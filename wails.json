@@ -5,6 +5,8 @@
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
+  "devServer": "localhost:3000",
+  "debounceMS": 10000,
   "author": {
     "name": "Pixiao",
     "email": "xiao15103183668@163.com"

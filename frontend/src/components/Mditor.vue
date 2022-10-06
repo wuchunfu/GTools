@@ -2,7 +2,7 @@
   <n-space vertical size="large">
     <n-layout has-sider>
       <n-layout-sider content-style="padding: 24px;" :bordered="true" collapse-mode="width"
-                      :collapsed="collapsed" show-trigger @collapse="collapsed = true" @expand="collapsed = false"
+                      :collapsed="collapsed" @collapse="collapsed = true" @expand="collapsed = false"
                       :collapsed-width="0" :width="250">
         <n-input-group>
           <n-input :style="{ width: '70%' }" placeholder="添加文件夹" v-model:value="dirPath"/>
@@ -22,7 +22,7 @@
 <script>
 import Vditor from "vditor"
 import "vditor/dist/index.css"
-import { GetMdContent, UploadImgByPicgo } from "../../wailsjs/go/main/App"
+import { GetMdContent, UploadImgByPicgo, AddDirPath } from "../../wailsjs/go/main/App"
 import { createDiscreteApi } from 'naive-ui'
 
 // 脱离上下文的 API 引入消息提示框
@@ -41,7 +41,24 @@ export default {
       collapsed: true,
       contentEditor: "",
       dirPath: null,
+    }
+  },
+  //mounted
+  mounted() {
+    let _this = this
+    this.contentEditor = new Vditor('vditor', {
+      height: '700px', // 默认就是全屏模式，但是此项不能省略，否则会出现大纲无法导航的问题
+      width: '100%',
       toolbar: [
+        {
+          name: 'sponsor',
+          tipPosition: 's',
+          tip: '菜单展开',
+          className: 'right',
+          icon: '<svg t="1665030513743" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10508" width="200" height="200"><path d="M104 64h815c22.091 0 40 17.909 40 40s-17.909 40-40 40H104c-22.091 0-40-17.909-40-40s17.909-40 40-40z m1 408h462c22.091 0 40 17.909 40 40s-17.909 40-40 40H105c-22.091 0-40-17.909-40-40s17.909-40 40-40z m0 408h815c22.091 0 40 17.909 40 40s-17.909 40-40 40H105c-22.091 0-40-17.909-40-40s17.909-40 40-40z m666.627-567.931l177.304 177.304c12.497 12.496 12.497 32.758 0 45.254L771.627 711.931c-12.496 12.497-32.758 12.497-45.254 0A32 32 0 0 1 717 689.304V334.696c0-17.673 14.327-32 32-32a32 32 0 0 1 22.627 9.373z" p-id="10509"></path></svg>',
+          click() {_this.collapsed = !_this.collapsed},
+        },
+        '|',
         'emoji',
         'headings',
         'bold',
@@ -73,15 +90,6 @@ export default {
         'fullscreen',
         'outline',
         {
-          hotkey: '⇧⌘S',
-          name: 'sponsor',
-          tipPosition: 's',
-          tip: '成为赞助者',
-          className: 'right',
-          icon: '<svg t="1663730736397" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9510" width="200" height="200"><path d="M511.250625 414.911719a46.545031 46.545031 0 0 1 46.545031 46.545031l0.162908 283.575604a46.545031 46.545031 0 0 1-93.090063 0l-0.162907-283.575604a46.545031 46.545031 0 0 1 46.545031-46.545031z m-50.012636-136.53985a50.035909 50.035909 0 0 1 100.071817 0l0.18618 1.512714a50.035909 50.035909 0 0 1-100.071817 0zM511.995345 1024a508.178653 508.178653 0 0 1-293.233697-93.299515 46.405396 46.405396 0 0 1-34.210598-44.683231l-0.418906-4.305415a46.405396 46.405396 0 0 1 80.592722-31.557531 420.534359 420.534359 0 1 0-132.653339-160.161453l-7.540295 7.540295a46.545031 46.545031 0 0 1 29.020827 43.077426l0.442177 4.328688a46.428669 46.428669 0 0 1-91.088626 12.776611A511.995345 511.995345 0 1 1 511.995345 1024z" p-id="9511"></path></svg>',
-          click() { console.log(213); },
-        },
-        {
           name: 'more',
           toolbar: [
             'export',
@@ -92,15 +100,6 @@ export default {
             'help',
           ],
         }],
-    }
-  },
-  //mounted
-  mounted() {
-    let _this = this
-    this.contentEditor = new Vditor('vditor', {
-      height: '700px', // 默认就是全屏模式，但是此项不能省略，否则会出现大纲无法导航的问题
-      width: '100%',
-      toolbar: this.toolbar,
       toolbarConfig: {
         pin: true,
         hide: false
@@ -175,12 +174,25 @@ export default {
     uploadClipboardToOSS() {
       let _this = this
       UploadImgByPicgo().then((res) => {
-        _this.contentEditor.insertValue("![url]("+res+")\n", true)
+        // _this.contentEditor.insertValue("![url]("+res+")\n", true)
+        message.info(res)
       })
     },
     addDirPath() {
-      message.info(this.dirPath)
-    }
+      if (this.dirPath !== null && this.dirPath.trim() !== ''){
+        console.log(
+          this.dirPath
+        );
+        AddDirPath(this.dirPath).then((res) => {
+          let result = JSON.parse(res)
+          if(result.code === 200) {
+            message.success(result.data)
+          } else {
+            message.error(result.msg)
+          }
+        })
+      }
+    },
   },
 
 }
