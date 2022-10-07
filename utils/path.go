@@ -53,7 +53,7 @@ func AddDirPathToJdb(dirPath string) string {
 	if len(b2) == 0 {
 		pathMap[dirPath] = dirPath
 		fmt.Printf("pathMap: %v\n", pathMap)
-		b3, _ := json.Marshal(pathMap)
+		b3, _ := json.MarshalIndent(pathMap,"","  ")
 		err4 := os.WriteFile(path, b3, fs.FileMode(os.O_RDWR|os.O_CREATE))
 		if err4 != nil {
 			resp.Code = 500
@@ -72,7 +72,7 @@ func AddDirPathToJdb(dirPath string) string {
 		}
 		fmt.Printf("pathMap[dirPath]: %v\n", pathMap[dirPath])
 		pathMap[dirPath] = dirPath
-		b3, _ := json.Marshal(pathMap)
+		b3, _ := json.MarshalIndent(pathMap,"","  ")
 		err4 := os.WriteFile(path, b3, fs.FileMode(os.O_RDWR|os.O_TRUNC))
 		if err4 != nil {
 			resp.Code = 500
