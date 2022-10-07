@@ -3,6 +3,8 @@
 
 export function AddDirPath(arg1:string):Promise<string>;
 
+export function GetDirList():Promise<string>;
+
 export function GetMdContent(arg1:string):Promise<string>;
 
 export function GetWd():Promise<string>;

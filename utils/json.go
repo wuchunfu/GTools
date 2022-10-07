@@ -43,3 +43,15 @@ func InitJdb(fileName string) (bool, string, error) {
 	}
 	return true, confFile, err3
 }
+
+func GetJdbContent(jdbName string) (bool, []byte) {
+	user, _ := user.Current()
+	var homeDir = user.HomeDir
+	var jdbPath = homeDir + "/GTools" + jdbName
+	b, err := os.ReadFile(jdbPath)
+	if err != nil {
+		return false, []byte(err.Error())
+	} else {
+		return true, b
+	}
+}

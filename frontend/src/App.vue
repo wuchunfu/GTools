@@ -4,7 +4,8 @@ import {RouterLink} from "vue-router";
 import {NIcon, NConfigProvider} from "naive-ui";
 import {
   Code as CodeIcon, Home as HomeIcon,
-  LogoMarkdown as MditorIcon
+  LogoMarkdown as MditorIcon,
+  SettingsSharp as SettingIcon
 } from '@vicons/ionicons5'
 
 import {darkTheme} from 'naive-ui'
@@ -42,7 +43,7 @@ export default {
                   path: "/cmd",
                 }
               },
-              {default: () => "快捷终端"}
+              {default: () => "快捷指令"}
           ),
           key: "go-back-cmd",
           icon: renderIcon(CodeIcon)
@@ -60,6 +61,20 @@ export default {
           ),
           key: "go-back-mditor",
           icon: renderIcon(MditorIcon)
+        },
+        {
+          label: () => h(
+              RouterLink,
+              {
+                to: {
+                  name: 'setting',
+                  path: "/setting",
+                }
+              },
+              {default: () => "设置"}
+          ),
+          key: "go-back-setting",
+          icon: renderIcon(SettingIcon)
         },
       ],
       railStyle: ({

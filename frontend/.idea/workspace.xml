@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="078c50c8-bf4b-4463-aedc-3de5f4c487c6" name="Default Changelist" comment="" />
+    <list default="true" id="078c50c8-bf4b-4463-aedc-3de5f4c487c6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/Setting.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app.go" beforeDir="false" afterPath="$PROJECT_DIR$/../app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Mditor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Mditor.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wailsjs/go/main/App.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/wailsjs/go/main/App.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wailsjs/go/main/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/wailsjs/go/main/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../utils/json.go" beforeDir="false" afterPath="$PROJECT_DIR$/../utils/json.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../utils/markdown.go" beforeDir="false" afterPath="$PROJECT_DIR$/../utils/markdown.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../utils/path.go" beforeDir="false" afterPath="$PROJECT_DIR$/../utils/path.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,12 +21,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Vue Single File Component" />
         <option value="JavaScript File" />
+        <option value="Vue Single File Component" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="2FdCIuLtaiWX2pfDlxwSJ2LckOv" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
@@ -67,10 +84,22 @@
       <updated>1664812500753</updated>
       <workItem from="1664812505840" duration="2916000" />
       <workItem from="1664855180612" duration="18388000" />
+      <workItem from="1665123792926" duration="2675000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

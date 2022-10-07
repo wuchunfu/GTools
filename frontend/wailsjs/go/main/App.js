@@ -6,6 +6,10 @@ export function AddDirPath(arg1) {
   return window['go']['main']['App']['AddDirPath'](arg1);
 }
 
+export function GetDirList() {
+  return window['go']['main']['App']['GetDirList']();
+}
+
 export function GetMdContent(arg1) {
   return window['go']['main']['App']['GetMdContent'](arg1);
 }

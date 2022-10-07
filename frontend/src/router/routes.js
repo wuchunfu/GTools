@@ -14,6 +14,11 @@ const routes = [
         name: 'mditor',
         path: '/mditor',
         component: () => import('../components/Mditor.vue')
+    },
+    {
+        name: 'setting',
+        path: '/setting',
+        component: () => import('../components/Setting.vue')
     }
 ]
 

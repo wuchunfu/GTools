@@ -86,6 +86,12 @@ func (a *App) GetWd() string {
 	return dir
 }
 
+// 添加md文件夹列表
 func (a *App) AddDirPath(path string) string {
 	return utils.AddDirPathToJdb(path)
+}
+
+// 获取md文件夹列表数据
+func (a *App) GetDirList() string {
+	return utils.GetPathData()
 }

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/fs"
 	"os"
 )
@@ -43,44 +42,45 @@ func AddDirPathToJdb(dirPath string) string {
 		resp.Msg = err.Error()
 		return resp.toJson()
 	}
-	b2, err2 := os.ReadFile(path)
+	pathData, err2 := os.ReadFile(path)
 	if err2 != nil {
 		resp.Code = 500
-		resp.Msg = "err2" + err2.Error()
+		resp.Msg = "path数据异常: " + err2.Error()
 		return resp.toJson()
 	}
-	pathMap := make(map[string]string)
-	if len(b2) == 0 {
-		pathMap[dirPath] = dirPath
-		fmt.Printf("pathMap: %v\n", pathMap)
-		b3, _ := json.MarshalIndent(pathMap,"","  ")
-		err4 := os.WriteFile(path, b3, fs.FileMode(os.O_RDWR|os.O_CREATE))
-		if err4 != nil {
-			resp.Code = 500
-			resp.Msg = "err4" + err4.Error()
-			return resp.toJson()
-		}
+	pathMap := make(map[string][]map[string]string) // Map 中key为目录，value为文件路径列表
+	// 获取目录下的md文件路径列表
+	if len(pathData) != 0 { // 如果数据库中没有数据则直接使用填充数据，否则取出后再进行修改
+		json.Unmarshal(pathData, &pathMap)
+	}
+	mdList := GetMdFileList(dirPath)
+	pathMap[dirPath] = mdList
+	b3, _ := json.MarshalIndent(pathMap, "", "  ")
+	err4 := os.WriteFile(path, b3, fs.FileMode(os.O_RDWR|os.O_CREATE))
+	if err4 != nil {
+		resp.Code = 500
+		resp.Msg = "err4" + err4.Error()
+		return resp.toJson()
+	}
+	resp.Code = 200
+	resp.Data = string(b3)
+	return resp.toJson()
+}
+
+// 获取路径所有存储的文件夹路径数据及Markdown文档列表
+func GetPathData() (string) {
+	// 从指定的数据json中取出所有数据
+	b, b2 := GetJdbContent("/path.json")
+	var resp Resp[string]
+	if b {
 		resp.Code = 200
-		resp.Data = string(b3)
+		resp.Msg = "OK"
+		resp.Data = string(b2)
 		return resp.toJson()
 	} else {
-		err3 := json.Unmarshal(b2, &pathMap)
-		if err3 != nil {
-			resp.Code = 500
-			resp.Msg = "err3" + err3.Error()
-			return resp.toJson()
-		}
-		fmt.Printf("pathMap[dirPath]: %v\n", pathMap[dirPath])
-		pathMap[dirPath] = dirPath
-		b3, _ := json.MarshalIndent(pathMap,"","  ")
-		err4 := os.WriteFile(path, b3, fs.FileMode(os.O_RDWR|os.O_TRUNC))
-		if err4 != nil {
-			resp.Code = 500
-			resp.Msg = "err4" + err4.Error()
-			return resp.toJson()
-		}
-		resp.Code = 200
-		resp.Data = string(b3)
+		resp.Code = 500
+		resp.Msg = string(b2)
+		resp.Data = ""
 		return resp.toJson()
 	}
 }
