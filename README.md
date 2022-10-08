@@ -15,6 +15,8 @@ GTools是基于wails开发的一款跨平台（Mac、Windows）桌面小工具
 - wails v2.0.0-rc.1.1
 - golang 1.18
 - Vue 3.2.37
+- Naive UI
+- Element-plus
 
 
 ## 目前功能点

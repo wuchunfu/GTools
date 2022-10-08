@@ -3,7 +3,6 @@ package main
 import (
 	"changeme/utils"
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -34,24 +33,8 @@ func (a *App) Greet(name string) string {
 }
 
 // 获取md文档的全部内容
-func (a *App) GetMdContent(name string) string {
-	ret := make(map[string]string)
-	b, err := os.ReadFile(name)
-	if err != nil {
-		ret["code"] = "0"
-		ret["msg"] = err.Error()
-		ret["data"] = ""
-		json2str, _ := json.Marshal(ret)
-		s := string(json2str)
-		return s
-	}
-	content := string(b)
-	ret["code"] = "1"
-	ret["msg"] = "OK"
-	ret["data"] = content
-	json2str, _ := json.Marshal(ret)
-	s := string(json2str)
-	return s
+func (a *App) GetMdContent(path string) string {
+	return utils.GetFileContent(path)
 }
 
 func (a *App) UploadImgByPicgo(name string) string {
@@ -94,4 +77,14 @@ func (a *App) AddDirPath(path string) string {
 // 获取md文件夹列表数据
 func (a *App) GetDirList() string {
 	return utils.GetPathData()
+}
+
+// 保存md文件内容
+func (a *App) SaveMdContent(path string, content string) string {
+	return utils.SaveFileContent(path, content)
+}
+
+// 删除md文件夹列表
+func (a *App) DelMdDir(path string) string {
+	return utils.DelDirPathFromJdb(path)
 }

@@ -3,6 +3,8 @@
 
 export function AddDirPath(arg1:string):Promise<string>;
 
+export function DelMdDir(arg1:string):Promise<string>;
+
 export function GetDirList():Promise<string>;
 
 export function GetMdContent(arg1:string):Promise<string>;
@@ -12,5 +14,7 @@ export function GetWd():Promise<string>;
 export function Greet(arg1:string):Promise<string>;
 
 export function OpenUrl(arg1:string):Promise<void>;
+
+export function SaveMdContent(arg1:string,arg2:string):Promise<string>;
 
 export function UploadImgByPicgo(arg1:string):Promise<string>;

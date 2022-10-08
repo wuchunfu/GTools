@@ -6,6 +6,10 @@ export function AddDirPath(arg1) {
   return window['go']['main']['App']['AddDirPath'](arg1);
 }
 
+export function DelMdDir(arg1) {
+  return window['go']['main']['App']['DelMdDir'](arg1);
+}
+
 export function GetDirList() {
   return window['go']['main']['App']['GetDirList']();
 }
@@ -24,6 +28,10 @@ export function Greet(arg1) {
 
 export function OpenUrl(arg1) {
   return window['go']['main']['App']['OpenUrl'](arg1);
+}
+
+export function SaveMdContent(arg1, arg2) {
+  return window['go']['main']['App']['SaveMdContent'](arg1, arg2);
 }
 
 export function UploadImgByPicgo(arg1) {
