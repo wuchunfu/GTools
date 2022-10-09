@@ -50,7 +50,13 @@ func GetJdbContent(jdbName string) (bool, []byte) {
 	var jdbPath = homeDir + "/GTools" + jdbName
 	b, err := os.ReadFile(jdbPath)
 	if err != nil {
-		return false, []byte(err.Error())
+		b2, _, err2 := InitJdb(jdbName)
+		if b2 {
+			b, _ := os.ReadFile(jdbPath)
+			return true, b
+		} else {
+			return false, []byte(err2.Error())
+		}
 	} else {
 		return true, b
 	}

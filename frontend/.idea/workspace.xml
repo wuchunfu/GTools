@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="078c50c8-bf4b-4463-aedc-3de5f4c487c6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../app.go" beforeDir="false" afterPath="$PROJECT_DIR$/../app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Mditor.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Mditor.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../utils/markdown.go" beforeDir="false" afterPath="$PROJECT_DIR$/../utils/markdown.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../wails.json" beforeDir="false" afterPath="$PROJECT_DIR$/../wails.json" afterDir="false" />
     </list>
@@ -78,7 +77,7 @@
       <updated>1664812500753</updated>
       <workItem from="1664812505840" duration="2916000" />
       <workItem from="1664855180612" duration="18388000" />
-      <workItem from="1665123792926" duration="4922000" />
+      <workItem from="1665123792926" duration="5093000" />
     </task>
     <servers />
   </component>
