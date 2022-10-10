@@ -4,8 +4,6 @@ import (
 	"changeme/utils"
 	"context"
 	"fmt"
-	"os"
-	"os/exec"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -37,36 +35,10 @@ func (a *App) GetMdContent(path string) string {
 	return utils.GetFileContent(path)
 }
 
-func (a *App) UploadImgByPicgo(name string) string {
-	os.Chdir("/Users/pixiao/GTools")
-	b, err := exec.Command("sh", "-c", "./picgo.sh").Output()
-	if err != nil {
-		return err.Error()
-	} else {
-		return string(b)
-	}
-	// resultStr := string(b)
-	// fmt.Printf("resultStr: %v\n", resultStr)
-	// s := strings.Trim(resultStr, " ")
-	// isContain := strings.ContainsAny(s, "https://")
-	// if isContain {
-	// 	s2 := strings.Split(s, "[PicGo SUCCESS]:")
-	// 	fmt.Printf("s: %v\n", s2[1])
-	// 	return s2[1]
-	// } else {
-	// 	return resultStr
-	// }
-}
-
+// 在浏览器中打开地址
 func (a *App) OpenUrl(url string) {
 	fmt.Printf("url: %v\n", url)
 	runtime.BrowserOpenURL(a.ctx, "http://www.baidu.com")
-}
-
-func (a *App) GetWd() string {
-	os.Chdir("/Users/pixiao/GTools")
-	dir, _ := os.Getwd()
-	return dir
 }
 
 // 添加md文件夹列表
@@ -87,4 +59,9 @@ func (a *App) SaveMdContent(path string, content string) string {
 // 删除md文件夹列表
 func (a *App) DelMdDir(path string) string {
 	return utils.DelDirPathFromJdb(path)
+}
+
+// 上传系统截图并获取公网链接地址
+func (a *App) UploadScreenshot() string {
+	return utils.UploadImgFromClipboard()
 }

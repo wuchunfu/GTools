@@ -15,7 +15,7 @@
 <script>
 import Vditor from "vditor"
 import "vditor/dist/index.css"
-import { UploadImgByPicgo, AddDirPath, GetDirList, GetMdContent, SaveMdContent, DelMdDir } from "../../wailsjs/go/main/App"
+import { UploadScreenshot, AddDirPath, GetDirList, GetMdContent, SaveMdContent, DelMdDir } from "../../wailsjs/go/main/App"
 import { createDiscreteApi, NButton } from 'naive-ui'
 import { h } from "vue";
 
@@ -160,7 +160,6 @@ export default {
           console.log(h);
         }
       },
-      theme: '',
       fullscreen: {
         index: 150
       },
@@ -189,7 +188,7 @@ export default {
       },
       upload: {
         handler() {
-          _this.uploadClipboardToOSS()
+          _this.uploadClipboard()
         }
       },
       counter: {
@@ -311,10 +310,15 @@ export default {
       evt.initEvent('click', true, true);
       this.contentEditor.vditor.toolbar.elements.preview.firstElementChild.dispatchEvent(evt);
     },
-    uploadClipboardToOSS() {
+    uploadClipboard() {
       let _this = this
-      UploadImgByPicgo().then((res) => {
-        message.info(res)
+      UploadScreenshot().then((res) => {
+        let result = JSON.parse(res)
+        if(result.code == 200) {
+          _this.insertValue(result.data)
+        } else {
+          message.error(res.msg)
+        }
       })
     },
     addDirPath() {

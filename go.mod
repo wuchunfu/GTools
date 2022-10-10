@@ -2,7 +2,16 @@ module changeme
 
 go 1.18
 
-require github.com/wailsapp/wails/v2 v2.0.0-rc.1.1
+require (
+	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible
+	github.com/wailsapp/wails/v2 v2.0.0-rc.1.1
+)
+
+require (
+	golang.org/x/exp/shiny v0.0.0-20221006183845-316c7553db56 // indirect
+	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
+	golang.org/x/mobile v0.0.0-20210716004757-34ab1303b554 // indirect
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
@@ -24,10 +33,12 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
+	golang.design/x/clipboard v0.6.2
 	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
 	golang.org/x/net v0.0.0-20221004154528-8021a29435af // indirect
 	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 )
 
 // replace github.com/wailsapp/wails/v2 v2.0.0-rc.1.1 => /Users/pixiao/go/pkg/mod/github.com/wailsapp/wails/v2@v2.0.0-rc.1.1

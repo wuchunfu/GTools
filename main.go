@@ -38,7 +38,7 @@ func main() {
 				HideToolbarSeparator:       true,
 			},
 			Appearance: mac.DefaultAppearance,
-			WebviewIsTransparent: true,
+			WebviewIsTransparent: false,
 			WindowIsTranslucent:  false,
 			About: &mac.AboutInfo{
 				Title:   "GTools",

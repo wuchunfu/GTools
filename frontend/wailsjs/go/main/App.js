@@ -18,10 +18,6 @@ export function GetMdContent(arg1) {
   return window['go']['main']['App']['GetMdContent'](arg1);
 }
 
-export function GetWd() {
-  return window['go']['main']['App']['GetWd']();
-}
-
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
@@ -34,6 +30,6 @@ export function SaveMdContent(arg1, arg2) {
   return window['go']['main']['App']['SaveMdContent'](arg1, arg2);
 }
 
-export function UploadImgByPicgo(arg1) {
-  return window['go']['main']['App']['UploadImgByPicgo'](arg1);
+export function UploadScreenshot() {
+  return window['go']['main']['App']['UploadScreenshot']();
 }

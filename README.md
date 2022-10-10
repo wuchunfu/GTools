@@ -27,9 +27,9 @@ GTools是基于wails开发的一款跨平台（Mac、Windows）桌面小工具
 
 ## TODO
 
-- [ ] Markdown编辑器增加阿里云OSS图片上传功能
+- [x] Markdown编辑器增加阿里云OSS图片上传功能
 - [x] Markdown编辑器增加目录功能
-- [ ] Markdown编辑器增加实时保存功能
+- [x] Markdown编辑器增加失去焦点保存功能
 - [ ] Markdown编辑器增加创建、保存文档功能
 - [ ] 快捷指令增、删、改、查功能
 - [ ] 待办事项清单分组、增、删、改、查功能
