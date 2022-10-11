@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -18,8 +19,6 @@ func UploadImgFromClipboard() string {
 		return resp.toJson()
 	}
 
-	fmt.Printf("imgPath: %v\n", imgPath)
-
 	// 判断文件是否存在并为非文件夹
 	b, s := CheckFileExist(imgPath)
 	if !b {
@@ -27,11 +26,16 @@ func UploadImgFromClipboard() string {
 		return resp.toJson()
 	}
 
-	// 从配置文件中选取上传首选项 TODO 目前先写死只使用阿里云OSS上传图片
+	// TODO 从配置文件中选取上传首选项  目前先写死只使用阿里云OSS上传图片
 	b2, s2 := uploadByAliOss(imgPath)
 	if b2 {
+		// 删除图片临时文件
+		os.Remove(imgPath)
+		// TODO 将线上图片地址存储到json数据库中
+
 		resp.Code = 200
-		resp.Data = s2
+		mdImg :=  "![](%v)" //  可以输出markdown原始图片
+		resp.Data = fmt.Sprintf(mdImg, s2)
 		return resp.toJson()
 	} else {
 		resp.Msg = s2
@@ -76,6 +80,5 @@ func uploadByAliOss(path string) (bool, string) {
 	if err != nil {
 		return false, err.Error()
 	}
-
-	return true, "https://"+ bucketName + "." + confEndpoint + "/" + objectName
+	return true, fmt.Sprintf("https://%s.%s/%s", bucketName, confEndpoint, objectName)
 }

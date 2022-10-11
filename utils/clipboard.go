@@ -14,8 +14,6 @@ func SavePngFromClipboard() (bool, string) {
 	if err != nil {
 		panic(err)
 	}
-	// b := clipboard.Read(clipboard.FmtText)
-	// fmt.Printf("b: %v\n", string(b))
 
 	b2 := clipboard.Read(clipboard.FmtImage)
 	i := len(b2)
