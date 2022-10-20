@@ -30,6 +30,10 @@ export function SaveMdContent(arg1, arg2) {
   return window['go']['main']['App']['SaveMdContent'](arg1, arg2);
 }
 
+export function StartTomcat() {
+  return window['go']['main']['App']['StartTomcat']();
+}
+
 export function UploadScreenshot() {
   return window['go']['main']['App']['UploadScreenshot']();
 }

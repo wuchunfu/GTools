@@ -1,16 +1,19 @@
 <template>
-  <div id="vditor" class="vditor"></div>
-  <n-drawer v-model:show="showDirList" :width="502" :placement="placement">
-    <n-input-group style="margin-top: 30px; margin-bottom: 10px;">
-      <n-input :style="{ width: '100%'}" placeholder="添加文件夹" v-model:value="dirPath" clearable />
-      <n-button type="primary" @click="addDirPath">
-        添加
-      </n-button>
-    </n-input-group>
-    <div>
-      <el-tree :data="treeData" @node-click="handleNodeClick" :default-expand-all="true" />
-    </div>
-  </n-drawer>
+  <div class="parentContent" ref="parentContent">
+    <div id="vditor" class="vditor" ref="vditor"></div>
+    <n-drawer v-model:show="showDirList" :width="502" :placement="placement">
+      <n-input-group style="margin-top: 30px; margin-bottom: 10px;">
+        <n-input :style="{ width: '100%'}" placeholder="添加文件夹" v-model:value="dirPath" clearable />
+        <n-button type="primary" @click="addDirPath">
+          添加
+        </n-button>
+      </n-input-group>
+      <div>
+        <el-tree :data="treeData" @node-click="handleNodeClick" :default-expand-all="true" />
+      </div>
+    </n-drawer>
+  </div>
+
 </template>
 <script>
 import Vditor from "vditor"
@@ -18,6 +21,7 @@ import "vditor/dist/index.css"
 import { UploadScreenshot, AddDirPath, GetDirList, GetMdContent, SaveMdContent, DelMdDir } from "../../wailsjs/go/main/App"
 import { createDiscreteApi, NButton } from 'naive-ui'
 import { h } from "vue";
+import mitt from '../utils/event.js'
 
 // 脱离上下文的 API 引入消息提示框
 const { message, dialog } = createDiscreteApi(
@@ -40,13 +44,20 @@ export default {
       placement: 'left',  // 抽屉展示位置
       mdPath: null,
       themeType: true,  // true 亮 false 暗
+      editorHeight: 0,
     }
   },
   //mounted
   mounted() {
     let _this = this
+    this.editorHeight = this.$refs.parentContent.clientHeight
+    let themeType = localStorage.getItem("theme")
+    let initTheme = 'classic'
+    if(themeType == 0) {
+      initTheme = 'dark'
+    } 
     this.contentEditor = new Vditor('vditor', {
-      height: '700px', // 默认就是全屏模式，但是此项不能省略，否则会出现大纲无法导航的问题
+      height: this.editorHeight, // 默认使用窗口的高度
       width: '100%',
       toolbar: [
         {
@@ -163,6 +174,7 @@ export default {
       fullscreen: {
         index: 150
       },
+      theme: initTheme,
       cache: { // 缓存
         enable: false,
       },
@@ -196,6 +208,13 @@ export default {
       }
     })
     this.getDirList()
+    mitt.on("theme", (val) => {
+      if(val == 0) {
+        _this.setDarkTheme()
+      } else {
+        _this.setLightTheme()
+      }
+    })
   },
   methods: {
     handleNodeClick(data) {
@@ -314,7 +333,7 @@ export default {
       let _this = this
       UploadScreenshot().then((res) => {
         let result = JSON.parse(res)
-        if(result.code == 200) {
+        if (result.code == 200) {
           _this.insertValue(result.data)
         } else {
           message.error(res.msg)
@@ -340,5 +359,14 @@ export default {
 <style>
 .treeDiv {
   margin-top: 10px;
+}
+.parentContent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>

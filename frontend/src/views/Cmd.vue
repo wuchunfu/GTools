@@ -1,12 +1,12 @@
 <template>
     <div>
-        <n-button type="success" @click="getWd">21313123</n-button>
+        <n-button type="success" @click="startTomcat">21313123</n-button>
     </div>
 </template>
 
 <script>
-import { WindowSetLightTheme } from "../../wailsjs/runtime/runtime"
 import { createDiscreteApi } from 'naive-ui'
+import { StartTomcat }from '../../wailsjs/go/main/App'
 
 // 脱离上下文的 API 引入消息提示框
 const { message } = createDiscreteApi(
@@ -14,7 +14,10 @@ const { message } = createDiscreteApi(
 );
 export default {
     methods: {
-        getWd() {
+        startTomcat() {
+            StartTomcat().then((res) => {
+                console.log(res);
+            })
         }
     }
 }

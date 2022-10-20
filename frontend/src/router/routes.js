@@ -19,6 +19,16 @@ const routes = [
         name: 'setting',
         path: '/setting',
         component: () => import('../views/Setting.vue')
+    },
+    {
+        name: 'todo',
+        path: '/todo',
+        component: () => import('../views/Todo.vue')
+    },
+    {
+        name: 'navigation',
+        path: '/navigation',
+        component: () => import('../views/Navigation.vue')
     }
 ]
 

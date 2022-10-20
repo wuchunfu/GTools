@@ -1,20 +1,27 @@
 <script>
-import { h, ref } from "vue";
+import { h } from "vue";
 import { RouterLink } from "vue-router";
 import { NIcon, NConfigProvider } from "naive-ui";
 import {
   Code as CodeIcon, Home as HomeIcon,
   LogoMarkdown as MditorIcon,
-  SettingsSharp as SettingIcon
+  SettingsSharp as SettingIcon,
+  Checkbox as TodoIcon,
+  Navigate as NavigateIcon,
+  DocumentText as DocIcon
 } from '@vicons/ionicons5'
 
 import { darkTheme } from 'naive-ui'
+import mitt from './utils/event.js'
 
 const renderIcon = (icon) => {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
 export default {
+  components: {
+    NConfigProvider
+  },
   data() {
     return {
       collapsed: false,
@@ -39,6 +46,34 @@ export default {
             RouterLink,
             {
               to: {
+                name: 'todo',
+                path: "/todo",
+              }
+            },
+            { default: () => "待办事项" }
+          ),
+          key: "go-back-todo",
+          icon: renderIcon(TodoIcon)
+        },
+        {
+          label: () => h(
+            RouterLink,
+            {
+              to: {
+                name: 'mditor',
+                path: "/mditor",
+              }
+            },
+            { default: () => "文档编辑" }
+          ),
+          key: "go-back-mditor",
+          icon: renderIcon(MditorIcon)
+        },
+        {
+          label: () => h(
+            RouterLink,
+            {
+              to: {
                 name: 'cmd',
                 path: "/cmd",
               }
@@ -53,14 +88,14 @@ export default {
             RouterLink,
             {
               to: {
-                name: 'mditor',
-                path: "/mditor",
+                name: 'navigation',
+                path: "/navigation",
               }
             },
-            { default: () => "Mditor" }
+            { default: () => "快捷导航" }
           ),
-          key: "go-back-mditor",
-          icon: renderIcon(MditorIcon)
+          key: "go-back-navigation",
+          icon: renderIcon(NavigateIcon)
         },
         {
           label: () => h(
@@ -75,7 +110,7 @@ export default {
           ),
           key: "go-back-setting",
           icon: renderIcon(SettingIcon)
-        },
+        }
       ],
       railStyle: ({
         focused,
@@ -97,13 +132,21 @@ export default {
       }
     }
   },
+  mounted () {
+    // 初始化项目时将主题保存在localStorage中
+    localStorage.setItem('theme', 1)
+  },
   methods: {
     changeTheme() {
       console.log(this.switchTheme);
       if (this.switchTheme) {
         this.myTheme = darkTheme
+        localStorage.setItem("theme", 0)
+        mitt.emit("theme","0")
       } else {
         this.myTheme = null
+        localStorage.setItem("theme", 1)
+        mitt.emit("theme","1")
       }
     }
   }
@@ -115,8 +158,8 @@ export default {
   <n-config-provider :theme="myTheme">
     <n-space vertical size="large">
       <n-layout has-sider position="absolute">
-          <n-layout-sider bordered collapse-mode="width" :collapsed-width="80" :width="150" :collapsed="collapsed"
-            show-trigger @collapse="collapsed = true" @expand="collapsed = false">
+        <n-layout-sider bordered collapse-mode="width" :collapsed-width="80" :width="150" :collapsed="collapsed"
+          show-trigger @collapse="collapsed = true" @expand="collapsed = false" style="--wails-draggable:drag">
             <n-menu :options="menuOptions" :collapsed-width="64" :collapsed-icon-size="22" style="margin-top: 40px;" />
             <div class="switchBtnPar">
               <n-divider />
@@ -130,11 +173,11 @@ export default {
                 </template>
               </n-switch>
             </div>
-          </n-layout-sider>
-          <n-layout-content>
-            <router-view/>
-          </n-layout-content>
-        </n-layout>
+        </n-layout-sider>
+        <n-layout-content>
+          <router-view />
+        </n-layout-content>
+      </n-layout>
     </n-space>
   </n-config-provider>
 </template>
@@ -148,5 +191,11 @@ export default {
   position: absolute;
   left: 50%;
   transform: translate(-50%);
+}
+html , body{
+  height: 100%;
+}
+body {
+  margin: 0;
 }
 </style>

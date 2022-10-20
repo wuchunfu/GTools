@@ -65,3 +65,7 @@ func (a *App) DelMdDir(path string) string {
 func (a *App) UploadScreenshot() string {
 	return utils.UploadImgFromClipboard()
 }
+
+func (a *App) StartTomcat()string  {
+	return utils.RunCmd()
+}
