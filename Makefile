@@ -4,4 +4,8 @@ dev:
 
 .PHONY: build
 build:
-	wails build -clean -platform darwin/amd64,windows/amd64,linux/amd64
+	wails build -clean -platform darwin,windows
+
+.PHONY: doc
+doc:
+	docsify serve docs --port=3010

@@ -12,7 +12,7 @@ GTools是基于wails开发的一款跨平台（Mac、Windows）桌面小工具
 
 - MacOS
 - Vscode
-- wails v2.1.0
+- wails v2.0.0-rc.1.1
 - golang 1.18
 - Vue 3.2.37
 - Naive UI
@@ -30,12 +30,7 @@ GTools是基于wails开发的一款跨平台（Mac、Windows）桌面小工具
 - [x] Markdown编辑器增加阿里云OSS图片上传功能
 - [x] Markdown编辑器增加目录功能
 - [x] Markdown编辑器增加失去焦点保存功能
-- [x] Markdown编辑器增加创建、保存文档功能
-- [x] 重构Golang后端代码结构
-- [ ] 使用xorm替代json文件进行数据的存储
-- [ ] 增加时钟功能
-- [ ] 增加倒计时结束后系统通知功能
-- [ ] 使用go-toast实现系统通知功能
+- [ ] Markdown编辑器增加创建、保存文档功能
 - [ ] 快捷指令增、删、改、查功能
 - [ ] 待办事项清单分组、增、删、改、查功能
 - [ ] Json格式化小工具

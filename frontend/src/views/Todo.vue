@@ -15,12 +15,12 @@
             <p style="display: flex; align-items: center;">
                 <n-button text style="font-size: 30px; margin-left: 15px;">
                     <n-icon>
-                        <cash-icon />
+                        <list-icon />
                     </n-icon>
                 </n-button>
                 <n-button text style="font-size: 30px; margin-left: 15px;">
                     <n-icon>
-                        <list-icon />
+                        <hide-done-icon />
                     </n-icon>
                 </n-button>
             </p>
@@ -29,83 +29,65 @@
                 type="circle" :show-indicator="false" status="success" :percentage="todopPrcent" :stroke-width="12" />
         </div>
         <div>
-            <!-- <el-table :data="todoList" class="table">
-                <el-table-column prop="done"  width="80">
-                    <template #default="scope">
-                        <el-checkbox v-model="scope.row.done" @change="handleSelectionChange(scope.row)"></el-checkbox>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="address"  show-overflow-tooltip/>
-                <el-table-column prop="content" width="120"  show-overflow-tooltip/>
-                <el-table-column prop="date"  width="120" />
-            </el-table> -->
-            <n-table :bordered="false" :single-line="false">
-                <tbody>
-                    <tr v-for="item, index in todoList">
-                        <td>
-                            <el-checkbox v-model="item.done" @change="handleSelectionChange(item)"></el-checkbox>
-                        </td>
-                        <td>{{item.date}}</td>
-                        <td style="overflow: hidden;">{{item.address}}</td>
-                    </tr>
-                </tbody>
-            </n-table>
             <n-list hoverable clickable>
                 <n-list-item v-for="item, index in todoList">
-                    <n-thing title="相见恨晚" content-style="margin-top: 10px;">
-                        <template #description>
-                            <n-space size="small" style="margin-top: 4px">
-                                <n-tag :bordered="false" type="info" size="small">
-                                    暑夜
-                                </n-tag>
-                                <n-tag :bordered="false" type="info" size="small">
-                                    晚春
-                                </n-tag>
-                            </n-space>
-                        </template>
-                        奋勇呀然后休息呀<br>
-                        完成你伟大的人生
-                    </n-thing>
+                    <div
+                        @contextmenu.prevent="rightClick(item)"
+                        style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
+                        <n-checkbox size="large" :checked="item.done"
+                            @update:checked="handleSelectionChange(item, index)" />
+                        <p :style="item.done ? doneItemTitleStyle : todoItemTitleStyle">{{item.title}}</p>
+                        <n-button text style="font-size: 30px; margin-left: 50px;" v-if="!item.hasContent">
+                            <n-icon :depth="item.done ? 4 : 2" color="#ff6347">
+                                <content-icon />
+                            </n-icon>
+                        </n-button>
+                        <p :style="item.done ? doneItemDateStyle : todoItemDateStyle">
+                            {{item.date}}</p>
+                    </div>
                 </n-list-item>
             </n-list>
+            <n-divider />
         </div>
         <n-back-top :right="100" />
     </div>
 </template>
 <script>
 import {
-    Location as CashIcon,
-    ListCircle as ListIcon
+    AlbumsOutline as ListIcon,
+    DocumentText as ContentIcon,
+    EyeOutline as HideDoneIcon
 } from "@vicons/ionicons5";
 export default {
     components: {
-        CashIcon,
-        ListIcon
+        ListIcon,
+        ContentIcon,
+        HideDoneIcon
     },
     data() {
         return {
+            app: window.go.gtools.App,
             todoItem: null,
             total: 0,
             undo: 0,
             done: 0,
             todopPrcent: 3,
-            todoList: [
-                {
-                    done: false,
-                    date: '2016-05-03',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles No. 189, Grove St, Los AngelesNo. 189, Grove St, Los AngelesNo. 189, Grove St, Los AngelesNo. 189, Grove St, Los Angeles',
-                },
-            ]
+            todoList: [],
+            todoItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #87ceeb;',
+            doneItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #D3D3D3;',
+            doneItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600; text-decoration: line-through; color: #D3D3D3',
+            todoItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600;',
         }
     },
     mounted() {
-        for (let index = 0; index < 1; index++) {
+        for (let index = 0; index < 2; index++) {
             this.todoList.push({
-                done: true,
+                done: false,
+                hasContent: false,
                 date: '2016-05-01',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles',
+                title: '今天的一项计划',
+                content: "具体的内容是XXXXXX",
+                tags: ['工作', '生活']
             })
         }
     },
@@ -113,9 +95,10 @@ export default {
         addItem() {
             console.log(this.todoItem);
         },
-        handleSelectionChange(val) {
-            console.log(val);
-            console.log(val.date);
+        handleSelectionChange(item, index) {
+            item.done = !item.done
+            console.log(item);
+            console.log(index);
         },
         tableRowClassName(val) {
             if (val.row.done === true) {
@@ -123,6 +106,9 @@ export default {
             } else {
                 return 'warning-row'
             }
+        },
+        rightClick(item) {
+            console.log(item);
         }
     }
 }
@@ -167,7 +153,7 @@ export default {
 }
 
 .todo_detail_undo {
-    color: #C03F53;
+    color: #DB7093;
     font-size: 20px;
     font-weight: 500;
 }

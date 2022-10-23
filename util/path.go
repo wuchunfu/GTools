@@ -1,26 +1,27 @@
-package utils
+package util
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
+	"strings"
 )
 
-type Resp[T any] struct {
+type Response[T any] struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg"`
 	Data T      `json:"data"`
 }
 
-func (a *Resp[T]) toJson() string {
+func (a *Response[T]) toJson() string {
 	b, _ := json.Marshal(a)
 	return string(b)
 }
 
 // 将文件夹路径添加到json数据库中
 func AddDirPathToJdb(dirPath string) string {
-	var resp Resp[string]
+	var resp Response[string]
 
 	// 判断路径是否为文件夹
 	fi, err := os.Stat(dirPath)
@@ -68,27 +69,9 @@ func AddDirPathToJdb(dirPath string) string {
 	return resp.toJson()
 }
 
-// 获取路径所有存储的文件夹路径数据及Markdown文档列表
-func GetPathData() (string) {
-	// 从指定的数据json中取出所有数据
-	b, b2 := GetJdbContent("/path.json")
-	var resp Resp[string]
-	if b {
-		resp.Code = 200
-		resp.Msg = "OK"
-		resp.Data = string(b2)
-		return resp.toJson()
-	} else {
-		resp.Code = 500
-		resp.Msg = string(b2)
-		resp.Data = ""
-		return resp.toJson()
-	}
-}
-
-func DelDirPathFromJdb(path string) string  {
+func DelDirPathFromJdb(path string) string {
 	fmt.Printf("path: %v\n", path)
-	var resp Resp[string]
+	var resp Response[string]
 	resp.Code = 500
 	fi, err := os.Stat(path)
 	if err != nil {
@@ -124,7 +107,7 @@ func DelDirPathFromJdb(path string) string  {
 	return resp.toJson()
 }
 
-func CheckFileExist(path string) (bool, string)  {
+func CheckFileExist(path string) (bool, string) {
 	fi, err := os.Stat(path)
 	if err != nil {
 		return false, err.Error()
@@ -135,4 +118,24 @@ func CheckFileExist(path string) (bool, string)  {
 		return true, ""
 	}
 
+}
+
+// 获取目录下所有的MarkDown文件（不递归）
+func GetMdFileList(name string) []map[string]string {
+	filePathList := make([]map[string]string, 0)
+	de, err := os.ReadDir(name)
+	if err != nil {
+		return filePathList
+	}
+	for _, v := range de {
+		s := strings.Split(v.Name(), ".")
+		if s[len(s)-1] == "md" {
+			mapPath := make(map[string]string)
+			fname := v.Name()
+			mapPath["fname"] = fname
+			mapPath["fpath"] = name + "/" + v.Name()
+			filePathList = append(filePathList, mapPath)
+		}
+	}
+	return filePathList
 }

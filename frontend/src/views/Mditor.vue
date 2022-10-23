@@ -8,7 +8,7 @@
           添加
         </n-button>
       </n-input-group>
-      <div>
+      <div class="dark">
         <el-tree :data="treeData" @node-click="handleNodeClick" :default-expand-all="true" />
       </div>
     </n-drawer>
@@ -18,7 +18,6 @@
 <script>
 import Vditor from "vditor"
 import "vditor/dist/index.css"
-import { UploadScreenshot, AddDirPath, GetDirList, GetMdContent, SaveMdContent, DelMdDir } from "../../wailsjs/go/main/App"
 import { createDiscreteApi, NButton } from 'naive-ui'
 import { h } from "vue";
 import mitt from '../utils/event.js'
@@ -36,6 +35,7 @@ export default {
   },
   data() {
     return {
+      app: window.go.gtools.App,
       collapsed: true,
       contentEditor: "",
       dirPath: null,
@@ -53,9 +53,11 @@ export default {
     this.editorHeight = this.$refs.parentContent.clientHeight
     let themeType = localStorage.getItem("theme")
     let initTheme = 'classic'
-    if(themeType == 0) {
+    let contentTheme = 'light'
+    if (themeType == 0) {
       initTheme = 'dark'
-    } 
+      contentTheme = 'dark'
+    }
     this.contentEditor = new Vditor('vditor', {
       height: this.editorHeight, // 默认使用窗口的高度
       width: '100%',
@@ -81,6 +83,17 @@ export default {
           },
         },
         {
+          name: 'newmd',
+          tipPosition: 's',
+          tip: '新建文档',
+          className: 'right',
+          icon: '<svg t="1666324094016" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5807" width="200" height="200"><path d="M608 384h-320c-19.2 0-32 12.8-32 32s12.8 32 32 32h320c19.2 0 32-12.8 32-32S627.2 384 608 384zM608 576h-320c-19.2 0-32 12.8-32 32s12.8 32 32 32h320c19.2 0 32-12.8 32-32S627.2 576 608 576z" p-id="5808"></path><path d="M800 0h-512C236.8 0 192 44.8 192 96V128h-32C108.8 128 64 172.8 64 224v704c0 51.2 44.8 96 96 96h576c51.2 0 96-44.8 96-96V896h32c51.2 0 96-44.8 96-96v-640C960 70.4 889.6 0 800 0zM768 928c0 19.2-12.8 32-32 32h-576c-19.2 0-32-12.8-32-32v-704c0-19.2 12.8-32 32-32h576c19.2 0 32 12.8 32 32v704z m128-128c0 19.2-12.8 32-32 32H832V224c0-51.2-44.8-96-96-96H256v-32c0-19.2 12.8-32 32-32h512c51.2 0 96 44.8 96 96v640z" p-id="5809"></path></svg>',
+          click() {
+            _this.setValue("")
+            localStorage.removeItem("mdPath")
+          },
+        },
+        {
           name: 'save',
           tipPosition: 's',
           tip: '保存',
@@ -101,6 +114,7 @@ export default {
         'list',
         'ordered-list',
         'check',
+        'table',
         'outdent',
         'indent',
         '|',
@@ -111,31 +125,27 @@ export default {
         'insert-before',
         'insert-after',
         '|',
-        'upload',
-        'record',
-        'table',
-        '|',
         'undo',
         'redo',
         '|',
         'edit-mode',
         'fullscreen',
         'outline',
-        {
-          name: 'changetheme',
-          tipPosition: 's',
-          tip: '亮暗模式',
-          className: 'right',
-          icon: '<svg t="1665281516966" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6580" width="200" height="200"><path d="M512 0h-0.7C298.7 0.4 126.2 174.8 128 387.4c1 112.1 50 212.8 127.5 282.4 51 45.8 80.5 110.8 80.5 179.3v57c0 65.1 52.8 117.9 117.9 117.9h116.2c65.1 0 117.9-52.8 117.9-117.9v-57c0-68.6 29.6-133.6 80.6-179.5C846.8 599.3 896 497.4 896 384 896 171.9 724.1 0 512 0z m213.9 622C661.1 680.3 624 763 624 849.1V896c0 35.3-28.7 64-64 64h-96c-35.3 0-64-28.7-64-64v-46.9c0-86.1-37.1-168.9-101.7-227-32.8-29.4-58.7-64.6-77.1-104.4-19-41.2-28.8-85.2-29.2-130.9-0.4-43.3 7.8-85.4 24.3-125.1 16-38.4 39-72.9 68.4-102.7 29.4-29.7 63.7-53.1 101.9-69.5 39.5-16.9 81.5-25.5 124.8-25.6h0.6c43.2 0 85.1 8.5 124.5 25.1 38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7C823.6 298.9 832 340.8 832 384c0 46.2-9.6 90.8-28.6 132.5C785 556.8 759 592.3 725.9 622z" p-id="6581"></path><path d="M516.7 624l19.4-173.3H460L627.3 208l-19.4 173.3H684L516.7 624zM576 912H448c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h128c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z m0-64H448c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h128c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z m16-64H432c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h160c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z" p-id="6582"></path></svg>',
-          click() {
-            _this.themeType = !_this.themeType
-            if (_this.themeType) {
-              _this.setLightTheme()
-            } else {
-              _this.setDarkTheme()
-            }
-          },
-        },
+        // {
+        //   name: 'changetheme',
+        //   tipPosition: 's',
+        //   tip: '亮暗模式',
+        //   className: 'right',
+        //   icon: '<svg t="1665281516966" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6580" width="200" height="200"><path d="M512 0h-0.7C298.7 0.4 126.2 174.8 128 387.4c1 112.1 50 212.8 127.5 282.4 51 45.8 80.5 110.8 80.5 179.3v57c0 65.1 52.8 117.9 117.9 117.9h116.2c65.1 0 117.9-52.8 117.9-117.9v-57c0-68.6 29.6-133.6 80.6-179.5C846.8 599.3 896 497.4 896 384 896 171.9 724.1 0 512 0z m213.9 622C661.1 680.3 624 763 624 849.1V896c0 35.3-28.7 64-64 64h-96c-35.3 0-64-28.7-64-64v-46.9c0-86.1-37.1-168.9-101.7-227-32.8-29.4-58.7-64.6-77.1-104.4-19-41.2-28.8-85.2-29.2-130.9-0.4-43.3 7.8-85.4 24.3-125.1 16-38.4 39-72.9 68.4-102.7 29.4-29.7 63.7-53.1 101.9-69.5 39.5-16.9 81.5-25.5 124.8-25.6h0.6c43.2 0 85.1 8.5 124.5 25.1 38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7C823.6 298.9 832 340.8 832 384c0 46.2-9.6 90.8-28.6 132.5C785 556.8 759 592.3 725.9 622z" p-id="6581"></path><path d="M516.7 624l19.4-173.3H460L627.3 208l-19.4 173.3H684L516.7 624zM576 912H448c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h128c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z m0-64H448c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h128c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z m16-64H432c-4.4 0-8.4-1.8-11.3-4.7-2.9-2.9-4.7-6.9-4.7-11.3 0-8.8 7.2-16 16-16h160c4.4 0 8.4 1.8 11.3 4.7 2.9 2.9 4.7 6.9 4.7 11.3 0 8.8-7.2 16-16 16z" p-id="6582"></path></svg>',
+        //   click() {
+        //     _this.themeType = !_this.themeType
+        //     if (_this.themeType) {
+        //       _this.setLightTheme()
+        //     } else {
+        //       _this.setDarkTheme()
+        //     }
+        //   },
+        // },
         {
           name: 'more',
           toolbar: [
@@ -151,8 +161,9 @@ export default {
         pin: true,
         hide: false
       },
+      mode: 'wysiwyg',
       outline: {
-        enable: true,
+        enable: false,
         position: 'left'
       },
       preview: {
@@ -162,7 +173,7 @@ export default {
           lineNumber: true
         },
         theme: {
-          current: 'ant-design'
+          current: contentTheme
         }
       },
       resize: {
@@ -176,7 +187,7 @@ export default {
       },
       theme: initTheme,
       cache: { // 缓存
-        enable: false,
+        enable: true,
       },
       after: () => {
 
@@ -188,11 +199,10 @@ export default {
 
       },
       blur: (content) => {
-        let path = _this.mdPath
+        let path = localStorage.getItem("mdPath")
         if (path !== null && path.trim() !== '' && !path.startsWith("menu")) {
-          SaveMdContent(path, content).then((res) => {
-            let result = JSON.parse(res)
-            if (result.code != 200) {
+          this.app.SaveMdContent(path, content).then((res) => {
+            if (res.code != 200) {
               message.error(result.msg)
             }
           })
@@ -209,7 +219,7 @@ export default {
     })
     this.getDirList()
     mitt.on("theme", (val) => {
-      if(val == 0) {
+      if (val == 0) {
         _this.setDarkTheme()
       } else {
         _this.setLightTheme()
@@ -219,21 +229,28 @@ export default {
   methods: {
     handleNodeClick(data) {
       this.mdPath = data.key
-      this.getMdContent(data.key)
+      localStorage.setItem("mdPath", this.mdPath)
+      if (this.mdPath.startsWith("menu")) {
+        this.setValue("")
+      } else {
+        this.getMdContent(data.key)
+      }
     },
     delMdDir() {
-      if (this.mdPath.startsWith("menu")) {
+      let path = localStorage.getItem("mdPath")
+      if (path.startsWith("menu")) {
         dialog.warning({
           title: '警告',
           content: '你确定删除目录: ' + this.mdPath.substring(5),
           positiveText: '确定',
           negativeText: '取消',
           onPositiveClick: () => {
-            DelMdDir(this.mdPath.substring(5)).then((res) => {
+            this.app.DelMdDir(this.mdPath.substring(5)).then((res) => {
               let result = JSON.parse(res)
               if (result.code == 200) {
                 message.success("删除成功")
                 this.getDirList()
+                localStorage.removeItem("mdPath")
               } else {
                 message.error(result.msg)
               }
@@ -247,22 +264,22 @@ export default {
     },
     getMdContent(path) {
       if (!path.startsWith("menu")) {
-        GetMdContent(path).then((res) => {
-          let result = JSON.parse(res)
-          if (result.code == 200) {
-            this.setValue(result.data)
-          } else if (result.code == 500) {
-            message.error(result.msg)
-          } else { }
+        this.app.GetMdContent(path).then((res) => {
+          if (res.code == 200) {
+            this.setValue(res.data)
+          } else {
+            message.error(res.msg)
+          }
         })
       }
     },
     saveMdContent() {
       let _this = this
-      let path = _this.mdPath
-      let content = _this.getValue()
-      if (path !== null && path.trim() !== '' && !path.startsWith("menu")) {
-        SaveMdContent(path, content).then((res) => {
+      let mdPath = ""
+      let path = localStorage.getItem("mdPath")
+      let content = this.getValue()
+      if (path !== null && path.trim() != '' && !path.startsWith("menu")) {
+        this.app.SaveMdContent(path, content).then((res) => {
           let result = JSON.parse(res)
           if (result.code == 200) {
             message.success("保存成功！")
@@ -270,14 +287,35 @@ export default {
             message.error(result.msg)
           }
         })
+      } else {
+        this.app.OpenMdSaveFileWindow().then(res => {
+          if (res.code != 200) {
+            message.error(res.msg)
+            return
+          }
+          mdPath = res.data
+          if (res.data == '') {
+            message.info("已取消保存")
+            return
+          }
+          let content = _this.getValue()
+          console.log(content);
+          _this.app.NewMd(mdPath, content).then(res => {
+            if (res.code == 200) {
+              message.success("保存成功")
+              localStorage.setItem("mdPath", mdPath)
+            } else {
+              message.error("保存失败")
+            }
+          })
+        })
       }
     },
     getDirList() {
       let _this = this
-      GetDirList().then((res) => {
-        let result = JSON.parse(res)
-        if (result.code == 200) {
-          let data = JSON.parse(result.data)
+      this.app.GetDirList().then((res) => {
+        if (res.code == 200) {
+          let data = JSON.parse(res.data)
           _this.treeData = []
           for (let item in data) {
             let newItem = {
@@ -288,7 +326,7 @@ export default {
             _this.treeData.push(newItem)
           }
         } else {
-          message.error(result.msg)
+          message.error(res.msg)
         }
       })
     },
@@ -331,10 +369,9 @@ export default {
     },
     uploadClipboard() {
       let _this = this
-      UploadScreenshot().then((res) => {
-        let result = JSON.parse(res)
-        if (result.code == 200) {
-          _this.insertValue(result.data)
+      this.app.UploadScreenshot().then((res) => {
+        if (res.code == 200) {
+          _this.insertValue(res.data)
         } else {
           message.error(res.msg)
         }
@@ -342,7 +379,7 @@ export default {
     },
     addDirPath() {
       if (this.dirPath !== null && this.dirPath.trim() !== '') {
-        AddDirPath(this.dirPath).then((res) => {
+        this.app.AddDirPath(this.dirPath).then((res) => {
           let result = JSON.parse(res)
           if (result.code === 200) {
             this.getDirList()
@@ -360,6 +397,7 @@ export default {
 .treeDiv {
   margin-top: 10px;
 }
+
 .parentContent {
   width: 100%;
   height: 100%;

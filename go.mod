@@ -4,10 +4,12 @@ go 1.18
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible
-	github.com/wailsapp/wails/v2 v2.0.0-rc.1.1
+	github.com/sirupsen/logrus v1.9.0
+	github.com/wailsapp/wails/v2 v2.1.0
 )
 
 require (
+	github.com/stretchr/testify v1.8.0 // indirect
 	golang.org/x/exp/shiny v0.0.0-20221006183845-316c7553db56 // indirect
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
 	golang.org/x/mobile v0.0.0-20210716004757-34ab1303b554 // indirect

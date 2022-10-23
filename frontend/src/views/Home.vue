@@ -13,9 +13,9 @@ import { defineComponent, ref } from 'vue'
 import { createDiscreteApi, zhCN, dateZhCN, NConfigProvider } from 'naive-ui'
 import { isYesterday, addDays } from 'date-fns/esm'
 // 脱离上下文的 API 引入消息提示框
-const { message, dialog } = createDiscreteApi(
-    ["message", "dialog"]
-);
+// const { message, dialog } = createDiscreteApi(
+//     ["message", "dialog"]
+// );
 
 export default defineComponent({
     components: {
@@ -30,7 +30,7 @@ export default defineComponent({
                 _: number,
                 { year, month, date }: { year: number; month: number; date: number }
             ) {
-                message.success(`${year}-${month}-${date}`)
+                // message.success(`${year}-${month}-${date}`)
             },
             isDateDisabled(timestamp: number) {
                 if (isYesterday(timestamp)) {

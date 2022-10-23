@@ -159,7 +159,7 @@ export default {
     <n-space vertical size="large">
       <n-layout has-sider position="absolute">
         <n-layout-sider bordered collapse-mode="width" :collapsed-width="80" :width="150" :collapsed="collapsed"
-          show-trigger @collapse="collapsed = true" @expand="collapsed = false" style="--wails-draggable:drag">
+          show-trigger @collapse="collapsed = true" @expand="collapsed = false" style="--wails-draggable:drag; opacity: 1;">
             <n-menu :options="menuOptions" :collapsed-width="64" :collapsed-icon-size="22" style="margin-top: 40px;" />
             <div class="switchBtnPar">
               <n-divider />
@@ -191,9 +191,6 @@ export default {
   position: absolute;
   left: 50%;
   transform: translate(-50%);
-}
-html , body{
-  height: 100%;
 }
 body {
   margin: 0;
