@@ -36,13 +36,13 @@
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done"
                             @update:checked="handleSelectionChange(item, index)" />
-                        <p :style="item.done ? doneItemTitleStyle : todoItemTitleStyle">{{item.title}}</p>
-                        <n-button text style="font-size: 30px; margin-left: 50px;" v-if="!item.hasContent">
-                            <n-icon :depth="item.done ? 4 : 2" color="#ff6347">
+                        <p :style="item.done == 1 ? doneItemTitleStyle : todoItemTitleStyle">{{item.title}}</p>
+                        <n-button text style="font-size: 30px; margin-left: 50px;" v-if="item.hasContent == 0">
+                            <n-icon :depth="item.done == 1 ? 4 : 2" color="#ff6347">
                                 <content-icon />
                             </n-icon>
                         </n-button>
-                        <p :style="item.done ? doneItemDateStyle : todoItemDateStyle">
+                        <p :style="item.done == 1 ? doneItemDateStyle : todoItemDateStyle">
                             {{item.date}}</p>
                     </div>
                 </n-list-item>
@@ -82,8 +82,8 @@ export default {
     mounted() {
         for (let index = 0; index < 2; index++) {
             this.todoList.push({
-                done: false,
-                hasContent: false,
+                done: 0,
+                hasContent: 0,
                 date: '2016-05-01',
                 title: '今天的一项计划',
                 content: "具体的内容是XXXXXX",
@@ -94,6 +94,9 @@ export default {
     methods: {
         addItem() {
             console.log(this.todoItem);
+            this.app.AddTodoItem(this.todoItem).then(res => {
+                console.log(res);
+            })
         },
         handleSelectionChange(item, index) {
             item.done = !item.done

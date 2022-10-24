@@ -9,13 +9,16 @@ import (
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/sirupsen/logrus"
+	"xorm.io/xorm"
 )
 
 // App 结构体
 type App struct {
 	ctx     context.Context
 	Log     *logrus.Logger
+	Db      *xorm.Engine
 	LogFile string
+	DBFile  string
 	AliOSS  *oss.Client
 }
 
@@ -35,6 +38,10 @@ func (a *App) OnStartup(ctx context.Context) {
 	// 配置logrus
 	a.LogFile = fmt.Sprintf(configs.LogFile, confDir)
 	a.Log = internal.NewLogger(a.LogFile)
+
+	// 配置xorm
+	a.DBFile = fmt.Sprintf(configs.DBFile, confDir)
+	a.Db = internal.NewXormEngine(a.DBFile)
 
 	// 配置阿里云OSS
 	a.AliOSS = internal.NewOssClient()

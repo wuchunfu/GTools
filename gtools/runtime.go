@@ -9,9 +9,10 @@ import (
 
 func (a *App) OpenMdSaveFileWindow() *util.Resp {
 	option := runtime.SaveDialogOptions{
-		DefaultFilename: "new",
-		Title:           "保存文件",
-		Filters:         [](runtime.FileFilter){configs.MdFilter},
+		DefaultFilename:      "new",
+		Title:                "保存文件",
+		Filters:              [](runtime.FileFilter){configs.MdFilter},
+		CanCreateDirectories: true,
 	}
 	fpath, err := runtime.SaveFileDialog(a.ctx, option)
 	if err != nil {
