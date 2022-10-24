@@ -9,8 +9,13 @@ type Resp struct {
 func Success(data interface{}) *Resp  {
 	return &Resp{
 		Code: 200,
-		Msg: "OK",
 		Data: data,
+	}
+}
+
+func Ok() * Resp  {
+	return &Resp{
+		Code: 200,
 	}
 }
 

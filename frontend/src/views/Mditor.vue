@@ -18,8 +18,7 @@
 <script>
 import Vditor from "vditor"
 import "vditor/dist/index.css"
-import { createDiscreteApi, NButton } from 'naive-ui'
-import { h } from "vue";
+import { createDiscreteApi } from 'naive-ui'
 import mitt from '../utils/event.js'
 
 // 脱离上下文的 API 引入消息提示框

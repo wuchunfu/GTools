@@ -22,13 +22,16 @@ func NewLogger(logFile string) *logrus.Logger {
 			panic("创建日志文件失败: " + err.Error())
 		}
 		writer := []io.Writer{f, os.Stdout}
+		// 分别输出到控制台和log日志
 		multiWriter := io.MultiWriter(writer...)
-		logger.SetOutput(multiWriter)
+		// log日志样式格式化
 		logger.SetFormatter(&logrus.TextFormatter{
 			ForceColors:   true,
 			DisableColors: false,
+			TimestampFormat:"2006-01-02 15:04:05",  //时间格式
 			FullTimestamp: true,
 		})
+		logger.SetOutput(multiWriter)
 	})
 	return logger
 }

@@ -9,9 +9,13 @@ export function AddTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function DelMdDir(arg1:string):Promise<string>;
 
+export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
+
 export function GetDirList():Promise<util.Resp>;
 
 export function GetMdContent(arg1:string):Promise<util.Resp>;
+
+export function GetTodoList():Promise<util.Resp>;
 
 export function NewMd(arg1:string,arg2:string):Promise<util.Resp>;
 

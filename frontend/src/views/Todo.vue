@@ -31,19 +31,20 @@
         <div>
             <n-list hoverable clickable>
                 <n-list-item v-for="item, index in todoList">
-                    <div
-                        @contextmenu.prevent="rightClick(item)"
+                    <div @contextmenu.prevent="rightClick(item)" @dblclick.native="editItem(item)"
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done"
                             @update:checked="handleSelectionChange(item, index)" />
-                        <p :style="item.done == 1 ? doneItemTitleStyle : todoItemTitleStyle">{{item.title}}</p>
-                        <n-button text style="font-size: 30px; margin-left: 50px;" v-if="item.hasContent == 0">
-                            <n-icon :depth="item.done == 1 ? 4 : 2" color="#ff6347">
+                        <p :style="item.done ? doneItemTitleStyle : todoItemTitleStyle">{{item.title}}</p>
+                        <n-button text style="font-size: 30px; margin-left: 50px;" v-if="item.hasContent">
+                            <n-icon :depth="item.done ? 4 : 2" color="#ff6347">
                                 <content-icon />
                             </n-icon>
                         </n-button>
-                        <p :style="item.done == 1 ? doneItemDateStyle : todoItemDateStyle">
-                            {{item.date}}</p>
+                        <n-time :time="new Date(item.date)" format="yyyy-MM-dd"
+                            :style="item.done  ? doneItemDateStyle : todoItemDateStyle" />
+                        <!-- <p :style="item.done  ? doneItemDateStyle : todoItemDateStyle">
+                            {{item.date}}</p> -->
                     </div>
                 </n-list-item>
             </n-list>
@@ -58,6 +59,12 @@ import {
     DocumentText as ContentIcon,
     EyeOutline as HideDoneIcon
 } from "@vicons/ionicons5";
+import { createDiscreteApi } from 'naive-ui'
+// 脱离上下文的 API 引入消息提示框
+const { message, dialog } = createDiscreteApi(
+    ["message", "dialog"]
+);
+
 export default {
     components: {
         ListIcon,
@@ -80,22 +87,24 @@ export default {
         }
     },
     mounted() {
-        for (let index = 0; index < 2; index++) {
-            this.todoList.push({
-                done: 0,
-                hasContent: 0,
-                date: '2016-05-01',
-                title: '今天的一项计划',
-                content: "具体的内容是XXXXXX",
-                tags: ['工作', '生活']
-            })
-        }
+        this.app.GetTodoList().then(res => {
+            if (res.code == 200) {
+                this.todoList = res.data
+            } else {
+                message.error(res.msg)
+            }
+        })
     },
     methods: {
         addItem() {
-            console.log(this.todoItem);
-            this.app.AddTodoItem(this.todoItem).then(res => {
-                console.log(res);
+            this.app.AddTodoItem({ title: this.todoItem }).then(res => {
+                console.log(res.data);
+                if (res.code == 200) {
+                    this.todoList = res.data
+                } else {
+                    message.error(res.msg)
+                }
+
             })
         },
         handleSelectionChange(item, index) {
@@ -111,6 +120,29 @@ export default {
             }
         },
         rightClick(item) {
+            let _this = this
+            dialog.warning({
+                title: "警告",
+                content: "确定删除待办事项: " + item.title,
+                positiveText: "确定",
+                negativeText: "取消",
+                onPositiveClick: () => {
+                    _this.app.DelTodoItem({id: item.id}).then(res => {
+                        if(res.code == 200) {
+                            message.success("已删除");
+                            _this.todoList = res.data
+                        } else {
+                            message.error(res.msg)
+                        }
+                    })
+                    
+                },
+                onNegativeClick: () => {
+                }
+            });
+            console.log(item);
+        },
+        editItem(item) {
             console.log(item);
         }
     }

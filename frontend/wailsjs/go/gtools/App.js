@@ -14,12 +14,20 @@ export function DelMdDir(arg1) {
   return window['go']['gtools']['App']['DelMdDir'](arg1);
 }
 
+export function DelTodoItem(arg1) {
+  return window['go']['gtools']['App']['DelTodoItem'](arg1);
+}
+
 export function GetDirList() {
   return window['go']['gtools']['App']['GetDirList']();
 }
 
 export function GetMdContent(arg1) {
   return window['go']['gtools']['App']['GetMdContent'](arg1);
+}
+
+export function GetTodoList() {
+  return window['go']['gtools']['App']['GetTodoList']();
 }
 
 export function NewMd(arg1, arg2) {

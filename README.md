@@ -32,6 +32,7 @@ GTools是基于wails开发的一款跨平台（Mac、Windows）桌面小工具
 - [x] Markdown编辑器增加失去焦点保存功能
 - [x] Markdown编辑器增加创建、保存文档功能
 - [x] 重构Golang后端代码结构
+- [ ] 增加Markdown编辑器图片上传和本地路径存储的选项
 - [ ] 使用xorm替代json文件进行数据的存储
 - [ ] 增加时钟功能
 - [ ] 增加倒计时结束后系统通知功能
