@@ -15,9 +15,13 @@ export function GetDirList():Promise<util.Resp>;
 
 export function GetMdContent(arg1:string):Promise<util.Resp>;
 
+export function GetTodoItem(arg1:number):Promise<util.Resp>;
+
 export function GetTodoList():Promise<util.Resp>;
 
 export function NewMd(arg1:string,arg2:string):Promise<util.Resp>;
+
+export function OpenMdFolderWindow():Promise<util.Resp>;
 
 export function OpenMdSaveFileWindow():Promise<util.Resp>;
 
@@ -26,5 +30,7 @@ export function OpenSelectFileWindow():Promise<util.Resp>;
 export function SaveMdContent(arg1:string,arg2:string):Promise<util.Resp>;
 
 export function StartTomcat():Promise<string>;
+
+export function UpdateTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function UploadScreenshot():Promise<util.Resp>;

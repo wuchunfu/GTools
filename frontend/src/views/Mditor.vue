@@ -2,13 +2,26 @@
   <div class="parentContent" ref="parentContent">
     <div id="vditor" class="vditor" ref="vditor"></div>
     <n-drawer v-model:show="showDirList" :width="502" :placement="placement">
-      <n-input-group style="margin-top: 30px; margin-bottom: 10px;">
-        <n-input :style="{ width: '100%'}" placeholder="添加文件夹" v-model:value="dirPath" clearable />
-        <n-button type="primary" @click="addDirPath">
-          添加
+      <n-input-group style="display: flex; justify-content: center; margin: 20px 0;">
+        <!-- <n-input :style="{ width: '100%'}" placeholder="添加文件夹" v-model:value="dirPath" clearable /> -->
+        <n-button type="primary" ghost round @click="addDirPath">
+          <template #icon>
+            <n-icon>
+              <folder-icon />
+            </n-icon>
+          </template>
+          添加文件夹
+        </n-button>
+        <n-button type="primary" ghost round @click="addFilePath">
+          <template #icon>
+            <n-icon>
+              <file-icon />
+            </n-icon>
+          </template>
+          添加文件
         </n-button>
       </n-input-group>
-      <div class="dark">
+      <div style="--wails-draggable:drag">
         <el-tree :data="treeData" @node-click="handleNodeClick" :default-expand-all="true" />
       </div>
     </n-drawer>
@@ -20,6 +33,7 @@ import Vditor from "vditor"
 import "vditor/dist/index.css"
 import { createDiscreteApi } from 'naive-ui'
 import mitt from '../utils/event.js'
+import { FolderOpen as FolderIcon, DocumentText as FileIcon } from "@vicons/ionicons5";
 
 // 脱离上下文的 API 引入消息提示框
 const { message, dialog } = createDiscreteApi(
@@ -27,6 +41,10 @@ const { message, dialog } = createDiscreteApi(
 );
 
 export default {
+  components: {
+    FolderIcon,
+    FileIcon
+  },
   props: ['path'],
   setup(props) {
     // const route = useRoute()
@@ -37,7 +55,6 @@ export default {
       app: window.go.gtools.App,
       collapsed: true,
       contentEditor: "",
-      dirPath: null,
       treeData: [],
       showDirList: false,
       placement: 'left',  // 抽屉展示位置
@@ -377,17 +394,26 @@ export default {
       })
     },
     addDirPath() {
-      if (this.dirPath !== null && this.dirPath.trim() !== '') {
-        this.app.AddDirPath(this.dirPath).then((res) => {
-          let result = JSON.parse(res)
-          if (result.code === 200) {
-            this.getDirList()
-          } else {
-            message.error(result.msg)
+      this.app.OpenMdFolderWindow().then(res => {
+        if (res.code == 200) {
+          if(res.data == null || res.data.trim() == ''){
+            message.error("文件夹选择异常！")
+            return
           }
-        })
-      }
+          this.app.AddDirPath(res.data).then((res) => {
+            let result = JSON.parse(res)
+            if (result.code === 200) {
+              this.getDirList()
+            } else {
+              message.error(result.msg)
+            }
+          })
+        }
+      })
     },
+    addFilePath() {
+
+    }
   },
 
 }

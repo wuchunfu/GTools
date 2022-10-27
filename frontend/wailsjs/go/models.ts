@@ -4,7 +4,7 @@ export namespace internal {
 	    id: number;
 	    title: string;
 	    content: string;
-	    tags: string[];
+	    tags: string;
 	    // Go type: time.Time
 	    date: any;
 	    hasContent: boolean;

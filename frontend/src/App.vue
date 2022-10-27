@@ -5,6 +5,7 @@ import { NIcon, NConfigProvider } from "naive-ui";
 import {
   Code as CodeIcon, Home as HomeIcon,
   LogoMarkdown as MditorIcon,
+  FileTrayFull as RichTextIcon,
   SettingsSharp as SettingIcon,
   Checkbox as TodoIcon,
   Navigate as NavigateIcon,
@@ -64,10 +65,24 @@ export default {
                 path: "/mditor",
               }
             },
-            { default: () => "文档编辑" }
+            { default: () => "MarkDown" }
           ),
           key: "go-back-mditor",
           icon: renderIcon(MditorIcon)
+        },
+        {
+          label: () => h(
+            RouterLink,
+            {
+              to: {
+                name: 'wditor',
+                path: "/wditor",
+              }
+            },
+            { default: () => "富文本" }
+          ),
+          key: "go-back-wditor",
+          icon: renderIcon(RichTextIcon)
         },
         {
           label: () => h(

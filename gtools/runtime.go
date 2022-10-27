@@ -21,3 +21,15 @@ func (a *App) OpenMdSaveFileWindow() *util.Resp {
 	}
 	return util.Success(fpath)
 }
+
+func (a *App) OpenMdFolderWindow() *util.Resp {
+	options := runtime.OpenDialogOptions{
+		Title: "选择文件夹",
+		CanCreateDirectories:true,
+	}
+	dirPath, err := runtime.OpenDirectoryDialog(a.ctx, options)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	return util.Success(dirPath)
+}

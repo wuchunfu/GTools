@@ -47,7 +47,7 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.AliOSS = internal.NewOssClient()
 }
 
-// OnBeforeClose ...
+// OnBeforeClose
 func (a *App) OnBeforeClose(ctx context.Context) bool {
 	// 关闭xorm连接
 	a.Db.Close()

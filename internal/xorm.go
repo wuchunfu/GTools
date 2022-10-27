@@ -11,15 +11,15 @@ import (
 
 type TodoItem struct {
 	Id         int64     `json:"id"`
-	Title      string    `json:"title" xorm:"varchar(50) default('') notnull"`     // 标题
+	Title      string    `json:"title" xorm:"varchar(100) default('') notnull"`    // 标题
 	Content    string    `json:"content" xorm:"varchar(1024) default('') notnull"` // 内容
-	Tags       []string  `json:"tags" xorm:"-"`                                    // 标签
-	Date       time.Time `json:"date" xorm:"created notnull"`                      // 日期
+	Tags       string    `json:"tags" xorm:"varchar(100) default('') notnull"`     // 标签
+	Date       time.Time `json:"date" xorm:"created"`                              // 日期
 	HasContent bool      `json:"hasContent" xorm:"default(0) notnull"`             // 是否有内容
 	Done       bool      `json:"done" xorm:"default(0) notnull"`                   // 是否已完成
 	Importent  int       `json:"importent" xorm:"default(0) notnull"`              // 重要等级
-	Expired    time.Time `json:"expired" xorm:""`                                  // 事项到期时间
-	Updated    time.Time `json:"updated" xorm:"updated notnull"`                   // 更新时间
+	Expired    time.Time `json:"expired"`                                          // 事项到期时间
+	Updated    time.Time `json:"updated" xorm:"updated"`                           // 更新时间
 }
 
 func NewXormEngine(dbPath string) *xorm.Engine {
@@ -29,6 +29,9 @@ func NewXormEngine(dbPath string) *xorm.Engine {
 	if err != nil {
 		panic("数据库初始化失败: " + err.Error())
 	}
+	// 设置时区和数据库时区
+	engine.TZLocation, _ = time.LoadLocation("Asia/Shanghai")
+	engine.DatabaseTZ, _ = time.LoadLocation("Asia/Shanghai")
 	// 设置连接池大小
 	engine.ShowSQL(true)
 	engine.SetMaxIdleConns(5)

@@ -16,6 +16,11 @@ const routes = [
         component: () => import('../views/Mditor.vue')
     },
     {
+        name: 'wditor',
+        path: '/wditor',
+        component: () => import('../views/WangEditor.vue')
+    },
+    {
         name: 'setting',
         path: '/setting',
         component: () => import('../views/Setting.vue')

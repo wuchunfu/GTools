@@ -26,12 +26,20 @@ export function GetMdContent(arg1) {
   return window['go']['gtools']['App']['GetMdContent'](arg1);
 }
 
+export function GetTodoItem(arg1) {
+  return window['go']['gtools']['App']['GetTodoItem'](arg1);
+}
+
 export function GetTodoList() {
   return window['go']['gtools']['App']['GetTodoList']();
 }
 
 export function NewMd(arg1, arg2) {
   return window['go']['gtools']['App']['NewMd'](arg1, arg2);
+}
+
+export function OpenMdFolderWindow() {
+  return window['go']['gtools']['App']['OpenMdFolderWindow']();
 }
 
 export function OpenMdSaveFileWindow() {
@@ -48,6 +56,10 @@ export function SaveMdContent(arg1, arg2) {
 
 export function StartTomcat() {
   return window['go']['gtools']['App']['StartTomcat']();
+}
+
+export function UpdateTodoItem(arg1) {
+  return window['go']['gtools']['App']['UpdateTodoItem'](arg1);
 }
 
 export function UploadScreenshot() {
