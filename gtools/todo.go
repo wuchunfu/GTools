@@ -5,6 +5,7 @@ import (
 	"changeme/internal"
 	"changeme/util"
 	"fmt"
+	"math"
 )
 
 func (a *App) AddTodoItem(item internal.TodoItem) *util.Resp {
@@ -29,9 +30,18 @@ func (a *App) GetTodoList() *util.Resp {
 		a.Log.Error(fmt.Sprintf(configs.GetTodoListErr, err2.Error()))
 		return util.Error(err2.Error())
 	}
-	resultMap := make(map[string][]internal.TodoItem, 0)
-	resultMap["done"] = doneItemList
-	resultMap["todo"] = todoItemList
+	doneItemNum := len(doneItemList)
+	todoItemNUm := len(todoItemList)
+	totaltotalItemNum := doneItemNum + todoItemNUm
+	frate := float64(doneItemNum) / float64(totaltotalItemNum)
+	rate := math.Floor(frate * 100)
+	
+	resultMap := make(map[string]interface{}, 0)
+	resultMap["doneList"] = doneItemList
+	resultMap["todoList"] = todoItemList
+	resultMap["rate"] = rate
+	resultMap["todonum"] = todoItemNUm // 未完成待办事项
+	resultMap["donenum"] = doneItemNum
 	return util.Success(resultMap)
 }
 

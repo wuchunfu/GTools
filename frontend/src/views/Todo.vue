@@ -6,12 +6,12 @@
         </n-space>
         <div>
             <n-gradient-text :size="40" type="success" class="total_todo">
-                待办事项: {{ total }}
+                待办事项: {{ data.todonum }}
             </n-gradient-text>
         </div>
         <div class="todo_detail">
-            <p class="todo_detail_undo">未完成: {{ undo }}</p>
-            <p class="todo_detail_done">已完成: {{ done }}</p>
+            <p class="todo_detail_undo">未完成: {{ data.todonum }}</p>
+            <p class="todo_detail_done">已完成: {{ data.donenum }}</p>
             <p style="display: flex; align-items: center;">
                 <n-button text style="font-size: 30px; margin-left: 15px;">
                     <n-icon>
@@ -26,11 +26,11 @@
             </p>
 
             <n-progress style="width: 40px; line-height: 30px; margin-left: auto; margin-right: 20px;" class="progress"
-                type="circle" :show-indicator="false" status="success" :percentage="todopPrcent" :stroke-width="12" />
+                type="circle" :show-indicator="false" status="success" :percentage="rate" :stroke-width="12" />
         </div>
         <div>
             <n-list hoverable clickable>
-                <n-list-item v-for="item, index in todoList">
+                <n-list-item v-for="item, index in data.todoList">
                     <div @contextmenu.prevent="rightClick(item)" @dblclick.native="showEditModal(item)"
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done ? true : false"
@@ -48,7 +48,7 @@
             </n-list>
             <n-divider title-placement="center" v-show="showDoneList">已完成</n-divider>
             <n-list hoverable clickable v-show="showDoneList">
-                <n-list-item v-for="item, index in doneList">
+                <n-list-item v-for="item, index in data.doneList">
                     <div @contextmenu.prevent="rightClick(item)" @dblclick.native="editItem(item)"
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done ? true : false"
@@ -103,12 +103,13 @@ export default {
         return {
             app: window.go.gtools.App,
             todoItem: null,
-            total: 0,
-            undo: 0,
-            done: 0,
-            todopPrcent: 3,
-            todoList: [],
-            doneList: [],
+            data: {
+                todonum: 0,
+                donenum: 0,
+                rate: 0,
+                todoList: [],
+                doneList: [],
+            },
             showDoneList: false,
             todoItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #87ceeb;',
             doneItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #D3D3D3;',
@@ -128,8 +129,7 @@ export default {
     mounted() {
         this.app.GetTodoList().then(res => {
             if (res.code == 200) {
-                this.todoList = res.data.todo
-                this.doneList = res.data.done
+                this.data = res.data
             } else {
                 message.error(res.msg)
             }
@@ -139,8 +139,8 @@ export default {
         addItem() {
             this.app.AddTodoItem({ title: this.todoItem, date: new Date() }).then(res => {
                 if (res.code == 200) {
-                    this.todoList = res.data.todo
-                    this.doneList = res.data.done
+                    this.data = res.data
+                    this.todoItem = null
                 } else {
                     message.error(res.msg)
                 }
@@ -151,8 +151,7 @@ export default {
             this.app.UpdateTodoItem(item).then(res => {
                 if (res.code != 200) { message.error(res.msg) }
                 else {
-                    this.todoList = res.data.todo
-                    this.doneList = res.data.done
+                    this.data = res.data
                 }
             })
         },
@@ -160,8 +159,7 @@ export default {
             this.app.UpdateTodoItem(item).then(res => {
                 if (res.code != 200) { message.error(res.msg) }
                 else {
-                    this.todoList = res.data.todo
-                    this.doneList = res.data.done
+                    this.data = res.data
                     this.showEditModal = false
                     this.editItem = null
                 }
@@ -185,13 +183,11 @@ export default {
                     _this.app.DelTodoItem({ id: item.id }).then(res => {
                         if (res.code == 200) {
                             message.success("已删除");
-                            _this.todoList = res.data.todo
-                            _this.doneList = res.data.done
+                            _this.data = res.data
                         } else {
                             message.error(res.msg)
                         }
                     })
-
                 },
                 onNegativeClick: () => {
 
