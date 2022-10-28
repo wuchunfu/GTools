@@ -10,8 +10,8 @@ var (
 var (
 	Point           = "oss-cn-beijing"
 	Endpoint        = Point + ".aliyuncs.com"
-	AccessKeyId     = "LTAI5tF8bKmV9Be9axkMgM5b"
-	AccessKeySecret = "FrCuS7gqW1HW1zYVe3iKdnTLuEnmym"
+	AccessKeyId     = "LTAI5tFNagDQNmkdeLoXrkdL"
+	AccessKeySecret = "iUt3xEV5EgdmyLfASAwVNBsUfpQm4c"
 	BucketName      = "ly-img-xiao"
 	ProjectDir      = "test"
 )

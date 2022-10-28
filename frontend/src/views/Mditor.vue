@@ -3,7 +3,6 @@
     <div id="vditor" class="vditor" ref="vditor"></div>
     <n-drawer v-model:show="showDirList" :width="502" :placement="placement">
       <n-input-group style="display: flex; justify-content: center; margin: 20px 0;">
-        <!-- <n-input :style="{ width: '100%'}" placeholder="添加文件夹" v-model:value="dirPath" clearable /> -->
         <n-button type="primary" ghost round @click="addDirPath">
           <template #icon>
             <n-icon>

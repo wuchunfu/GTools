@@ -26,7 +26,7 @@
             </p>
 
             <n-progress style="width: 40px; line-height: 30px; margin-left: auto; margin-right: 20px;" class="progress"
-                type="circle" :show-indicator="false" status="success" :percentage="rate" :stroke-width="12" />
+                type="circle" :show-indicator="false" status="success" :percentage="data.rate" :stroke-width="12" />
         </div>
         <div>
             <n-list hoverable clickable>
