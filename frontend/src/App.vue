@@ -12,6 +12,8 @@ import {
   DocumentText as DocIcon
 } from '@vicons/ionicons5'
 
+import { PictureAsPdfFilled as PdfIcon} from '@vicons/material'
+
 import { darkTheme } from 'naive-ui'
 import mitt from './utils/event.js'
 

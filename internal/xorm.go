@@ -9,6 +9,7 @@ import (
 	"xorm.io/xorm/names"
 )
 
+// 待办事项表
 type TodoItem struct {
 	Id         int64     `json:"id"`
 	Title      string    `json:"title" xorm:"varchar(100) default('') notnull"`    // 标题
@@ -20,6 +21,13 @@ type TodoItem struct {
 	Importent  int       `json:"importent" xorm:"default(0) notnull"`              // 重要等级
 	Expired    time.Time `json:"expired"`                                          // 事项到期时间
 	Updated    time.Time `json:"updated" xorm:"updated"`                           // 更新时间
+}
+
+// markdown文件夹
+type MdDir struct {
+	Id int64 `json:"id"`
+	Path string `json:"path" xorm:"varchar(100) unique"`
+	Created time.Time `json:"created" xorm:"created"`
 }
 
 func NewXormEngine(dbPath string) *xorm.Engine {
@@ -37,6 +45,6 @@ func NewXormEngine(dbPath string) *xorm.Engine {
 	engine.SetMaxIdleConns(5)
 	engine.SetMaxOpenConns(10)
 	engine.SetMapper(names.GonicMapper{}) // 名称映射规则 驼峰式
-	engine.Sync2(new(TodoItem))
+	engine.Sync2(new(TodoItem), new(MdDir))
 	return engine
 }

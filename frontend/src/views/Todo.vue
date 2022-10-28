@@ -49,7 +49,7 @@
             <n-divider title-placement="center" v-show="showDoneList">已完成</n-divider>
             <n-list hoverable clickable v-show="showDoneList">
                 <n-list-item v-for="item, index in data.doneList">
-                    <div @contextmenu.prevent="rightClick(item)" @dblclick.native="editItem(item)"
+                    <div @contextmenu.prevent="rightClick(item)" @dblclick.native="showEditModal(item)"
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done ? true : false"
                             @update:checked="handleSelectionChange(item, index)" />

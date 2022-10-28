@@ -2,9 +2,11 @@ package gtools
 
 import (
 	"bufio"
+	"changeme/internal"
 	"changeme/util"
 	"io/fs"
 	"os"
+	"strings"
 )
 
 // 获取md文档的全部内容
@@ -28,20 +30,42 @@ func (a *App) GetMdContent(path string) *util.Resp {
 }
 
 // 添加md文件夹列表
-func (a *App) AddDirPath(path string) string {
-	return util.AddDirPathToJdb(path)
+func (a *App) AddMdDirPath(item internal.MdDir) *util.Resp {
+	_, err := a.Db.Insert(&item)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	return a.GetMdDirList()
 }
 
-// 获取md文件夹列表数据
-func (a *App) GetDirList() *util.Resp {
-	// 从指定的数据json中取出所有数据
-	b, content := util.GetJdbContent("/path.json")
-	if b {
-		return util.Success(string(content))
-	} else {
-		a.Log.Error("path.json 数据获取失败")
-		return util.Error("路径数据获取失败")
+// 获取文件夹列表
+func (a *App) GetMdDirList() *util.Resp {
+	MdDirList := make([]internal.MdDir, 0)
+	err := a.Db.Find(&MdDirList)
+	if err != nil {
+		return util.Error(err.Error())
 	}
+	return util.Success(MdDirList)
+}
+
+// 获取文件夹下所有的md文件
+func (a *App) GetMdFileList(dirPath string) *util.Resp {
+	mdFileList := make([]map[string]string, 0)
+	de, err := os.ReadDir(dirPath)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	for _, v := range de {
+		s := strings.Split(v.Name(), ".")
+		if s[len(s)-1] == "md" {
+			mapPath := make(map[string]string)
+			fname := v.Name()
+			mapPath["fname"] = fname
+			mapPath["fpath"] = dirPath + "/" + v.Name()
+			mdFileList = append(mdFileList, mapPath)
+		}
+	}
+	return util.Success(mdFileList)
 }
 
 // 保存md文件内容
@@ -62,8 +86,12 @@ func (a *App) SaveMdContent(path string, content string) *util.Resp {
 }
 
 // 删除md文件夹列表
-func (a *App) DelMdDir(path string) string {
-	return util.DelDirPathFromJdb(path)
+func (a *App) DelMdDir(item internal.MdDir) *util.Resp {
+	_, err := a.Db.Delete(&item)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	return a.GetMdDirList()
 }
 
 // 新建md文档
