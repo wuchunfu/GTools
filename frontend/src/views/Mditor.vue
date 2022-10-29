@@ -24,9 +24,9 @@
         <n-collapse accordion @item-header-click="handleItem">
           <n-collapse-item :title="item.path" :name="item.path" v-for="item, index in treeData">
             <n-list hoverable clickable>
-              <n-list-item v-for="item in MdFils" @click="getMdContent(item.fpath)">
+              <n-list-item v-for="item in mdFils" @click="getMdContent(item.fpath)">
                 <n-thing content-style="margin-left: 10px;">
-                  {{item.fname}}
+                  {{ item.fname }}
                 </n-thing>
               </n-list-item>
             </n-list>
@@ -41,6 +41,23 @@
             </template>
           </n-collapse-item>
         </n-collapse>
+        <n-divider dashed>
+          文件
+        </n-divider>
+        <n-list hoverable clickable>
+          <n-list-item v-for="item in mdFileList" @click="getMdContent(item.path)">
+            <n-thing content-style="margin-left: 10px; display: flex; align-items:center; justify-content: left;">
+              {{ item.fname }}
+              <n-button circle @click="delMdDir(item)" style="margin-left: auto;">
+                <template #icon>
+                  <n-icon>
+                    <del-icon />
+                  </n-icon>
+                </template>
+              </n-button>
+            </n-thing>
+          </n-list-item>
+        </n-list>
       </div>
     </n-drawer>
   </div>
@@ -76,7 +93,8 @@ export default {
       collapsed: true,
       contentEditor: "",
       treeData: [],
-      MdFils: [],
+      mdFils: [], // 文件夹下的md文档
+      mdFileList: [],
       showDirList: false,
       placement: 'left',  // 抽屉展示位置
       mdPath: null,
@@ -216,6 +234,7 @@ export default {
           this.app.SaveMdContent(path, content).then((res) => {
             if (res.code != 200) {
               message.error(res.msg)
+              localStorage.removeItem("mdPath")
             }
           })
         }
@@ -242,7 +261,7 @@ export default {
     handleItem(data) {
       this.app.GetMdFileList(data.name).then(res => {
         if (res.code == 200) {
-          this.MdFils = res.data
+          this.mdFils = res.data
         } else {
           message.error(res.msg)
         }
@@ -250,15 +269,16 @@ export default {
     },
     delMdDir(item) {
       dialog.warning({
-        title: '警告',
-        content: '你确定删除目录: ' + item.path,
+        title: '警告（非真实删除）',
+        content: '你确定删除: ' + item.path,
         positiveText: '确定',
         negativeText: '取消',
         onPositiveClick: () => {
           this.app.DelMdDir(item).then((res) => {
             if (res.code == 200) {
               message.success("删除成功")
-              this.treeData = res.data
+              this.treeData = res.data.dir
+              this.mdFileList = res.data.file
             } else {
               message.error(result.msg)
             }
@@ -270,22 +290,45 @@ export default {
       })
     },
     getMdContent(path) {
-      
-      localStorage.setItem("mdPath", path)
-      this.app.GetMdContent(path).then((res) => {
+      // 判断当前文件是否保存
+      if (this.getValue != "" && localStorage.getItem("mdPath") != null) {
+        localStorage.setItem("mdPath", path)
+        this.app.GetMdContent(path).then((res) => {
           if (res.code == 200) {
             this.setValue(res.data)
           } else {
             message.error(res.msg)
           }
         })
+      } else {
+        dialog.warning({
+          title: '警告',
+          content: '当前文档未保存，是否保存',
+          positiveText: '确定',
+          negativeText: '取消',
+          onPositiveClick: () => {
+            this.saveMdContent()
+          },
+          onNegativeClick: () => {
+            localStorage.setItem("mdPath", path)
+            this.app.GetMdContent(path).then((res) => {
+              if (res.code == 200) {
+                this.setValue(res.data)
+              } else {
+                message.error(res.msg)
+              }
+            })
+          }
+        })
+      }
+
     },
     saveMdContent() {
       let _this = this
       let mdPath = ""
       let path = localStorage.getItem("mdPath")
       let content = this.getValue()
-      if (path !== null && path.trim() != '') {
+      if (path !== null && path.trim() !== '') {
         this.app.SaveMdContent(path, content).then((res) => {
           if (res.code == 200) {
             message.success("保存成功！")
@@ -319,8 +362,10 @@ export default {
     },
     getDirList() {
       this.app.GetMdDirList().then(res => {
+        console.log(res);
         if (res.code === 200) {
-          this.treeData = res.data
+          this.treeData = res.data.dir
+          this.mdFileList = res.data.file
         } else {
           message.error(res.msg)
         }
@@ -372,9 +417,10 @@ export default {
           if (res.data == '') { // 取消选择
             return
           }
-          this.app.AddMdDirPath({ path: res.data }).then((res) => {
+          this.app.AddMdDirPath({ path: res.data, type: 0 }).then((res) => {
             if (res.code === 200) {
-              this.treeData = res.data
+              this.treeData = res.data.dir
+              this.mdFileList = res.data.file
             } else {
               message.error(res.msg)
             }
@@ -383,7 +429,14 @@ export default {
       })
     },
     addFilePath() {
-
+      this.app.AddMdFile().then(res => {
+        if (res.code == 200) {
+          this.treeData = res.data.dir
+          this.mdFileList = res.data.file
+        } else {
+          message.error(res.msg)
+        }
+      })
     }
   },
 

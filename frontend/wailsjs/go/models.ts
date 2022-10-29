@@ -1,19 +1,23 @@
 export namespace internal {
 	
-	export class MdDir {
+	export class MdPath {
 	    id: number;
 	    path: string;
+	    type: number;
+	    fname: string;
 	    // Go type: time.Time
 	    created: any;
 	
 	    static createFrom(source: any = {}) {
-	        return new MdDir(source);
+	        return new MdPath(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.id = source["id"];
 	        this.path = source["path"];
+	        this.type = source["type"];
+	        this.fname = source["fname"];
 	        this.created = this.convertValues(source["created"], null);
 	    }
 	

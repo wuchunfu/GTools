@@ -24,9 +24,11 @@ type TodoItem struct {
 }
 
 // markdown文件夹
-type MdDir struct {
+type MdPath struct {
 	Id int64 `json:"id"`
 	Path string `json:"path" xorm:"varchar(100) unique"`
+	Type int8 `json:"type" xorm:"default(0) notnull"`
+	Fname string `json:"fname" xorm:"varchar(100)"`
 	Created time.Time `json:"created" xorm:"created"`
 }
 
@@ -45,6 +47,6 @@ func NewXormEngine(dbPath string) *xorm.Engine {
 	engine.SetMaxIdleConns(5)
 	engine.SetMaxOpenConns(10)
 	engine.SetMapper(names.GonicMapper{}) // 名称映射规则 驼峰式
-	engine.Sync2(new(TodoItem), new(MdDir))
+	engine.Sync2(new(TodoItem), new(MdPath))
 	return engine
 }

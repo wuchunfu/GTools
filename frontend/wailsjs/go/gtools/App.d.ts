@@ -3,11 +3,13 @@
 import {internal} from '../models';
 import {util} from '../models';
 
-export function AddMdDirPath(arg1:internal.MdDir):Promise<util.Resp>;
+export function AddMdDirPath(arg1:internal.MdPath):Promise<util.Resp>;
+
+export function AddMdFile():Promise<util.Resp>;
 
 export function AddTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
-export function DelMdDir(arg1:internal.MdDir):Promise<util.Resp>;
+export function DelMdDir(arg1:internal.MdPath):Promise<util.Resp>;
 
 export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 

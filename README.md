@@ -49,13 +49,15 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
 - [x] Markdown编辑器增加失去焦点保存功能
 - [x] Markdown编辑器增加创建、保存文档功能
 - [x] 使用Naive UI下拉框实现Markdown编辑器的文件树功能
+- [x] 实现添加文件夹和文件功能
 - [ ] Markdown文本的PDF、HTML导出功能
+- [ ] markdown基于百度翻译的实时翻译功能
 - [x] 将markdown的存储方式由json改为sqlite3
 - [x] 重构Golang后端代码结构
 - [ ] 实现大部分设置的动态配置
 - [ ] 增加Markdown编辑器图片上传和本地路径存储的选项
 - [ ] 富文本编辑器的文件增删改查功能实现
-- [ ] 使用xorm替代json文件进行数据的存储
+- [x] 使用xorm替代json文件进行数据的存储
 - [ ] 增加时钟功能
 - [ ] 增加倒计时结束后系统通知功能
 - [ ] 使用go-toast实现系统通知功能

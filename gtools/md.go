@@ -2,12 +2,21 @@ package gtools
 
 import (
 	"bufio"
+	"changeme/configs"
 	"changeme/internal"
 	"changeme/util"
+	"fmt"
 	"io/fs"
 	"os"
 	"strings"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
+
+type MdInfo struct {
+	Fname string `json:"fname"`
+	Fpath string `json:"fpath"`
+}
 
 // 获取md文档的全部内容
 func (a *App) GetMdContent(path string) *util.Resp {
@@ -30,7 +39,7 @@ func (a *App) GetMdContent(path string) *util.Resp {
 }
 
 // 添加md文件夹列表
-func (a *App) AddMdDirPath(item internal.MdDir) *util.Resp {
+func (a *App) AddMdDirPath(item internal.MdPath) *util.Resp {
 	_, err := a.Db.Insert(&item)
 	if err != nil {
 		return util.Error(err.Error())
@@ -40,12 +49,20 @@ func (a *App) AddMdDirPath(item internal.MdDir) *util.Resp {
 
 // 获取文件夹列表
 func (a *App) GetMdDirList() *util.Resp {
-	MdDirList := make([]internal.MdDir, 0)
-	err := a.Db.Find(&MdDirList)
+	mdDirList := make([]internal.MdPath, 0)
+	mdFileList := make([]internal.MdPath, 0)
+	err := a.Db.Where("type = ?", 0).Find(&mdDirList)
 	if err != nil {
 		return util.Error(err.Error())
 	}
-	return util.Success(MdDirList)
+	err2 := a.Db.Where("type = ?", 1).Find(&mdFileList)
+	if err2 != nil {
+		return util.Error(err2.Error())
+	}
+	resultMap := make(map[string][]internal.MdPath, 0)
+	resultMap["dir"] = mdDirList
+	resultMap["file"] = mdFileList
+	return util.Success(resultMap)
 }
 
 // 获取文件夹下所有的md文件
@@ -61,7 +78,7 @@ func (a *App) GetMdFileList(dirPath string) *util.Resp {
 			mapPath := make(map[string]string)
 			fname := v.Name()
 			mapPath["fname"] = fname
-			mapPath["fpath"] = dirPath + "/" + v.Name()
+			mapPath["fpath"] = fmt.Sprintf("%s/%s", dirPath, v.Name())
 			mdFileList = append(mdFileList, mapPath)
 		}
 	}
@@ -86,7 +103,7 @@ func (a *App) SaveMdContent(path string, content string) *util.Resp {
 }
 
 // 删除md文件夹列表
-func (a *App) DelMdDir(item internal.MdDir) *util.Resp {
+func (a *App) DelMdDir(item internal.MdPath) *util.Resp {
 	_, err := a.Db.Delete(&item)
 	if err != nil {
 		return util.Error(err.Error())
@@ -106,4 +123,30 @@ func (a *App) NewMd(path string, content string) *util.Resp {
 	writer.WriteString(content)
 	writer.Flush()
 	return util.Success("OK")
+}
+
+// 添加文件
+func (a *App) AddMdFile() *util.Resp {
+	options := runtime.OpenDialogOptions{
+		Title:                "选择文件",
+		Filters:              [](runtime.FileFilter){configs.MdFilter},
+		CanCreateDirectories: true,
+	}
+	path, err := runtime.OpenFileDialog(a.ctx, options)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	if path != "" {
+		s := strings.Split(path, "/")
+		item := internal.MdPath{
+			Path:  path,
+			Type:  1,
+			Fname: s[len(s)-1],
+		}
+		_, err = a.Db.Insert(&item)
+		if err != nil {
+			return util.Error(err.Error())
+		}
+	}
+	return a.GetMdDirList()
 }

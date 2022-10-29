@@ -6,6 +6,10 @@ export function AddMdDirPath(arg1) {
   return window['go']['gtools']['App']['AddMdDirPath'](arg1);
 }
 
+export function AddMdFile() {
+  return window['go']['gtools']['App']['AddMdFile']();
+}
+
 export function AddTodoItem(arg1) {
   return window['go']['gtools']['App']['AddTodoItem'](arg1);
 }
