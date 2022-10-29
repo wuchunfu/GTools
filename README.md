@@ -3,10 +3,15 @@
 ## 简介
 
 GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小工具
+- 功能完善
+- 可执行包体积超小
+- 开发难度小
+- 可扩展性高
+- 跨平台
 
 ## 起源
 
-一款目前来说只适合我自己的跨平台小工具。
+一款目前来说只适合本人的跨平台小工具
 
 ## 开发
 
@@ -36,11 +41,6 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
     |-- wails.json          # wails配置文件
 ```
 
-## 目前功能点
-
-1. Markdown编辑器 - 主要由Vue3实现，使用了功能较为齐全的Vditor
-2. 快捷指令 - 主要存储并执行常用的快捷指令，基于vue-web-terminal
-3. 设置 - 主要进行软件的功能设置
 
 ## TODO
 
@@ -71,4 +71,15 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
 - [ ] 房贷计算器小工具
 - [ ] 基于百度OCR的图片精准转文字小工具
 - [ ] 更多的功能拓展
+- [ ] 完善Log日志提示
 - [ ] 精简前端后端包结构，继续减小包体积
+
+## 界面展示
+
+![首页亮](assets/home-light.png)
+![首页暗](assets/home-dark.png)
+![待办事项亮](assets/todo-light.png)
+![待办事项暗](assets/todo-dark.png)
+![markdown亮](assets/md-light.png)
+![markdown暗](assets/md-dark.png)
+![markdown菜单](assets/md-menu.png)
