@@ -83,3 +83,7 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
 ![markdown亮](assets/md-light.png)
 ![markdown暗](assets/md-dark.png)
 ![markdown菜单](assets/md-menu.png)
+
+## 欢迎交流讨论
+
+企鹅群：736733848（GTools交流群）

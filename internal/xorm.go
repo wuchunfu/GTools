@@ -19,16 +19,16 @@ type TodoItem struct {
 	HasContent bool      `json:"hasContent" xorm:"default(0) notnull"`             // 是否有内容
 	Done       bool      `json:"done" xorm:"default(0) notnull"`                   // 是否已完成
 	Importent  int       `json:"importent" xorm:"default(0) notnull"`              // 重要等级
-	Expired    time.Time `json:"expired"`                                          // 事项到期时间
+	Expired    time.Time `json:"expired" xorm:"created"`                           // 事项到期时间
 	Updated    time.Time `json:"updated" xorm:"updated"`                           // 更新时间
 }
 
 // markdown文件夹
 type MdPath struct {
-	Id int64 `json:"id"`
-	Path string `json:"path" xorm:"varchar(100) unique"`
-	Type int8 `json:"type" xorm:"default(0) notnull"`
-	Fname string `json:"fname" xorm:"varchar(100)"`
+	Id      int64     `json:"id"`
+	Path    string    `json:"path" xorm:"varchar(100) unique"`
+	Type    int8      `json:"type" xorm:"default(0) notnull"`
+	Fname   string    `json:"fname" xorm:"varchar(100)"`
 	Created time.Time `json:"created" xorm:"created"`
 }
 
