@@ -18,7 +18,7 @@ type TodoItem struct {
 	Date       time.Time `json:"date" xorm:"created"`                              // 日期
 	HasContent bool      `json:"hasContent" xorm:"default(0) notnull"`             // 是否有内容
 	Done       bool      `json:"done" xorm:"default(0) notnull"`                   // 是否已完成
-	Importent  int       `json:"importent" xorm:"default(0) notnull"`              // 重要等级
+	Importent  int8       `json:"importent" xorm:"default(0) notnull"`              // 重要等级
 	Expired    time.Time `json:"expired" xorm:"created"`                           // 事项到期时间
 	Updated    time.Time `json:"updated" xorm:"updated"`                           // 更新时间
 }
