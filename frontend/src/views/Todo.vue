@@ -137,6 +137,9 @@ export default {
     },
     methods: {
         addItem() {
+            if(this.todoItem == null || this.todoItem.trim() == ''){
+                return
+            }
             this.app.AddTodoItem({ title: this.todoItem, date: new Date() }).then(res => {
                 if (res.code == 200) {
                     this.data = res.data
