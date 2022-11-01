@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 0 150px;">
+    <div style="padding: 0 120px;">
         <n-space vertical>
             <n-input type="text" placeholder="今日事今日毕" @keyup.enter="addItem()" v-model:value="todoItem"
                 class="item_input" round />
@@ -35,7 +35,7 @@
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done ? true : false"
                             @update:checked="handleSelectionChange(item, index)" />
-                        <p :style="item.done ? doneItemTitleStyle : todoItemTitleStyle">{{ item.title }}</p>
+                        <n-ellipsis :style="item.done ? doneItemTitleStyle : todoItemTitleStyle">{{ item.title }}</n-ellipsis>
                         <n-button text style="font-size: 30px; margin-left: 50px;" v-if="item.hasContent">
                             <n-icon :depth="item.done ? 4 : 2" color="#ff6347">
                                 <content-icon />
@@ -95,13 +95,13 @@
                         <n-input v-model:value="editItem.content" type="textarea" placeholder="详情" />
                     </n-form-item>
                     <n-form-item style="display: flex; justify-content: center;">
-                        <n-button attr-type="button" @click="delById(editItem.id)" type="error">
+                        <n-button attr-type="button" @click="delById(editItem.id)" type="error" secondary round>
                             删除
                         </n-button>
-                        <n-button attr-type="button" @click="closeModal()" style="margin-left: 50px">
+                        <n-button attr-type="button" @click="closeModal()" style="margin-left: 30px" round secondary>
                             取消
                         </n-button>
-                        <n-button style="margin-left: 50px" attr-type="button" type="success" @click="updateTodoItem()">
+                        <n-button style="margin-left: 30px" attr-type="button" type="success" @click="updateTodoItem()" round secondary>
                             保存
                         </n-button>
                     </n-form-item>
@@ -157,8 +157,8 @@ export default {
             showDoneList: false,
             todoItemDateStyle: 'margin-left: 20px; margin-right: 20px;font-weight: 500; font-size: large; color: #87ceeb;',
             doneItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #D3D3D3;',
-            doneItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600; text-decoration: line-through; color: #D3D3D3',
-            todoItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600;',
+            doneItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600; text-decoration: line-through; color: #D3D3D3; max-width: 320px',
+            todoItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600; max-width: 320px',
             showItemModal: false,
             editItem: null,
             rules: {

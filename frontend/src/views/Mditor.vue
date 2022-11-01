@@ -216,7 +216,7 @@ export default {
       },
       theme: initTheme,
       cache: { // 缓存
-        enable: true,
+        enable: false,
       },
       after: () => {
 
@@ -247,6 +247,7 @@ export default {
         enable: true,
       }
     })
+    localStorage.removeItem("mdPath")
     this.getDirList()
     mitt.on("theme", (val) => {
       if (val == 0) {
@@ -290,7 +291,7 @@ export default {
     },
     getMdContent(path) {
       // 判断当前文件是否保存
-      if (this.getValue != "" && localStorage.getItem("mdPath") != null) {
+      if (localStorage.getItem("mdPath") != null) {
         localStorage.setItem("mdPath", path)
         this.app.GetMdContent(path).then((res) => {
           if (res.code == 200) {
@@ -309,6 +310,7 @@ export default {
             this.saveMdContent()
           },
           onNegativeClick: () => {
+            console.log(path);
             localStorage.setItem("mdPath", path)
             this.app.GetMdContent(path).then((res) => {
               if (res.code == 200) {
