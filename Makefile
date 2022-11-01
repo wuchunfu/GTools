@@ -8,7 +8,6 @@ dev:
 build:
 	wails build -clean -webview2 browser
 
-
 # 运行docsify文档服务
 .PHONY: doc
 doc:

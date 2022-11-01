@@ -75,5 +75,5 @@ func (a *App) DelTodoItemById(item internal.TodoItem) *util.Resp  {
 	if err != nil {
 		return util.Error(err.Error())
 	}
-	return util.Ok()
+	return a.GetTodoList()
 }

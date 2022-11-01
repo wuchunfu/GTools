@@ -268,12 +268,13 @@ export default {
         delById(id) {
             this.showItemModal = false
             this.app.DelTodoItemById({id: id}).then(res => {
-                if(res.code != 200) {
+                if(res.code == 200) {
+                    this.data = res.data
+                    this.tags = []
+                } else{
                     message.error(res.msg)
-                    this.closeModal()
                 }
             })
-            this.getTodoList()
         }
     }
 }
