@@ -31,7 +31,7 @@
         <div>
             <n-list hoverable clickable>
                 <n-list-item v-for="item, index in data.todoList">
-                    <div @contextmenu.prevent="rightClick(item)" @dblclick.native="showEditModal(item)"
+                    <div @contextmenu.prevent="delTodoItem(item)" @dblclick.native="showEditModal(item)"
                         style="height: 40px; line-height: 40px; display: flex; align-items: center; justify-content: left;">
                         <n-checkbox size="large" :checked="item.done ? true : false"
                             @update:checked="handleSelectionChange(item, index)" />
@@ -41,6 +41,11 @@
                                 <content-icon />
                             </n-icon>
                         </n-button>
+                        <n-space style="margin-left: auto;">
+                            <n-tag :type="levelStyle[item.level]">
+                                {{levels[item.level].label}}
+                            </n-tag>
+                        </n-space>
                         <n-time :time="new Date(item.date)" format="yyyy-MM-dd"
                             :style="item.done ? doneItemDateStyle : todoItemDateStyle" />
                     </div>
@@ -65,14 +70,40 @@
                 </n-list-item>
             </n-list>
         </div>
-        <n-modal v-model:show="showItemModal" transform-origin="center">
+        <n-modal v-model:show="showItemModal" transform-origin="center" :auto-focus="false" :mask-closable="false">
             <n-card style="width: 600px" title="编辑事项" :bordered="false" size="huge" role="dialog" aria-modal="true">
                 <n-form ref="formRef" :model="editItem" :rules="rules" label-placement="left" label-width="auto"
                     require-mark-placement="right-hanging" size="medium" :style="{
                         maxWidth: '640px'
                     }">
-                    <n-form-item label="事项" path="inputValue">
+                    <n-form-item label="事项" path="todoValue">
                         <n-input v-model:value="editItem.title" placeholder="请输入事项" />
+                    </n-form-item>
+                    <n-form-item label="标签" path="tagsValue" :show-label="true">
+                        <n-dynamic-tags v-model:value="tags" />
+                    </n-form-item>
+                    <!-- <n-form-item label="日期" path="dateValue" :show-label="true">
+                        <n-date-picker v-model:value="editItem.mdate" type="date" />
+                    </n-form-item> -->
+                    <n-form-item label="等级" path="importValue" :show-label="true">
+                        <n-radio-group v-model:value="editItem.level" name="radiobuttongroup">
+                            <n-radio-button v-for="level in levels" :key="level.value" :value="level.value"
+                                :label="level.label" />
+                        </n-radio-group>
+                    </n-form-item>
+                    <n-form-item label="详情" path="contentValue" :show-label="true">
+                        <n-input v-model:value="editItem.content" type="textarea" placeholder="详情" />
+                    </n-form-item>
+                    <n-form-item style="display: flex; justify-content: center;">
+                        <n-button attr-type="button" @click="delById(editItem.id)" type="error">
+                            删除
+                        </n-button>
+                        <n-button attr-type="button" @click="closeModal()" style="margin-left: 50px">
+                            取消
+                        </n-button>
+                        <n-button style="margin-left: 50px" attr-type="button" type="success" @click="updateTodoItem()">
+                            保存
+                        </n-button>
                     </n-form-item>
                 </n-form>
             </n-card>
@@ -103,22 +134,35 @@ export default {
         return {
             app: window.go.gtools.App,
             todoItem: null,
+            tags: [],
+            levels: [
+                { value: 0, label: '不急' },
+                { value: 1, label: '普通' },
+                { value: 2, label: '重要' },
+                { value: 3, label: '紧急' },
+            ],
+            levelStyle: [
+                '',
+                'info',
+                'warning',
+                'error'
+            ],
             data: {
                 todonum: 0,
                 donenum: 0,
                 rate: 0,
                 todoList: [],
-                doneList: [],
+                doneList: []
             },
             showDoneList: false,
-            todoItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #87ceeb;',
+            todoItemDateStyle: 'margin-left: 20px; margin-right: 20px;font-weight: 500; font-size: large; color: #87ceeb;',
             doneItemDateStyle: 'margin-left: auto; margin-right: 20px;font-weight: 500; font-size: large; color: #D3D3D3;',
             doneItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600; text-decoration: line-through; color: #D3D3D3',
             todoItemTitleStyle: 'margin-left: 20px; font-size: large; font-weight: 600;',
             showItemModal: false,
             editItem: null,
             rules: {
-                inputValue: {
+                todoValue: {
                     required: true,
                     trigger: ["input"],
                     message: "请输入事项"
@@ -127,20 +171,24 @@ export default {
         }
     },
     mounted() {
-        this.app.GetTodoList().then(res => {
-            if (res.code == 200) {
-                this.data = res.data
-            } else {
-                message.error(res.msg)
-            }
-        })
+        this.getTodoList()
     },
     methods: {
+        getTodoList() {
+            this.app.GetTodoList().then(res => {
+                if (res.code == 200) {
+                    this.data = res.data
+                    this.tags = []
+                } else {
+                    message.error(res.msg)
+                }
+            })
+        },
         addItem() {
-            if(this.todoItem == null || this.todoItem.trim() == ''){
+            if (this.todoItem == null || this.todoItem.trim() == '') {
                 return
             }
-            this.app.AddTodoItem({ title: this.todoItem, date: new Date() }).then(res => {
+            this.app.AddTodoItem({ title: this.todoItem, date: new Date() ,level: 1}).then(res => {
                 if (res.code == 200) {
                     this.data = res.data
                     this.todoItem = null
@@ -163,8 +211,6 @@ export default {
                 if (res.code != 200) { message.error(res.msg) }
                 else {
                     this.data = res.data
-                    this.showEditModal = false
-                    this.editItem = null
                 }
             })
         },
@@ -175,7 +221,7 @@ export default {
                 return 'warning-row'
             }
         },
-        rightClick(item) {
+        delTodoItem(item) {
             let _this = this
             dialog.warning({
                 title: "警告",
@@ -196,13 +242,39 @@ export default {
 
                 }
             });
-            console.log(item);
         },
         showEditModal(item) {
-            console.log(item);
-            this.showItemModal = true
+            item.mdate = parseInt(new Date(item.date).getTime())
             this.editItem = item
+            if(this.editItem.tags != '') {
+                this.tags = this.editItem.tags.split(',')
+                console.log(this.tags);
+            }
+            this.showItemModal = true
         },
+        closeModal() {
+            this.getTodoList()
+            this.showItemModal = false
+        },
+        updateTodoItem() {
+            if (this.editItem.content != '' && this.editItem.content != null) {
+                this.editItem.hasContent = true
+            }
+            this.editItem.tags = this.tags.join(',')
+            this.updateItem(this.editItem)
+            this.showItemModal = false
+            this.tags = []
+        },
+        delById(id) {
+            this.showItemModal = false
+            this.app.DelTodoItemById({id: id}).then(res => {
+                if(res.code != 200) {
+                    message.error(res.msg)
+                    this.closeModal()
+                }
+            })
+            this.getTodoList()
+        }
     }
 }
 </script>

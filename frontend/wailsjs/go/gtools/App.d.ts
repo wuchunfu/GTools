@@ -13,6 +13,8 @@ export function DelMdDir(arg1:internal.MdPath):Promise<util.Resp>;
 
 export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
+export function DelTodoItemById(arg1:internal.TodoItem):Promise<util.Resp>;
+
 export function GetMdContent(arg1:string):Promise<util.Resp>;
 
 export function GetMdDirList():Promise<util.Resp>;

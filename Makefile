@@ -6,7 +6,7 @@ dev:
 # 根据系统进行本地构建
 .PHONY: build
 build:
-	wails build -clean
+	wails build -clean -webview2 browser
 
 
 # 运行docsify文档服务

@@ -48,7 +48,7 @@ export namespace internal {
 	    date: any;
 	    hasContent: boolean;
 	    done: boolean;
-	    importent: number;
+	    level: number;
 	    // Go type: time.Time
 	    expired: any;
 	    // Go type: time.Time
@@ -67,7 +67,7 @@ export namespace internal {
 	        this.date = this.convertValues(source["date"], null);
 	        this.hasContent = source["hasContent"];
 	        this.done = source["done"];
-	        this.importent = source["importent"];
+	        this.level = source["level"];
 	        this.expired = this.convertValues(source["expired"], null);
 	        this.updated = this.convertValues(source["updated"], null);
 	    }

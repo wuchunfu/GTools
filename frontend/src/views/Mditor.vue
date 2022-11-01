@@ -209,7 +209,6 @@ export default {
       resize: {
         enable: true,
         after(h) {
-          console.log(h);
         }
       },
       fullscreen: {
@@ -348,7 +347,6 @@ export default {
             return
           }
           let content = _this.getValue()
-          console.log(content);
           _this.app.NewMd(mdPath, content).then(res => {
             if (res.code == 200) {
               message.success("保存成功")
@@ -362,7 +360,6 @@ export default {
     },
     getDirList() {
       this.app.GetMdDirList().then(res => {
-        console.log(res);
         if (res.code === 200) {
           this.treeData = res.data.dir
           this.mdFileList = res.data.file

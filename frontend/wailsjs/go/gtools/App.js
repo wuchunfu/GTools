@@ -22,6 +22,10 @@ export function DelTodoItem(arg1) {
   return window['go']['gtools']['App']['DelTodoItem'](arg1);
 }
 
+export function DelTodoItemById(arg1) {
+  return window['go']['gtools']['App']['DelTodoItemById'](arg1);
+}
+
 export function GetMdContent(arg1) {
   return window['go']['gtools']['App']['GetMdContent'](arg1);
 }
