@@ -291,38 +291,39 @@ export default {
     },
     getMdContent(path) {
       // 判断当前文件是否保存
+      console.log(path);
       if (localStorage.getItem("mdPath") != null) {
         localStorage.setItem("mdPath", path)
-        this.app.GetMdContent(path).then((res) => {
-          if (res.code == 200) {
-            this.setValue(res.data)
-          } else {
-            message.error(res.msg)
-          }
-        })
-      } else {
-        dialog.warning({
-          title: '警告',
-          content: '当前文档未保存，是否保存',
-          positiveText: '确定',
-          negativeText: '取消',
-          onPositiveClick: () => {
-            this.saveMdContent()
-          },
-          onNegativeClick: () => {
-            console.log(path);
-            localStorage.setItem("mdPath", path)
-            this.app.GetMdContent(path).then((res) => {
-              if (res.code == 200) {
-                this.setValue(res.data)
-              } else {
-                message.error(res.msg)
-              }
-            })
-          }
-        })
+        this.getContent(path)
+      } else { // 未保存
+        if (this.getValue().trim() != '') { // 有内容
+          dialog.warning({
+            title: '警告',
+            content: '当前文档未保存，是否保存',
+            positiveText: '确定',
+            negativeText: '取消',
+            onPositiveClick: () => {
+              this.saveMdContent()
+            },
+            onNegativeClick: () => {
+              localStorage.setItem("mdPath", path)
+              this.getContent(path)
+            }
+          })
+        } else { // 无内容
+          localStorage.setItem("mdPath", path)
+          this.getContent(path)
+        }
       }
-
+    },
+    getContent(path) {
+      this.app.GetMdContent(path).then((res) => {
+        if (res.code == 200) {
+          this.setValue(res.data)
+        } else {
+          message.error(res.msg)
+        }
+      })
     },
     saveMdContent() {
       let _this = this
