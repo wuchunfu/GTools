@@ -5,7 +5,12 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   server: {
+    host: 'localhost',
+    cors: true,
+    open: true,
     hmr: true,
-    usePolling:true
+    watch: {
+      usePolling: true
+    }
   }
 })

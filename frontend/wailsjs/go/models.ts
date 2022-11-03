@@ -1,5 +1,29 @@
 export namespace internal {
 	
+	export class CmdItem {
+	    id: number;
+	    name: string;
+	    type: number;
+	    state: number;
+	    port: string;
+	    start: string;
+	    stop: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CmdItem(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.name = source["name"];
+	        this.type = source["type"];
+	        this.state = source["state"];
+	        this.port = source["port"];
+	        this.start = source["start"];
+	        this.stop = source["stop"];
+	    }
+	}
 	export class MdPath {
 	    id: number;
 	    path: string;

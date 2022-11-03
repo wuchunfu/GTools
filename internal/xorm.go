@@ -32,6 +32,18 @@ type MdPath struct {
 	Created time.Time `json:"created" xorm:"created"`          // 创建时间
 }
 
+// cmd快捷指令
+
+type CmdItem struct {
+	Id      int64  `json:"id"`                                               // ID
+	Name    string `json:"name" xorm:"varchar(100) default('') notnull"`     // 名称
+	Type    int8   `json:"type" xorm:"default(1) notnull"`                   // 执行类型
+	State   int8   `json:"state" xorm:"default(0) notnull"`                  // 状态 0-停止 1-运行
+	Port    string `json:"port" xorm:"varchar(20) default(0) notnull"`       // 端口号
+	Start string `json:"start" xorm:"varchar(1024) default('') notnull"` // 启动指令
+	Stop string `json:"stop" xorm:"varchar(1024) default('') notnull"`
+}
+
 func NewXormEngine(dbPath string) *xorm.Engine {
 	engine, err := xorm.NewEngine("sqlite3", dbPath)
 	// 引入 _ "github.com/go-sql-driver/mysql" 即可使用mysql进行数据存储， 配置如下
@@ -47,6 +59,6 @@ func NewXormEngine(dbPath string) *xorm.Engine {
 	engine.SetMaxIdleConns(5)
 	engine.SetMaxOpenConns(10)
 	engine.SetMapper(names.GonicMapper{}) // 名称映射规则 驼峰式
-	engine.Sync2(new(TodoItem), new(MdPath))
+	engine.Sync2(new(TodoItem), new(MdPath), new(CmdItem))
 	return engine
 }

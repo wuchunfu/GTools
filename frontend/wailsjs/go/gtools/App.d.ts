@@ -3,17 +3,23 @@
 import {internal} from '../models';
 import {util} from '../models';
 
+export function AddCmdItem(arg1:internal.CmdItem):Promise<util.Resp>;
+
 export function AddMdDirPath(arg1:internal.MdPath):Promise<util.Resp>;
 
 export function AddMdFile():Promise<util.Resp>;
 
 export function AddTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
+export function CleanWebKitCache():Promise<util.Resp>;
+
 export function DelMdDir(arg1:internal.MdPath):Promise<util.Resp>;
 
 export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function DelTodoItemById(arg1:internal.TodoItem):Promise<util.Resp>;
+
+export function GetCmdItemList():Promise<util.Resp>;
 
 export function GetMdContent(arg1:string):Promise<util.Resp>;
 

@@ -84,8 +84,6 @@ export default {
   },
   props: ['path'],
   setup(props) {
-    // const route = useRoute()
-    // localStorage.setItem('mdPath', route.query.path)
   },
   data() {
     return {
@@ -227,6 +225,7 @@ export default {
       esc: () => {
 
       },
+      // cdn: location.origin,
       blur: (content) => {
         let path = localStorage.getItem("mdPath")
         if (path !== null && path.trim() !== '') {

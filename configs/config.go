@@ -22,3 +22,8 @@ var (
 		Pattern: "*.md",
 	}
 )
+
+// Mac webkit路径
+var (
+	WebkitPath = "%s/Library/Caches/com.wails.GTools/WebKit"
+)

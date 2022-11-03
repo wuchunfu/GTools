@@ -1,17 +1,24 @@
-# GTools开发说明
+# GTools开发说明 
+
+<div>
+<a href='https://gitee.com/pixiao/gtools/stargazers'><img src='https://gitee.com/pixiao/gtools/badge/star.svg?theme=dark' alt='star'></img></a>
+<a href='https://gitee.com/pixiao/gtools/members'><img src='https://gitee.com/pixiao/gtools/badge/fork.svg?theme=dark' alt='fork'></img></a>
+</div>
 
 ## 简介
 
 GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小工具
-- 功能完善
-- 可执行包体积超小
-- 开发难度小
-- 可扩展性高
-- 跨平台
+- 功能完善（我需要的功能都有，没有的也在开发的路上，没在路上也在计划上）
+- 可执行包体积小（wails开发8M起步，我就喜欢小钢炮）
+- 开发难度小（会点go、vue即可快速开发）
+- 可扩展性高（vue实现不了的go实现，go实现不了的三方服务实现）
+- 跨平台（Mac打包Mac用，Windows打包Windows用，Linux打包Linux用）
 
-## 起源
+## 需求
 
-一款目前来说只适合本人的跨平台小工具
+我想用的功能N合一，不要那么多花哨的主题，亮暗即可（我要是会前端我整的还花哨）
+不要广告、不要订阅、不要插件（专注细节，专注产品，每一个功能都要精雕细琢）
+如果姊妹们有什么好想法可以加企鹅群讨论：736733848
 
 ## 开发
 
