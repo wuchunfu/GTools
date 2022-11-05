@@ -22,6 +22,14 @@ export function CleanWebKitCache() {
   return window['go']['gtools']['App']['CleanWebKitCache']();
 }
 
+export function CmdHandler(arg1) {
+  return window['go']['gtools']['App']['CmdHandler'](arg1);
+}
+
+export function DelCmdItem(arg1) {
+  return window['go']['gtools']['App']['DelCmdItem'](arg1);
+}
+
 export function DelMdDir(arg1) {
   return window['go']['gtools']['App']['DelMdDir'](arg1);
 }

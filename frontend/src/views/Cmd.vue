@@ -52,7 +52,7 @@
                                             </n-icon>
                                         </template>
                                     </n-button>
-                                    <n-button circle>
+                                    <n-button circle  @click="cmdHandler(item)">
                                         <template #icon>
                                             <n-icon v-if="item.state == 0">
                                                 <start-icon />
@@ -97,11 +97,11 @@ export default {
             types: [
                 {
                     label: "sh",
-                    value: 1
+                    value: "sh"
                 },
                 {
                     label: "无",
-                    value: 0
+                    value: ""
                 },
             ],
             cmdForm: {
@@ -134,9 +134,13 @@ export default {
                 }
             })
         },
-        startTomcat() {
-            this.app.StartTomcat().then((res) => {
-                console.log(res);
+        cmdHandler(item) {
+            this.app.CmdHandler(item).then((res) => {
+                if (res.code == 200) {
+                    this.data = res.data
+                } else {
+                    message.error(res.msg)
+                }
             })
         },
         selectFile() {

@@ -3,7 +3,7 @@ export namespace internal {
 	export class CmdItem {
 	    id: number;
 	    name: string;
-	    type: number;
+	    type: string;
 	    state: number;
 	    port: string;
 	    start: string;

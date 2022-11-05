@@ -35,13 +35,13 @@ type MdPath struct {
 // cmd快捷指令
 
 type CmdItem struct {
-	Id      int64  `json:"id"`                                               // ID
-	Name    string `json:"name" xorm:"varchar(100) default('') notnull"`     // 名称
-	Type    int8   `json:"type" xorm:"default(1) notnull"`                   // 执行类型
-	State   int8   `json:"state" xorm:"default(0) notnull"`                  // 状态 0-停止 1-运行
-	Port    string `json:"port" xorm:"varchar(20) default(0) notnull"`       // 端口号
+	Id    int64  `json:"id"`                                             // ID
+	Name  string `json:"name" xorm:"varchar(100) default('') notnull"`   // 名称
+	Type  string `json:"type" xorm:"varchar(200) default('') notnull"`   // 执行类型
+	State int8   `json:"state" xorm:"default(0) notnull"`                // 状态 0-停止 1-运行
+	Port  string `json:"port" xorm:"varchar(20) default(0) notnull"`     // 端口号
 	Start string `json:"start" xorm:"varchar(1024) default('') notnull"` // 启动指令
-	Stop string `json:"stop" xorm:"varchar(1024) default('') notnull"`
+	Stop  string `json:"stop" xorm:"varchar(1024) default('') notnull"`
 }
 
 func NewXormEngine(dbPath string) *xorm.Engine {

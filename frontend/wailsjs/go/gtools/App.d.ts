@@ -13,6 +13,10 @@ export function AddTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function CleanWebKitCache():Promise<util.Resp>;
 
+export function CmdHandler(arg1:internal.CmdItem):Promise<util.Resp>;
+
+export function DelCmdItem(arg1:internal.CmdItem):Promise<util.Resp>;
+
 export function DelMdDir(arg1:internal.MdPath):Promise<util.Resp>;
 
 export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
