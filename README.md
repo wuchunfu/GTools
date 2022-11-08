@@ -5,6 +5,9 @@
 <a href='https://gitee.com/pixiao/gtools/members'><img src='https://gitee.com/pixiao/gtools/badge/fork.svg?theme=dark' alt='fork'></img></a>
 </div>
 
+> Gitee地址：https://gitee.com/pixiao/gtools
+> GitHub地址：https://github.com/Pixiao3668/GTools
+
 ## 简介
 
 GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小工具
