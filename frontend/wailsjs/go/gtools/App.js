@@ -78,16 +78,8 @@ export function OpenMdSaveFileWindow() {
   return window['go']['gtools']['App']['OpenMdSaveFileWindow']();
 }
 
-export function OpenSelectFileWindow() {
-  return window['go']['gtools']['App']['OpenSelectFileWindow']();
-}
-
 export function SaveMdContent(arg1, arg2) {
   return window['go']['gtools']['App']['SaveMdContent'](arg1, arg2);
-}
-
-export function StartTomcat() {
-  return window['go']['gtools']['App']['StartTomcat']();
 }
 
 export function UpdateTodoItem(arg1) {

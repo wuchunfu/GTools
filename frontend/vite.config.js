@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     host: 'localhost',
     cors: true,
-    open: true,
+    open: false,
     hmr: true,
     watch: {
       usePolling: true

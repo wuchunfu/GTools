@@ -41,11 +41,7 @@ export function OpenMdFolderWindow():Promise<util.Resp>;
 
 export function OpenMdSaveFileWindow():Promise<util.Resp>;
 
-export function OpenSelectFileWindow():Promise<util.Resp>;
-
 export function SaveMdContent(arg1:string,arg2:string):Promise<util.Resp>;
-
-export function StartTomcat():Promise<string>;
 
 export function UpdateTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 

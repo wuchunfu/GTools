@@ -14,12 +14,13 @@ import (
 
 // App 结构体
 type App struct {
-	ctx     context.Context
-	Log     *logrus.Logger
-	Db      *xorm.Engine
-	LogFile string
-	DBFile  string
-	AliOSS  *oss.Client
+	ctx       context.Context
+	Log       *logrus.Logger
+	Db        *xorm.Engine
+	LogFile   string
+	DBFile    string
+	ConfigMap map[string]map[string]string
+	AliOSS    *oss.Client
 }
 
 // NewApp 创建一个新的 App 应用程序结构体
@@ -43,6 +44,9 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.DBFile = fmt.Sprintf(configs.DBFile, confDir)
 	a.Db = internal.NewXormEngine(a.DBFile)
 
+	// 获取系统配置文件
+	a.ConfigMap = a.getConfigMap()
+
 	// 初始化阿里云OSS客户端
 	a.AliOSS = internal.NewOssClient()
 }
@@ -55,6 +59,9 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 	return false
 }
 
-func (a *App) StartTomcat() string {
-	return util.RunCmd()
+// TODO 获取系统配置
+func (a *App) getConfigMap() map[string]map[string]string {
+	configMap := make(map[string]map[string]string)
+	
+	return configMap
 }

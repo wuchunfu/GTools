@@ -35,23 +35,6 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
 - Naive UI
 - Element-plus
 
-## 文件结构
-
-```
-|-- GTools
-    |-- build               # 构建文件夹，生成可执行文件
-        |-- appicon.png     # 软件图标
-    |-- configs             # 存放静态文件或者静态变量
-    |-- docs                # docsify文档目录，存放使用说明和开发说明文档
-    |-- frontend            # vue前端工程文件夹，可单独使用WS进行开发
-    |-- gtools              # 存放前端需要的接口，类似controller（个人喜好）
-    |-- internal            # 存放一些基本配置文件（xorm、log...）
-    |-- test                # 存放一些测试文件
-    |-- util                # 存放一些工具类
-    |-- main.go             # 程序入口
-    |-- Makefile            # 构建指令
-    |-- wails.json          # wails配置文件
-```
 
 ## TODO
 
@@ -79,6 +62,7 @@ GTools是基于wails开发的一款跨平台（Mac、Windows、Linux）桌面小
 - [ ] 快捷指令增、删、改、查、运行、停止功能
 - [X] 待办事项清单分组、增、删、改、查功能
 - [ ] 待办事项增加项目分类功能
+- [ ] 集成tutuList功能
 - [ ] Json格式化小工具
 - [ ] 图片-Base64转换工具
 - [ ] 房贷计算器小工具

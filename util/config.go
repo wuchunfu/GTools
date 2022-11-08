@@ -27,3 +27,8 @@ func GetConfigDir() string {
 	}
 	return gtDir
 }
+
+// 系统配置数据初始化
+func InitConfigData()  {
+	
+}
