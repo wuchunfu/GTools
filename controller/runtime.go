@@ -1,8 +1,8 @@
 package gtools
 
 import (
-	"changeme/configs"
-	"changeme/util"
+	"gtools/configs"
+	"gtools/util"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )

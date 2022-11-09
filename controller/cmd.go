@@ -1,10 +1,10 @@
 package gtools
 
 import (
-	"changeme/configs"
-	"changeme/internal"
-	"changeme/util"
+	"gtools/util"
 	"fmt"
+	"gtools/configs"
+	"gtools/internal"
 	"os/exec"
 )
 
@@ -24,7 +24,7 @@ func (a *App) GetCmdItemList() *util.Resp {
 	return util.Success(list)
 }
 
-func (a *App) DelCmdItem(item internal.CmdItem) *util.Resp  {
+func (a *App) DelCmdItem(item internal.CmdItem) *util.Resp {
 	if _, err := a.Db.Delete(&item); err != nil {
 		a.Log.Error(fmt.Sprintf(configs.DelCmdItemErr, item.Name, err.Error()))
 		return util.Error(err.Error())
@@ -43,7 +43,7 @@ func (a *App) CmdHandler(item internal.CmdItem) *util.Resp {
 		item.State = 0
 	}
 	fmt.Printf("item: %v\n", item)
-	if _, err := exec.Command(item.Type, cmdStr).Output() ;err != nil {
+	if _, err := exec.Command(item.Type, cmdStr).Output(); err != nil {
 		a.Log.Error(fmt.Sprintf(configs.CmdItemHandlerErr, item.Name, err.Error()))
 		return util.Error(err.Error())
 	}

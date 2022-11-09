@@ -1,7 +1,7 @@
 package gtools
 
 import (
-	"changeme/util"
+	"gtools/util"
 	"fmt"
 	"os"
 	"strconv"

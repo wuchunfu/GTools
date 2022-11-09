@@ -2,9 +2,9 @@ package gtools
 
 import (
 	"bufio"
-	"changeme/configs"
-	"changeme/internal"
-	"changeme/util"
+	"gtools/configs"
+	"gtools/internal"
+	"gtools/util"
 	"fmt"
 	"io/fs"
 	"os"

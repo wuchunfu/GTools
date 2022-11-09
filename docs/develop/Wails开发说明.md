@@ -26,6 +26,7 @@ wails doctor
 系统检测提示缺失wails命令，因为go install 将生成的可执行文件放在了GOPATH目录下的bin文件夹中，该文件夹没有添加到系统环境变量中，而配置golang开发环境时一般只将GOROOT添加到了系统环境变量中，所以解决办法就是：将GOPATH/bin/wails文件移动到GOROOT/bin/目录下
 
 查看golang配置文件
+重点查看 `GOPATH` 和 `GOROOT` 路径
 
 ```shell
 go env

@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"changeme/configs"
+	"gtools/configs"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

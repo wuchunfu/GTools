@@ -1,9 +1,9 @@
 package gtools
 
 import (
-	"changeme/configs"
-	"changeme/internal"
-	"changeme/util"
+	"gtools/configs"
+	"gtools/internal"
+	"gtools/util"
 	"fmt"
 	"math"
 )

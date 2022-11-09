@@ -1,11 +1,11 @@
 package gtools
 
 import (
-	"changeme/configs"
-	"changeme/internal"
-	"changeme/util"
+	"gtools/util"
 	"context"
 	"fmt"
+	"gtools/configs"
+	"gtools/internal"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/sirupsen/logrus"
@@ -62,6 +62,6 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 // TODO 获取系统配置
 func (a *App) getConfigMap() map[string]map[string]string {
 	configMap := make(map[string]map[string]string)
-	
+
 	return configMap
 }

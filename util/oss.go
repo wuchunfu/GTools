@@ -1,8 +1,8 @@
 package util
 
 import (
-	"changeme/configs"
 	"fmt"
+	"gtools/configs"
 	"strings"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
