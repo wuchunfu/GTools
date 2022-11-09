@@ -9,6 +9,8 @@ jobs:
       matrix:
         platform: [windows-latest, macos-11]
         go-version: [1.19.2]
+        compiler: gcc
+        gcc: 8
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
@@ -26,14 +28,17 @@ jobs:
         run: |
           wails build
       - name: upload artifacts macOS
-        if: matrix.platform == 'macos-latest'
+        if: matrix.platform == 'macos-11'
         uses: actions/upload-artifact@v3
         with:
-          name: wails-binaries-macos
+          name: GTools-macos
           path: build/bin/*
       - name: upload artifacts windows
         if: matrix.platform == 'windows-latest'
+        env:
+          CC: gcc-${{ matrix.gcc }}
+          CXX: g++-${{ matrix.gcc }}
         uses: actions/upload-artifact@v3
         with:
-          name: wails-binaries-windows
+          name: GTools-windows
           path: build/bin/*
