@@ -29,7 +29,7 @@ jobs:
         run: |
           wails build
       - name: upload artifacts ubuntu
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-18'
         uses: actions/upload-artifact@v3
         with:
           name: GTools-linux-amd64
