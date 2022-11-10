@@ -15,6 +15,9 @@ jobs:
       - name: Ubuntu update
         if: matrix.platform == 'ubuntu-18.04'
         run: sudo apt-get update && sudo apt-get install libx11-dev xvfb
+      - name: init x11
+        if: matrix.platform == 'ubuntu-18.04'
+        run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &; export DISPLAY=:99.0
       - name: Install Go
         uses: actions/setup-go@v3
         with:
