@@ -1,0 +1,23 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install Mingw
+      uses: egor-tensin/setup-mingw@v2
+      with: 
+        platform: x64
+    - name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
+    - name: check gcc version
+      run: |
+        gcc -v

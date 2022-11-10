@@ -12,6 +12,14 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
+      - name: install MinGW
+        if: matrix.platform == 'windows-latest'
+        uses: egor-tensin/setup-mingw@v2
+        with: 
+          platform: x64
+      - name: Setup MSYS2
+        if: matrix.platform == 'windows-latest'
+        uses: msys2/setup-msys2@v2
       - name: Install Go
         uses: actions/setup-go@v3
         with:
@@ -33,9 +41,6 @@ jobs:
           path: build/bin/*
       - name: upload artifacts windows
         if: matrix.platform == 'windows-latest'
-        env:
-          CC: gcc-8
-          CXX: g++-8
         uses: actions/upload-artifact@v3
         with:
           name: GTools-windows
