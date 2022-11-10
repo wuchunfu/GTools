@@ -16,6 +16,8 @@ jobs:
       uses: egor-tensin/setup-mingw@v2
       with: 
         platform: x64
+    - name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
     - name: check gcc version
       run: |
         gcc -v
