@@ -11,3 +11,7 @@ var (
 	CmdItemHandlerErr = "[%s]指令执行失败--异常信息[%s]"
 	DelCmdItemErr     = "删除快捷指令[%s]失败--异常信息[%s]"
 )
+var (
+	GetConfigListErr = "获取系统配置列表失败--异常信息[%s]"
+	AddConfigItemErr = "新增[%s]系统配置失败--异常信息[%s]"
+)
