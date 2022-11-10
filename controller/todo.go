@@ -1,10 +1,10 @@
 package gtools
 
 import (
+	"fmt"
 	"gtools/configs"
 	"gtools/internal"
 	"gtools/util"
-	"fmt"
 	"math"
 )
 
@@ -70,7 +70,7 @@ func (a *App) UpdateTodoItem(item internal.TodoItem) *util.Resp {
 	return a.GetTodoList()
 }
 
-func (a *App) DelTodoItemById(item internal.TodoItem) *util.Resp  {
+func (a *App) DelTodoItemById(item internal.TodoItem) *util.Resp {
 	_, err := a.Db.ID(item.Id).Delete(&item)
 	if err != nil {
 		return util.Error(err.Error())
