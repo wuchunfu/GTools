@@ -12,14 +12,14 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
-      - name: install MinGW
-        if: matrix.platform == 'windows-2019'
-        uses: egor-tensin/setup-mingw@v2
-        with: 
-          platform: x64
-      - name: Setup MSYS2
-        if: matrix.platform == 'windows-2019'
-        uses: msys2/setup-msys2@v2
+      # - name: install MinGW
+      #   if: matrix.platform == 'windows-2019'
+      #   uses: egor-tensin/setup-mingw@v2
+      #   with: 
+      #     platform: x64
+      # - name: Setup MSYS2
+      #   if: matrix.platform == 'windows-2019'
+      #   uses: msys2/setup-msys2@v2
       - name: Install Go
         uses: actions/setup-go@v3
         with:
@@ -30,9 +30,14 @@ jobs:
           node-version: 16
       - name: Get Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
-      - name: Build Wails app
+      - name: Build GTools for Windows-amd64
+        if: matrix.platform == 'windows-2019'
         run: |
-          wails build
+          wails build -clean -tags exp_gowebview2loader
+      - name: Build GTools for MacOS-amd64
+        if: matrix.platform == 'macos-11'
+        run: |
+          wails build -clean
       - name: upload artifacts macOS
         if: matrix.platform == 'macos-11'
         uses: actions/upload-artifact@v3
