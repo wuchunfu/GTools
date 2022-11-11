@@ -3,14 +3,14 @@ package internal
 import (
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
 )
 
 func NewXormEngine(dbPath string) *xorm.Engine {
-	engine, err := xorm.NewEngine("sqlite3", dbPath)
+	engine, err := xorm.NewEngine("sqlite", dbPath)
 	// 引入 _ "github.com/go-sql-driver/mysql" 即可使用mysql进行数据存储， 配置如下
 	// engine, err := xorm.NewEngine("mysql", "root:root@/gtools?charset=utf8")
 	if err != nil {
