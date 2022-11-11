@@ -2,7 +2,9 @@ package configs
 
 import "github.com/wailsapp/wails/v2/pkg/runtime"
 
+// 存储所有配置项的类型
 var ConfigTypes = [...]string{"alioss", "localImgPath", "tuChuang"}
+// 按照类型存储所有配置项
 var AliOSS = [...]string{"point", "endPoint", "accessKeyId", "accessKeySecret", "bucketName", "projectDir"}
 var LocalImgPath = [...]string{"path"}
 var TuChuang = [...]string{"configType"}
