@@ -1,0 +1,21 @@
+name: "test"
+on:
+  workflow_dispatch:
+    # 手动触发
+
+jobs:
+  package:
+    strategy:
+      matrix: # 2022版本的Windows 即Win11 sqlite3数据写入会有闪退问题. [windows-2019, macos-11, ubuntu-latest]
+        platform: [windows-2019]
+        go-version: [1.19.2]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: check go env
+        run: |
+          go env
