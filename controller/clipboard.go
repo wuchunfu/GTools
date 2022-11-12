@@ -1,8 +1,9 @@
 package gtools
 
 import (
-	"gtools/util"
 	"fmt"
+	"gtools/configs"
+	"gtools/util"
 	"os"
 	"strconv"
 	"time"
@@ -11,12 +12,19 @@ import (
 )
 
 func (a *App) UploadScreenshot() *util.Resp {
+	imgBedType := a.ConfigMap["imgBed"]["configType"]
+	if imgBedType == "" {
+		return util.Error(configs.NoImgBedConfigErr)
+	}
 
 	// 获取系统粘贴板中的文件地址
 	b, imgPath := savePngFromClipboard()
 	if !b {
+		// 删除图片临时文件
+		os.Remove(imgPath)
+
 		a.Log.Error("系统剪贴板图片地址异常: " + imgPath)
-		return util.Error(imgPath)
+		return util.Error(configs.GetSystemClipboardImgErr)
 	}
 
 	// 判断文件是否存在并为非文件夹
@@ -26,12 +34,22 @@ func (a *App) UploadScreenshot() *util.Resp {
 		return util.Error(s)
 	}
 
-	// TODO 从配置文件中选取上传首选项  目前先写死只使用阿里云OSS上传图片
-	b, s = util.UploadByAliOss(imgPath, a.AliOSS, a.Log)
+	// 选择图床存储文件
+	switch imgBedType {
+	case "alioss":
+		if b, s = util.UploadByAliOss(imgPath, a.AliOSS, a.Log, a.ConfigMap["alioss"]); !b {
+			return util.Error("图片上传阿里云OSS失败, 请检查软件配置和网路状况")
+		}
+	case "localImgPath":
+		if b, s = util.MoveImgToPath(imgPath, a.ConfigMap["localImgPath"]["path"]); !b {
+			return util.Error("图片本地存储失败, 请检查软件配置")
+		}
+	default:
+	}
+	// 删除图片临时文件
+	os.Remove(imgPath)
 	if b {
-		// 删除图片临时文件
-		os.Remove(imgPath)
-		// TODO 将线上图片地址存储到sqlite数据库中
+		// TODO 图片地址存储到sqlite数据库中
 
 		mdImg := "![](%v)" //  可以输出markdown原始图片
 		return util.Success(fmt.Sprintf(mdImg, s))

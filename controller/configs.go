@@ -1,13 +1,37 @@
 package gtools
 
 import (
-	"gtools/configs"
-	"gtools/util"
 	"fmt"
+	"gtools/configs"
+	"gtools/internal"
+	"gtools/util"
 	"os"
 	"os/user"
 )
 
+// 获取系统配置
+func (a *App) GetConfigMap() map[string]map[string]string {
+	configMap := make(map[string]map[string]string)
+	for _, ctype := range configs.ConfigTypes {
+		list := make([]internal.ConfigItem, 0)
+		if err := a.Db.Where("type = ?", ctype).Find(&list); err != nil {
+			a.Log.Error(fmt.Sprintf(configs.GetConfigListErr, err.Error()))
+			panic(err.Error())
+		}
+		if len(list) == 0 {
+			a.initConfigData(ctype)
+		} else {
+			typeMap := make(map[string]string, 0)
+			for _, v := range list {
+				typeMap[v.Name] = v.Value
+			}
+			configMap[ctype] = typeMap
+		}
+	}
+	return configMap
+}
+
+// 清理Mac上的Webkit缓存
 func (a *App) CleanWebKitCache() *util.Resp {
 	// 直接将MacOS上对应的Cache文件夹删除
 	userInfo, err := user.Current()

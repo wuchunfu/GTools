@@ -46,6 +46,10 @@ export function GetCmdItemList() {
   return window['go']['gtools']['App']['GetCmdItemList']();
 }
 
+export function GetConfigMap() {
+  return window['go']['gtools']['App']['GetConfigMap']();
+}
+
 export function GetMdContent(arg1) {
   return window['go']['gtools']['App']['GetMdContent'](arg1);
 }
@@ -76,6 +80,10 @@ export function OpenMdFolderWindow() {
 
 export function OpenMdSaveFileWindow() {
   return window['go']['gtools']['App']['OpenMdSaveFileWindow']();
+}
+
+export function SaveImgPath() {
+  return window['go']['gtools']['App']['SaveImgPath']();
 }
 
 export function SaveMdContent(arg1, arg2) {

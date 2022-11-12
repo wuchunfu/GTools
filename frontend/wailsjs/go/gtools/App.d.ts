@@ -25,6 +25,8 @@ export function DelTodoItemById(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function GetCmdItemList():Promise<util.Resp>;
 
+export function GetConfigMap():Promise<{[key: string]: {[key: string]: string}}>;
+
 export function GetMdContent(arg1:string):Promise<util.Resp>;
 
 export function GetMdDirList():Promise<util.Resp>;
@@ -40,6 +42,8 @@ export function NewMd(arg1:string,arg2:string):Promise<util.Resp>;
 export function OpenMdFolderWindow():Promise<util.Resp>;
 
 export function OpenMdSaveFileWindow():Promise<util.Resp>;
+
+export function SaveImgPath():Promise<void>;
 
 export function SaveMdContent(arg1:string,arg2:string):Promise<util.Resp>;
 
