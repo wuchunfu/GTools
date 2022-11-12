@@ -14,13 +14,13 @@ import (
 
 // App 结构体
 type App struct {
-	ctx       context.Context
-	Log       *logrus.Logger
-	Db        *xorm.Engine
-	LogFile   string
-	DBFile    string
-	ConfigMap map[string]map[string]string
-	AliOSS    *oss.Client
+	ctx          context.Context
+	Log          *logrus.Logger
+	Db           *xorm.Engine
+	LogFile      string
+	DBFile       string
+	ConfigMap    map[string]map[string]string
+	AliOSS       *oss.Client
 	LocalImgPath string
 }
 
@@ -46,10 +46,10 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.Db = internal.NewXormEngine(a.DBFile)
 
 	// 获取系统配置文件
-	a.ConfigMap = a.getConfigMap()
+	a.ConfigMap = a.GetConfigMap()
 
 	// 初始化图床配置
-	a.initTuChuang()
+	a.initImgBed()
 }
 
 // OnBeforeClose
@@ -58,29 +58,6 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 	a.Db.Close()
 	// 返回 true 将阻止程序关闭
 	return false
-}
-
-// TODO 获取系统配置
-func (a *App) getConfigMap() map[string]map[string]string {
-	configMap := make(map[string]map[string]string)
-	for _, ctype := range configs.ConfigTypes {
-		list := make([]internal.ConfigItem, 0)
-		if err := a.Db.Where("type = ?", ctype).Find(&list); err != nil {
-			a.Log.Error(fmt.Sprintf(configs.GetConfigListErr, err.Error()))
-			panic(err.Error())
-		}
-		if len(list) == 0 {
-			a.initConfigData(ctype)
-		} else {
-			typeMap := make(map[string]string, 0)
-			for _, v := range list {
-				typeMap[v.Name] = v.Value
-			}
-			configMap[ctype] = typeMap
-			fmt.Printf("configMap: %v\n", configMap)
-		}
-	}
-	return configMap
 }
 
 // 系统配置数据初始化
@@ -94,10 +71,10 @@ func (a *App) initConfigData(ctype string) {
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
-	case "tuChuang":
+	case "imgBed":
 		datas := make([]*internal.ConfigItem, 0)
-		for i := 0; i < len(configs.TuChuang); i++ {
-			datas = append(datas, &internal.ConfigItem{Name: configs.TuChuang[i], Value: "", Type: ctype})
+		for i := 0; i < len(configs.ImgBed); i++ {
+			datas = append(datas, &internal.ConfigItem{Name: configs.ImgBed[i], Value: "", Type: ctype})
 		}
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
@@ -115,15 +92,15 @@ func (a *App) initConfigData(ctype string) {
 	}
 }
 
-func (a *App) initTuChuang() {
-	switch a.ConfigMap["tuChuang"]["configType"] {
+func (a *App) initImgBed() {
+	switch a.ConfigMap["imgBed"]["configType"] {
 	case "alioss":
 		// 初始化阿里云OSS客户端
-		a.AliOSS = internal.NewOssClient()
+		a.AliOSS = internal.NewOssClient(a.ConfigMap["alioss"]["endPoint"], a.ConfigMap["alioss"]["accessKeyId"], a.ConfigMap["alioss"]["accessKeySecret"], a.Log)
 	case "localImgPath":
 		// 配置本地图床文件夹路径
-		a.LocalImgPath = a.ConfigMap["tuChuang"]["path"]
-	default: a.Log.Info("系统无图床配置")
+		a.LocalImgPath = a.ConfigMap["imgBed"]["path"]
+	default:
+		a.Log.Info(configs.NoImgBedConfigErr)
 	}
-
 }

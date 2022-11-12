@@ -12,6 +12,16 @@ var (
 	DelCmdItemErr     = "删除快捷指令[%s]失败--异常信息[%s]"
 )
 var (
-	GetConfigListErr = "获取系统配置列表失败--异常信息[%s]"
-	AddConfigItemErr = "新增[%s]系统配置失败--异常信息[%s]"
+	GetConfigListErr  = "获取系统配置列表失败--异常信息[%s]"
+	AddConfigItemErr  = "新增[%s]系统配置失败--异常信息[%s]"
+	NoImgBedConfigErr = "系统无图床配置"
+)
+var (
+	GetSystemClipboardImgErr = "获取系统剪贴板图片失败"
+	SaveImgToLocalErr        = "图片本地存储失败"
+)
+
+var (
+	CreateAliOSSClientErr = "创建阿里云OSS客户端失败--异常信息[%s]"
+	GetAliOSSBucketErr = "获取AliOSS存储空间失败--异常信息[%s]"
 )

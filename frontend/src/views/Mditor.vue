@@ -400,6 +400,7 @@ export default {
       let _this = this
       this.app.UploadScreenshot().then((res) => {
         if (res.code == 200) {
+          console.log(res);
           _this.insertValue(res.data)
         } else {
           message.error(res.msg)
