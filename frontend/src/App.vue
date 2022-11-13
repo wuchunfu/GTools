@@ -9,7 +9,8 @@ import {
   SettingsSharp as SettingIcon,
   Checkbox as TodoIcon,
   Navigate as NavigateIcon,
-  DocumentText as DocIcon
+  DocumentText as DocIcon,
+  AlertCircleSharp as AboutIcon
 } from '@vicons/ionicons5'
 
 import { PictureAsPdfFilled as PdfIcon} from '@vicons/material'
@@ -123,11 +124,25 @@ export default {
                 path: "/setting",
               }
             },
-            { default: () => "设置" }
+            { default: () => "软件设置" }
           ),
           key: "go-back-setting",
           icon: renderIcon(SettingIcon)
-        }
+        },
+        {
+          label: () => h(
+            RouterLink,
+            {
+              to: {
+                name: 'about',
+                path: "/about",
+              }
+            },
+            { default: () => "关于" }
+          ),
+          key: "go-back-about",
+          icon: renderIcon(AboutIcon)
+        },
       ],
       railStyle: ({
         focused,

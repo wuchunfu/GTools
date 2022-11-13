@@ -214,7 +214,7 @@ export default {
       },
       theme: initTheme,
       cache: { // 缓存
-        enable: false,
+        enable: true,
       },
       after: () => {
 
@@ -246,7 +246,7 @@ export default {
         enable: true,
       }
     })
-    localStorage.removeItem("mdPath")
+    // localStorage.removeItem("mdPath")
     this.getDirList()
     mitt.on("theme", (val) => {
       if (val == 0) {

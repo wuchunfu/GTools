@@ -47,7 +47,7 @@ type ConfigItem struct {
 	Created time.Time `json:"created" xorm:"created"`                        // 创建时间
 }
 
-// 图床配置项
+// 图床图片
 type ImageItem struct {
 	Id      int64     `json:"id"`                                 // ID
 	Path    string    `json:"path" xorm:"default('') notnull"`    // 图片路径

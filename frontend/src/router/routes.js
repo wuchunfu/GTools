@@ -34,7 +34,12 @@ const routes = [
         name: 'navigation',
         path: '/navigation',
         component: () => import('../views/Navigation.vue')
-    }
+    },
+    {
+        name: 'about',
+        path: '/about',
+        component: () => import('../views/About.vue')
+    },
 ]
 
 export default routes
