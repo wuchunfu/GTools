@@ -27,6 +27,8 @@ export function GetCmdItemList():Promise<util.Resp>;
 
 export function GetConfigMap():Promise<{[key: string]: {[key: string]: string}}>;
 
+export function GetConfigOnounted():Promise<util.Resp>;
+
 export function GetMdContent(arg1:string):Promise<util.Resp>;
 
 export function GetMdDirList():Promise<util.Resp>;
@@ -46,6 +48,8 @@ export function OpenMdSaveFileWindow():Promise<util.Resp>;
 export function SaveImgPath():Promise<void>;
 
 export function SaveMdContent(arg1:string,arg2:string):Promise<util.Resp>;
+
+export function UpdateConfigItem(arg1:internal.ConfigItem):Promise<util.Resp>;
 
 export function UpdateTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 

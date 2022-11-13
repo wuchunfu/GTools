@@ -50,6 +50,10 @@ export function GetConfigMap() {
   return window['go']['gtools']['App']['GetConfigMap']();
 }
 
+export function GetConfigOnounted() {
+  return window['go']['gtools']['App']['GetConfigOnounted']();
+}
+
 export function GetMdContent(arg1) {
   return window['go']['gtools']['App']['GetMdContent'](arg1);
 }
@@ -88,6 +92,10 @@ export function SaveImgPath() {
 
 export function SaveMdContent(arg1, arg2) {
   return window['go']['gtools']['App']['SaveMdContent'](arg1, arg2);
+}
+
+export function UpdateConfigItem(arg1) {
+  return window['go']['gtools']['App']['UpdateConfigItem'](arg1);
 }
 
 export function UpdateTodoItem(arg1) {

@@ -49,7 +49,7 @@ type ConfigItem struct {
 
 // 图床配置项
 type ImageItem struct {
-	Id      int64     `json:"id"`                                 // 图片
+	Id      int64     `json:"id"`                                 // ID
 	Path    string    `json:"path" xorm:"default('') notnull"`    // 图片路径
 	Type    string    `json:"type" xorm:"default('') notnull"`    // 图片类型-本地/阿里OSS/腾讯OSS/sm.ms
 	Article string    `json:"article" xorm:"default('') notnull"` // 图片所在文章

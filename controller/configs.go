@@ -9,6 +9,35 @@ import (
 	"os/user"
 )
 
+// 页面加载是获取系统配置
+func (a *App) GetConfigOnounted() *util.Resp {
+	return util.Success(a.ConfigMap)
+}
+
+func (a *App) UpdateConfigItem(item internal.ConfigItem) *util.Resp {
+	var value string = item.Value
+	var search = internal.ConfigItem {
+		Name: item.Name,
+		Type: item.Type,
+	}
+	if _, err := a.Db.Where("name = ?", item.Name).Where("type = ?", item.Type).Get(&search); err != nil {
+		a.Log.Error(fmt.Sprintf(configs.GetConfigItemErr, item.Name, err.Error()))
+		return util.Error(err.Error())
+	}
+	// 值没有变化
+	if value == search.Value {
+		return util.Ok()
+	}
+	search.Value = value
+	// 值有变化，则进行更新，同时需要配置上下文信息
+	if _, err := a.Db.ID(search.Id).AllCols().Update(&search); err != nil {
+		a.Log.Error(fmt.Sprintf(configs.UpdateConfigItemErr, item.Name, err.Error()))
+		return util.Error(err.Error())
+	}
+	a.ConfigMap = a.GetConfigMap()
+	return util.Success(a.ConfigMap)
+}
+
 // 获取系统配置
 func (a *App) GetConfigMap() map[string]map[string]string {
 	configMap := make(map[string]map[string]string)
