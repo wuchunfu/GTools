@@ -75,6 +75,7 @@ import { DeleteOutlineOutlined as DelIcon } from '@vicons/material'
 const { message, dialog } = createDiscreteApi(
   ["message", "dialog"]
 );
+const previewElement = document.getElementById('preview')
 
 export default {
   components: {
@@ -114,6 +115,10 @@ export default {
     this.contentEditor = new Vditor('vditor', {
       height: this.editorHeight, // 默认使用窗口的高度
       width: '100%',
+      // icon: "material",
+      cache: {
+        enable: true
+      },
       toolbar: [
         {
           name: 'menu',
@@ -133,6 +138,7 @@ export default {
           icon: '<svg t="1666974492027" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7368" width="200" height="200"><path d="M658.285714 0l292.571429 292.571429h-73.142857L658.285714 73.142857V0z m292.571429 292.571429v731.428571H73.142857V0h585.142857v292.571429h292.571429z m-73.142857 73.142857H585.142857V73.142857H146.285714v877.714286h731.428572V365.714286zM146.285714 804.571429h146.285715v146.285714h73.142857V804.571429h146.285714v-73.142858H365.714286V585.142857h-73.142857v146.285714H146.285714v73.142858z" p-id="7369"></path></svg>',
           click() {
             _this.setValue("")
+            _this.clearCache()
             localStorage.removeItem("mdPath")
           },
         },
@@ -179,10 +185,10 @@ export default {
           toolbar: [
             'export',
             'preview',
-            'content-theme',
-            'code-theme',
-            'info',
-            'help',
+            // 'content-theme',
+            // 'code-theme',
+            // 'info',
+            // 'help',
           ],
         }],
       toolbarConfig: {
@@ -246,7 +252,6 @@ export default {
         enable: true,
       }
     })
-    // localStorage.removeItem("mdPath")
     this.getDirList()
     mitt.on("theme", (val) => {
       if (val == 0) {
@@ -353,6 +358,8 @@ export default {
             if (res.code == 200) {
               message.success("保存成功")
               localStorage.setItem("mdPath", mdPath)
+              this.treeData = res.data.dir
+              this.mdFileList = res.data.file
             } else {
               message.error("保存失败")
             }
@@ -378,6 +385,9 @@ export default {
     },
     setValue(value) {
       return this.contentEditor.setValue(value);     //设置 Markdown 内容
+    },
+    clearCache() {
+      return this.contentEditor.clearCache(); // 清理编辑器缓存
     },
     disabled() {
       return this.contentEditor.disabled();     //设置 只读

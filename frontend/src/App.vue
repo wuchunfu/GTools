@@ -106,20 +106,6 @@ export default {
             RouterLink,
             {
               to: {
-                name: 'navigation',
-                path: "/navigation",
-              }
-            },
-            { default: () => "快捷导航" }
-          ),
-          key: "go-back-navigation",
-          icon: renderIcon(NavigateIcon)
-        },
-        {
-          label: () => h(
-            RouterLink,
-            {
-              to: {
                 name: 'setting',
                 path: "/setting",
               }

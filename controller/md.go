@@ -122,7 +122,19 @@ func (a *App) NewMd(path string, content string) *util.Resp {
 	writer := bufio.NewWriter(file)
 	writer.WriteString(content)
 	writer.Flush()
-	return util.Success("OK")
+	if path != "" {
+		s := strings.Split(path, "/")
+		item := internal.MdPath{
+			Path:  path,
+			Type:  1,
+			Fname: s[len(s)-1],
+		}
+		_, err = a.Db.Insert(&item)
+		if err != nil {
+			return util.Error(err.Error())
+		}
+	}
+	return a.GetMdDirList()
 }
 
 // 添加文件

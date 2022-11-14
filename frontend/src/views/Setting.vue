@@ -28,7 +28,23 @@
                   <n-input v-model:value="data.localImgPath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }"/>
                 </n-form-item>
                 <n-form-item>
-                  <n-button attr-type="button" @click="handleValidateClick">
+                  <n-button attr-type="button" @click="handleValidateClick" type="success">
+                    保存
+                  </n-button>
+                </n-form-item>
+              </n-form>
+              <n-form ref="formRef" inline :label-width="80" :model="data.localImgPath" size="medium" v-show="data.imgBed.configType == 'alioss'">
+                <n-form-item label="存储区域(例如: oss-cn-beijing)" path="data.localImgPath.path">
+                  <n-input v-model:value="data.alioss.point" placeholder="存储区域" :style="{ width: '200px' }"/>
+                </n-form-item>
+                <n-form-item label="访问密钥id" path="data.localImgPath.path">
+                  <n-input v-model:value="data.alioss.accessKeyId" placeholder="访问密钥id" :style="{ width: '250px' }" type="password"/>
+                </n-form-item>
+                <n-form-item label="访问密钥key" path="data.localImgPath.path">
+                  <n-input v-model:value="data.alioss.accessKeySecret" placeholder="访问密钥key" :style="{ width: '250px' }" type="password"/>
+                </n-form-item>
+                <n-form-item>
+                  <n-button attr-type="button" @click="handleValidateClick" type="success">
                     保存
                   </n-button>
                 </n-form-item>
