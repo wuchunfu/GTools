@@ -23,31 +23,60 @@
               </n-radio-group>
             </n-card>
             <n-card :title="this.imgBedCardName" embedded class="card-radius-10">
-              <n-form ref="formRef" inline :label-width="80" :model="data.localImgPath" size="medium" v-show="data.imgBed.configType == 'localImgPath'">
+              <n-form ref="formRef" inline :label-width="80" :model="data.localImgPath" size="medium"
+                v-show="data.imgBed.configType == 'localImgPath'">
                 <n-form-item label="本地图片存储路径" path="data.localImgPath.path">
-                  <n-input v-model:value="data.localImgPath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }"/>
+                  <n-input v-model:value="data.localImgPath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
                 </n-form-item>
                 <n-form-item>
-                  <n-button attr-type="button" @click="handleValidateClick" type="success">
+                  <n-button attr-type="button" @click="" type="success">
                     保存
                   </n-button>
                 </n-form-item>
               </n-form>
-              <n-form ref="formRef" inline :label-width="80" :model="data.localImgPath" size="medium" v-show="data.imgBed.configType == 'alioss'">
-                <n-form-item label="存储区域(例如: oss-cn-beijing)" path="data.localImgPath.path">
-                  <n-input v-model:value="data.alioss.point" placeholder="存储区域" :style="{ width: '200px' }"/>
-                </n-form-item>
-                <n-form-item label="访问密钥id" path="data.localImgPath.path">
-                  <n-input v-model:value="data.alioss.accessKeyId" placeholder="访问密钥id" :style="{ width: '250px' }" type="password"/>
-                </n-form-item>
-                <n-form-item label="访问密钥key" path="data.localImgPath.path">
-                  <n-input v-model:value="data.alioss.accessKeySecret" placeholder="访问密钥key" :style="{ width: '250px' }" type="password"/>
-                </n-form-item>
-                <n-form-item>
-                  <n-button attr-type="button" @click="handleValidateClick" type="success">
-                    保存
-                  </n-button>
-                </n-form-item>
+              <n-alert title="注意事项" type="info" v-show="data.imgBed.configType == 'alioss'" :bordered="false" closable>
+                Region、Bucket、Object内容请勿添加任何符号
+              </n-alert>
+              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.localImgPath" size="medium"
+                v-show="data.imgBed.configType == 'alioss'">
+                <n-grid cols="2 400:2 800:3 1000:4">
+                  <n-grid-item>
+                    <n-form-item label="存储地域(Region)" path="data.localImgPath.path">
+                      <n-input v-model:value="data.alioss.point" placeholder="存储地域名称" :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="访问密钥id" path="data.localImgPath.path">
+                      <n-input v-model:value="data.alioss.accessKeyId" placeholder="访问密钥id" :style="{ width: '250px' }"
+                        type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="访问密钥key" path="data.localImgPath.path">
+                      <n-input v-model:value="data.alioss.accessKeySecret" placeholder="访问密钥key"
+                        :style="{ width: '250px' }" type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="存储空间(Bucket)" path="data.localImgPath.path">
+                      <n-input v-model:value="data.alioss.bucketName" placeholder="存储空间名称"
+                        :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="对象/文件(Object)" path="data.localImgPath.path">
+                      <n-input v-model:value="data.alioss.projectDir" placeholder="对象或文件"
+                        :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item>
+                      <n-button attr-type="button" @click="" type="success">
+                        保存
+                      </n-button>
+                    </n-form-item>
+                  </n-grid-item>
+                </n-grid>
               </n-form>
             </n-card>
           </n-space>
@@ -75,6 +104,7 @@ export default {
   data() {
     return {
       app: go.gtools.App,
+      run: runtime.runtime,
       imgBedCardName: null,
       imgBedTypes: [
         {
