@@ -1,3 +1,22 @@
+export namespace gtools {
+	
+	export class updatParam {
+	    type: string;
+	    value: {[key: string]: string};
+	
+	    static createFrom(source: any = {}) {
+	        return new updatParam(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.value = source["value"];
+	    }
+	}
+
+}
+
 export namespace internal {
 	
 	export class CmdItem {

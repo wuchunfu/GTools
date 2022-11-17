@@ -9,14 +9,42 @@ import (
 	"os/user"
 )
 
+type updatParam struct {
+	Type  string            `json:"type"`
+	Value map[string]string `json:"value"`
+}
+
 // 页面加载是获取系统配置
 func (a *App) GetConfigOnounted() *util.Resp {
 	return util.Success(a.ConfigMap)
 }
 
+func (a *App) UpdateConfigByType(param updatParam) *util.Resp {
+	m := param.Value
+	for name := range m {
+		fmt.Printf("name: %v\n", name)
+		fmt.Printf("m[name]: %v\n", m[name])
+		var search = internal.ConfigItem{
+			Name: name,
+			Type: param.Type,
+		}
+		if _, err := a.Db.Where("name = ?", name).Where("type = ?", param.Type).Get(&search); err != nil {
+			a.Log.Error(fmt.Sprintf(configs.GetConfigItemErr, name, err.Error()))
+			return util.Error(err.Error())
+		}
+		search.Value = m[name]
+		if _, err := a.Db.ID(search.Id).AllCols().Update(&search); err != nil {
+			a.Log.Error(fmt.Sprintf(configs.UpdateConfigItemErr, name, err.Error()))
+			return util.Error(err.Error())
+		}
+	}
+	a.ConfigMap = a.GetConfigMap()
+	return util.Success(a.ConfigMap)
+}
+
 func (a *App) UpdateConfigItem(item internal.ConfigItem) *util.Resp {
 	var value string = item.Value
-	var search = internal.ConfigItem {
+	var search = internal.ConfigItem{
 		Name: item.Name,
 		Type: item.Type,
 	}

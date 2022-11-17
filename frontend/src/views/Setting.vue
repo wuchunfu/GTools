@@ -29,8 +29,8 @@
                   <n-input v-model:value="data.localImgPath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
                 </n-form-item>
                 <n-form-item>
-                  <n-button attr-type="button" @click="" type="success">
-                    保存
+                  <n-button attr-type="button" @click="updateConfigByType('localImgPath', data.localImgPath)" type="success">
+                    更新
                   </n-button>
                 </n-form-item>
               </n-form>
@@ -71,8 +71,8 @@
                   </n-grid-item>
                   <n-grid-item>
                     <n-form-item>
-                      <n-button attr-type="button" @click="" type="success">
-                        保存
+                      <n-button attr-type="button" @click="updateConfigByType('alioss', data.alioss)" type="success">
+                        更新
                       </n-button>
                     </n-form-item>
                   </n-grid-item>
@@ -147,6 +147,17 @@ export default {
         }
       })
     },
+    updateConfigByType(type, value) {
+      this.app.UpdateConfigByType({"type": type, "value": value}).then(res => {
+        if (res.code == 200) {
+          if (res.data != null) this.data = res.data
+          // this.setImgBedCardName()
+          message.success("配置已更新")
+        } else {
+          message.error(res.msg)
+        }
+      })
+    },  
     setImgBedCardName() {
       switch (this.data.imgBed.configType) {
         case "localImgPath":

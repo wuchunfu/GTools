@@ -94,6 +94,10 @@ export function SaveMdContent(arg1, arg2) {
   return window['go']['gtools']['App']['SaveMdContent'](arg1, arg2);
 }
 
+export function UpdateConfigByType(arg1) {
+  return window['go']['gtools']['App']['UpdateConfigByType'](arg1);
+}
+
 export function UpdateConfigItem(arg1) {
   return window['go']['gtools']['App']['UpdateConfigItem'](arg1);
 }
