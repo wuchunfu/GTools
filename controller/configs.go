@@ -119,15 +119,19 @@ func (a *App) initConfigData(ctype string) {
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
-	case "imgBed":
+	case "imgbed":
 		datas := make([]*internal.ConfigItem, 0)
 		for i := 0; i < len(configs.ImgBed); i++ {
-			datas = append(datas, &internal.ConfigItem{Name: configs.ImgBed[i], Value: "", Type: ctype})
+			value := ""
+			if configs.BdOcr[i] == "configType" {
+				value = "limgpath"
+			}
+			datas = append(datas, &internal.ConfigItem{Name: configs.ImgBed[i], Value: value, Type: ctype})
 		}
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
-	case "localImgPath":
+	case "limgpath":
 		datas := make([]*internal.ConfigItem, 0)
 		for i := 0; i < len(configs.LocalImgPath); i++ {
 			datas = append(datas, &internal.ConfigItem{Name: configs.LocalImgPath[i], Value: "", Type: ctype})
@@ -135,7 +139,7 @@ func (a *App) initConfigData(ctype string) {
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
-	case "bdOcr":
+	case "bdocr":
 		datas := make([]*internal.ConfigItem, 0)
 		for i := 0; i < len(configs.BdOcr); i++ {
 			value := ""

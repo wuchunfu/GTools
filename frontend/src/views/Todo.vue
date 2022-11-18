@@ -101,7 +101,7 @@
                         <n-button attr-type="button" @click="closeModal()" style="margin-left: 30px" round secondary>
                             取消
                         </n-button>
-                        <n-button style="margin-left: 30px" attr-type="button" type="success" @click="updateTodoItem()" round secondary>
+                        <n-button style="margin-left: 30px" attr-type="button" type="success" @click="updateTodoItem(editItem.title)" round secondary>
                             保存
                         </n-button>
                     </n-form-item>
@@ -164,8 +164,6 @@ export default {
             rules: {
                 todoValue: {
                     required: true,
-                    trigger: ["input"],
-                    message: "请输入事项"
                 },
             }
         }
@@ -256,7 +254,11 @@ export default {
             this.getTodoList()
             this.showItemModal = false
         },
-        updateTodoItem() {
+        updateTodoItem(title) {
+            if (title == "") {
+                message.error("内容不完整")
+                return
+            }
             if (this.editItem.content != '' && this.editItem.content != null) {
                 this.editItem.hasContent = true
             }

@@ -17,54 +17,54 @@
         <n-tab-pane name="imgbed" tab="图床设置">
           <n-space vertical>
             <n-card title="Markdown图片存储方式" class="card-radius-10" embedded>
-              <n-radio-group v-model:value="data.imgBed.configType" name="imgBedTypeRadiobuttongroup"
-                :on-update="changeImgBed(data.imgBed.configType)">
+              <n-radio-group v-model:value="data.imgbed.configType" name="imgBedTypeRadiobuttongroup"
+                :on-update="changeImgBed(data.imgbed.configType)">
                 <n-radio-button v-for="song in imgBedTypes" :key="song.value" :value="song.value" :label="song.label" />
               </n-radio-group>
             </n-card>
             <n-card :title="this.imgBedCardName" embedded class="card-radius-10">
-              <n-form ref="formRef" inline :label-width="80" :model="data.localImgPath" size="medium"
-                v-show="data.imgBed.configType == 'localImgPath'">
-                <n-form-item label="本地图片存储路径" path="data.localImgPath.path">
-                  <n-input v-model:value="data.localImgPath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
+              <n-form ref="formRef" inline :label-width="80" :model="data.limgpath" size="medium"
+                v-show="data.imgbed.configType == 'limgpath'">
+                <n-form-item label="本地图片存储路径" path="data.limgpath.path">
+                  <n-input v-model:value="data.limgpath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
                 </n-form-item>
                 <n-form-item>
-                  <n-button attr-type="button" @click="updateConfigByType('localImgPath', data.localImgPath)" type="success">
+                  <n-button attr-type="button" @click="updateConfigByType('limgpath', data.limgpath)" type="success">
                     更新
                   </n-button>
                 </n-form-item>
               </n-form>
-              <n-alert title="注意事项" type="info" v-show="data.imgBed.configType == 'alioss'" :bordered="false" closable>
+              <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false" closable>
                 Region、Bucket、Object内容请勿添加任何符号
               </n-alert>
-              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.localImgPath" size="medium"
-                v-show="data.imgBed.configType == 'alioss'">
+              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.limgpath" size="medium"
+                v-show="data.imgbed.configType == 'alioss'">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
-                    <n-form-item label="存储地域(Region)" path="data.localImgPath.path">
+                    <n-form-item label="存储地域(Region)">
                       <n-input v-model:value="data.alioss.point" placeholder="存储地域名称" :style="{ width: '250px' }" />
                     </n-form-item>
                   </n-grid-item>
                   <n-grid-item>
-                    <n-form-item label="访问密钥id" path="data.localImgPath.path">
+                    <n-form-item label="访问密钥id">
                       <n-input v-model:value="data.alioss.accessKeyId" placeholder="访问密钥id" :style="{ width: '250px' }"
                         type="password" :clearable="true" />
                     </n-form-item>
                   </n-grid-item>
                   <n-grid-item>
-                    <n-form-item label="访问密钥key" path="data.localImgPath.path">
+                    <n-form-item label="访问密钥key">
                       <n-input v-model:value="data.alioss.accessKeySecret" placeholder="访问密钥key"
                         :style="{ width: '250px' }" type="password" :clearable="true" />
                     </n-form-item>
                   </n-grid-item>
                   <n-grid-item>
-                    <n-form-item label="存储空间(Bucket)" path="data.localImgPath.path">
+                    <n-form-item label="存储空间(Bucket)">
                       <n-input v-model:value="data.alioss.bucketName" placeholder="存储空间名称"
                         :style="{ width: '250px' }" />
                     </n-form-item>
                   </n-grid-item>
                   <n-grid-item>
-                    <n-form-item label="对象/文件(Object)" path="data.localImgPath.path">
+                    <n-form-item label="对象/文件(Object)">
                       <n-input v-model:value="data.alioss.projectDir" placeholder="对象或文件"
                         :style="{ width: '250px' }" />
                     </n-form-item>
@@ -108,7 +108,7 @@ export default {
       imgBedTypes: [
         {
           label: "本地存储",
-          value: "localImgPath"
+          value: "limgpath"
         },
         {
           label: "阿里云OSS",
@@ -137,7 +137,7 @@ export default {
       })
     },
     changeImgBed(val) {
-      this.app.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgBed" }).then(res => {
+      this.app.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
         if (res.code == 200) {
           if (res.data != null) this.data = res.data
           this.setImgBedCardName()
@@ -158,8 +158,8 @@ export default {
       })
     },  
     setImgBedCardName() {
-      switch (this.data.imgBed.configType) {
-        case "localImgPath":
+      switch (this.data.imgbed.configType) {
+        case "limgpath":
           this.imgBedCardName = "本地存储配置"
           break;
         case "alioss":
