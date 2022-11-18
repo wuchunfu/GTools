@@ -35,6 +35,11 @@ const routes = [
         path: '/about',
         component: () => import('../views/About.vue')
     },
+    {
+        name: 'ocr',
+        path: '/ocr',
+        component: () => import('../views/Ocr.vue')
+    },
 ]
 
 export default routes

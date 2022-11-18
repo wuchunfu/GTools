@@ -60,38 +60,7 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 	return false
 }
 
-// 系统配置数据初始化
-func (a *App) initConfigData(ctype string) {
-	switch ctype {
-	case "alioss":
-		datas := make([]*internal.ConfigItem, 0)
-		for i := 0; i < len(configs.AliOSS); i++ {
-			datas = append(datas, &internal.ConfigItem{Name: configs.AliOSS[i], Value: "", Type: ctype})
-		}
-		if _, err := a.Db.Insert(&datas); err != nil {
-			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
-		}
-	case "imgBed":
-		datas := make([]*internal.ConfigItem, 0)
-		for i := 0; i < len(configs.ImgBed); i++ {
-			datas = append(datas, &internal.ConfigItem{Name: configs.ImgBed[i], Value: "", Type: ctype})
-		}
-		if _, err := a.Db.Insert(&datas); err != nil {
-			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
-		}
-	case "localImgPath":
-		datas := make([]*internal.ConfigItem, 0)
-		for i := 0; i < len(configs.LocalImgPath); i++ {
-			datas = append(datas, &internal.ConfigItem{Name: configs.LocalImgPath[i], Value: "", Type: ctype})
-		}
-		if _, err := a.Db.Insert(&datas); err != nil {
-			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
-		}
-	default:
-		a.Log.Warn(fmt.Sprintf("未找到配置项[%s], 系统配置初始化失败", ctype))
-	}
-}
-
+// 初始化图床配置
 func (a *App) initImgBed() {
 	switch a.ConfigMap["imgBed"]["configType"] {
 	case "alioss":

@@ -27,3 +27,9 @@ var (
 	CreateAliOSSClientErr = "创建阿里云OSS客户端失败--异常信息[%s]"
 	GetAliOSSBucketErr    = "获取AliOSS存储空间失败--异常信息[%s]"
 )
+var (
+	BdOcrUrlParseErr = "百度OCR url解析错误--异常信息[%s]"
+	BdOcrTokenGetErr = "百度OCR Token获取失败--异常信息[%s]"
+	BdOcrRequestErr  = "百度OCR Request请求失败--异常信息[%s]"
+	BdOcrResponseErr = "百度OCR Response读取失败--异常信息[%s]"
+)

@@ -52,6 +52,7 @@ type ImageItem struct {
 	Id      int64     `json:"id"`                                 // ID
 	Path    string    `json:"path" xorm:"default('') notnull"`    // 图片路径
 	Type    string    `json:"type" xorm:"default('') notnull"`    // 图片类型-本地/阿里OSS/腾讯OSS/sm.ms
-	Article string    `json:"article" xorm:"default('') notnull"` // 图片所在文章
+	Artname string    `json:"artname" xorm:"default('') notnull"` // 图片所在文章名称
+	Artpath string    `json:"artpath" xorm:"default('') notnull"` // 图片所在文章路径
 	Created time.Time `json:"created" xorm:"created"`             // 创建时间
 }

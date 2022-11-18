@@ -18,7 +18,7 @@ func (a *App) UploadScreenshot() *util.Resp {
 	}
 
 	// 获取系统粘贴板中的文件地址
-	b, imgPath := savePngFromClipboard()
+	b, imgPath := SavePngFromClipboard()
 	if !b {
 		// 删除图片临时文件
 		os.Remove(imgPath)
@@ -58,7 +58,7 @@ func (a *App) UploadScreenshot() *util.Resp {
 	}
 }
 
-func savePngFromClipboard() (bool, string) {
+func SavePngFromClipboard() (bool, string) {
 	b2 := clipboard.Read(clipboard.FmtImage)
 	i := len(b2)
 	if i != 0 {

@@ -18,6 +18,10 @@ export function AddTodoItem(arg1) {
   return window['go']['gtools']['App']['AddTodoItem'](arg1);
 }
 
+export function BaiduOCR(arg1) {
+  return window['go']['gtools']['App']['BaiduOCR'](arg1);
+}
+
 export function CleanWebKitCache() {
   return window['go']['gtools']['App']['CleanWebKitCache']();
 }
@@ -40,6 +44,10 @@ export function DelTodoItem(arg1) {
 
 export function DelTodoItemById(arg1) {
   return window['go']['gtools']['App']['DelTodoItemById'](arg1);
+}
+
+export function GetBdOCRToken() {
+  return window['go']['gtools']['App']['GetBdOCRToken']();
 }
 
 export function GetCmdItemList() {

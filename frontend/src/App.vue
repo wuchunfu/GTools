@@ -10,7 +10,8 @@ import {
   Checkbox as TodoIcon,
   Navigate as NavigateIcon,
   DocumentText as DocIcon,
-  AlertCircleSharp as AboutIcon
+  AlertCircleSharp as AboutIcon,
+  Barcode as OcrIcon
 } from '@vicons/ionicons5'
 
 import { PictureAsPdfFilled as PdfIcon} from '@vicons/material'
@@ -106,6 +107,20 @@ export default {
             RouterLink,
             {
               to: {
+                name: 'ocr',
+                path: "/ocr",
+              }
+            },
+            { default: () => "图文识别" }
+          ),
+          key: "go-back-ocr",
+          icon: renderIcon(OcrIcon)
+        },
+        {
+          label: () => h(
+            RouterLink,
+            {
+              to: {
                 name: 'setting',
                 path: "/setting",
               }
@@ -156,7 +171,6 @@ export default {
   },
   methods: {
     changeTheme() {
-      console.log(this.switchTheme);
       if (this.switchTheme) {
         this.myTheme = darkTheme
         localStorage.setItem("theme", 0)
