@@ -1,5 +1,5 @@
 <template>
-    关于
+关于
 </template>
 <script>
 

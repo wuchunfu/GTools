@@ -12,7 +12,7 @@ import (
 )
 
 func (a *App) UploadScreenshot() *util.Resp {
-	imgBedType := a.ConfigMap["imgBed"]["configType"]
+	imgBedType := a.ConfigMap["imgbed"]["configType"]
 	if imgBedType == "" {
 		return util.Error(configs.NoImgBedConfigErr)
 	}
@@ -40,8 +40,8 @@ func (a *App) UploadScreenshot() *util.Resp {
 		if b, s = util.UploadByAliOss(imgPath, a.AliOSS, a.Log, a.ConfigMap["alioss"]); !b {
 			return util.Error("图片上传阿里云OSS失败, 请检查软件配置和网路状况")
 		}
-	case "localImgPath":
-		if b, s = util.MoveImgToPath(imgPath, a.ConfigMap["localImgPath"]["path"]); !b {
+	case "limgpath":
+		if b, s = util.MoveImgToPath(imgPath, a.ConfigMap["limgpath"]["path"]); !b {
 			return util.Error("图片本地存储失败, 请检查软件配置")
 		}
 	default:

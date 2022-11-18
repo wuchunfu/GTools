@@ -37,9 +37,9 @@ func (a *App) GetBdOCRToken() (bool, string) {
 	var host = configs.BdOcrTokenHost
 
 	var param = map[string]string{
-		"grant_type":    a.ConfigMap["bdOcr"]["grantType"],
-		"client_id":     a.ConfigMap["bdOcr"]["clientId"],
-		"client_secret": a.ConfigMap["bdOcr"]["clientSecret"],
+		"grant_type":    a.ConfigMap["bdocr"]["grantType"],
+		"client_id":     a.ConfigMap["bdocr"]["clientId"],
+		"client_secret": a.ConfigMap["bdocr"]["clientSecret"],
 	}
 
 	uri, err := url.Parse(host)
@@ -72,10 +72,10 @@ func (a *App) GetBdOCRToken() (bool, string) {
 		a.Log.Error(configs.BdOcrTokenGetErr, err.Error())
 		return false, err.Error()
 	}
-	a.ConfigMap["bdOcr"]["token"] = newToken.Access
+	a.ConfigMap["bdocr"]["token"] = newToken.Access
 	a.UpdateConfigItem(internal.ConfigItem {
 		Name: "token",
-		Type: "bdOcr",
+		Type: "bdocr",
 		Value: newToken.Access,
 	})
 	a.ConfigMap = a.GetConfigMap()
@@ -94,7 +94,7 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 		host = configs.BdOcrGeneralBasic
 	}
 
-	var accessToken = a.ConfigMap["bdOcr"]["token"]
+	var accessToken = a.ConfigMap["bdocr"]["token"]
 	if accessToken == "" {
 		ok, token := a.GetBdOCRToken(); 
 		if !ok {
@@ -140,14 +140,14 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 
 	response, err := client.Do(request)
 	if err != nil {
-		a.ConfigMap["bdOcr"]["token"] = ""
+		a.ConfigMap["bdocr"]["token"] = ""
 		a.Log.Error(configs.BdOcrRequestErr, err.Error())
 		return util.Error(err.Error())
 	}
 	defer response.Body.Close()
 	result, err := io.ReadAll(response.Body)
 	if err != nil {
-		a.ConfigMap["bdOcr"]["token"] = ""
+		a.ConfigMap["bdocr"]["token"] = ""
 		a.Log.Error(configs.BdOcrResponseErr, err.Error())
 		return util.Error(err.Error())
 	}
@@ -158,6 +158,5 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 	for _, v := range wordsList {
 		content += v.Words + "\n"
 	}
-	// clipboard.Write(clipboard.FmtText, []byte(content))
 	return util.Success(content)
 }

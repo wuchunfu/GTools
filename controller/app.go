@@ -9,19 +9,19 @@ import (
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/sirupsen/logrus"
+	"golang.design/x/clipboard"
 	"xorm.io/xorm"
 )
 
 // App 结构体
 type App struct {
-	ctx          context.Context
-	Log          *logrus.Logger
-	Db           *xorm.Engine
-	LogFile      string
-	DBFile       string
-	ConfigMap    map[string]map[string]string
-	AliOSS       *oss.Client
-	LocalImgPath string
+	ctx       context.Context
+	Log       *logrus.Logger
+	Db        *xorm.Engine
+	LogFile   string
+	DBFile    string
+	ConfigMap map[string]map[string]string
+	AliOSS    *oss.Client
 }
 
 // NewApp 创建一个新的 App 应用程序结构体
@@ -50,6 +50,9 @@ func (a *App) OnStartup(ctx context.Context) {
 
 	// 初始化图床配置
 	a.initImgBed()
+
+	// 初始化系统剪贴板工具
+	initClipboard()
 }
 
 // OnBeforeClose
@@ -62,14 +65,22 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 
 // 初始化图床配置
 func (a *App) initImgBed() {
-	switch a.ConfigMap["imgBed"]["configType"] {
+	switch a.ConfigMap["imgbed"]["configType"] {
 	case "alioss":
 		// 初始化阿里云OSS客户端
 		a.AliOSS = internal.NewOssClient(a.ConfigMap["alioss"]["endPoint"], a.ConfigMap["alioss"]["accessKeyId"], a.ConfigMap["alioss"]["accessKeySecret"], a.Log)
-	case "localImgPath":
+	case "limgpath":
 		// 配置本地图床文件夹路径
-		a.LocalImgPath = a.ConfigMap["imgBed"]["path"]
+		// a.LocalImgPath = a.ConfigMap["imgbed"]["path"]
 	default:
 		a.Log.Info(configs.NoImgBedConfigErr)
+	}
+}
+
+func initClipboard() {
+	// Init returns an error if the package is not ready for use.
+	err := clipboard.Init()
+	if err != nil {
+		panic(err)
 	}
 }

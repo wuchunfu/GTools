@@ -37,8 +37,8 @@
               <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false" closable>
                 Region、Bucket、Object内容请勿添加任何符号
               </n-alert>
-              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.limgpath" size="medium"
-                v-show="data.imgbed.configType == 'alioss'">
+              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.limgpath"
+                size="medium" v-show="data.imgbed.configType == 'alioss'">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
                     <n-form-item label="存储地域(Region)">
@@ -65,8 +65,7 @@
                   </n-grid-item>
                   <n-grid-item>
                     <n-form-item label="对象/文件(Object)">
-                      <n-input v-model:value="data.alioss.projectDir" placeholder="对象或文件"
-                        :style="{ width: '250px' }" />
+                      <n-input v-model:value="data.alioss.projectDir" placeholder="对象或文件" :style="{ width: '250px' }" />
                     </n-form-item>
                   </n-grid-item>
                   <n-grid-item>
@@ -82,7 +81,36 @@
           </n-space>
 
         </n-tab-pane>
-        <n-tab-pane name="jay chou" tab="其他设置">
+        <n-tab-pane name="ocr" tab="图文识别">
+          <n-space vertical>
+            <n-card title="百度OCR" embedded class="card-radius-10">
+              <n-form ref="formRef" inline :label-width="80" :model="data.limgpath"
+                size="medium">
+                <n-grid cols="2 400:2 800:3 1000:4">
+                  <n-grid-item>
+                    <n-form-item label="ID(clientId)">
+                      <n-input v-model:value="data.bdocr.clientId" placeholder="存储地域名称" :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="密钥(clientSecret)">
+                      <n-input v-model:value="data.bdocr.clientSecret" placeholder="访问密钥id" :style="{ width: '250px' }"
+                        type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item>
+                      <n-button attr-type="button" @click="updateConfigByType('bdocr', data.bdocr)" type="success">
+                        更新
+                      </n-button>
+                    </n-form-item>
+                  </n-grid-item>
+                </n-grid>
+              </n-form>
+            </n-card>
+          </n-space>
+        </n-tab-pane>
+        <n-tab-pane name="other" tab="其他设置">
           我爱波多野结衣
         </n-tab-pane>
       </n-tabs>
@@ -90,85 +118,78 @@
   </div>
 </template>
 
-<script>
+<script async setup>
 import { Trash as CleancacheIcon } from "@vicons/ionicons5";
 import { createDiscreteApi } from 'naive-ui'
+import { ref, onMounted } from "vue";
+// 生命周期放在最前面
+onMounted(() => {
+  getConfigMap()
+})
+
 // 脱离上下文的 API 引入消息提示框
 const { message, dialog } = createDiscreteApi(
   ["message", "dialog"]
 );
-export default {
-  components: {
-    CleancacheIcon
+const imgBedCardName = ref(null)
+const imgBedTypes = ref([
+  {
+    label: "本地存储",
+    value: "limgpath"
   },
-  data() {
-    return {
-      app: go.gtools.App,
-      imgBedCardName: null,
-      imgBedTypes: [
-        {
-          label: "本地存储",
-          value: "limgpath"
-        },
-        {
-          label: "阿里云OSS",
-          value: "alioss"
-        },
-      ],
-      data: {}
+  {
+    label: "阿里云OSS",
+    value: "alioss"
+  },
+])
+const data = ref({})
+
+const cleanCache = () => {
+  window.go.gtools.App.CleanWebKitCache().then(res => {
+    if (res.code == 200) message.success("缓存已清理")
+  })
+}
+const getConfigMap = () => {
+  window.go.gtools.App.GetConfigOnounted().then(res => {
+    if (res.code == 200) {
+      data.value = res.data
+      setImgBedCardName()
     }
-  },
-  name: "Setting",
-  mounted() {
-    this.getConfigMap()
-  },
-  methods: {
-    cleanCache() {
-      this.app.CleanWebKitCache().then(res => {
-        if (res.code == 200) message.success("缓存已清理")
-      })
-    },
-    getConfigMap() {
-      this.app.GetConfigOnounted().then(res => {
-        if (res.code == 200) {
-          this.data = res.data
-          this.setImgBedCardName()
-        }
-      })
-    },
-    changeImgBed(val) {
-      this.app.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
-        if (res.code == 200) {
-          if (res.data != null) this.data = res.data
-          this.setImgBedCardName()
-        } else {
-          message.error(res.msg)
-        }
-      })
-    },
-    updateConfigByType(type, value) {
-      this.app.UpdateConfigByType({"type": type, "value": value}).then(res => {
-        if (res.code == 200) {
-          if (res.data != null) this.data = res.data
-          // this.setImgBedCardName()
-          message.success("配置已更新")
-        } else {
-          message.error(res.msg)
-        }
-      })
-    },  
-    setImgBedCardName() {
-      switch (this.data.imgbed.configType) {
-        case "limgpath":
-          this.imgBedCardName = "本地存储配置"
-          break;
-        case "alioss":
-          this.imgBedCardName = "阿里云OSS配置"
-          break;
-        default:
-          break;
-      }
+  })
+}
+
+const changeImgBed = (val) => {
+  window.go.gtools.App.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
+    if (res.code == 200) {
+      if (res.data != null) data.value = res.data
+      setImgBedCardName()
+    } else {
+      message.error(res.msg)
     }
+  })
+}
+
+const updateConfigByType = (type, value) => {
+  window.go.gtools.App.UpdateConfigByType({ "type": type, "value": value }).then(res => {
+    if (res.code == 200) {
+      if (res.data != null) data.value = res.data
+      // this.setImgBedCardName()
+      message.success("配置已更新")
+    } else {
+      message.error(res.msg)
+    }
+  })
+}
+const setImgBedCardName = () => {
+  switch (data.value.imgbed.configType) {
+    case "limgpath":
+      imgBedCardName.value = "本地存储配置"
+      break;
+    case "alioss":
+      imgBedCardName.value = "阿里云OSS配置"
+      break;
+    default:
+      break;
   }
 }
 </script>

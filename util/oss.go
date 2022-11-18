@@ -35,6 +35,9 @@ func UploadByAliOss(path string, client *oss.Client, log *logrus.Logger, config 
 
 // 将临时图片文件存储到指定的文件夹下
 func MoveImgToPath(imgPath string, targetPath string) (bool, string) {
+	if targetPath == "" {
+		return false, "本地存储路径未配置"
+	}
 	s := strings.Split(imgPath, "/")
 	imgName := s[len(s)-1]
 	newPath := fmt.Sprintf("%s/%s", targetPath, imgName)

@@ -12,7 +12,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
-	"golang.design/x/clipboard"
 )
 
 //go:embed frontend/dist
@@ -20,14 +19,6 @@ var assets embed.FS
 
 // icon会默认使用 build/appicon.png 转换为byte数组
 var icon []byte
-
-func init() {
-	// Init returns an error if the package is not ready for use.
-	err := clipboard.Init()
-	if err != nil {
-		panic(err)
-	}
-}
 
 type FileLoader struct {
 	http.Handler
@@ -44,7 +35,6 @@ func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		res.WriteHeader(http.StatusBadRequest)
 		res.Write([]byte(fmt.Sprintf("Could not load file %s", requestedFilename)))
 	}
-
 	res.Write(fileData)
 }
 
@@ -60,7 +50,7 @@ func main() {
 		MinWidth:          1100,     // 最小宽度
 		MinHeight:         768,      // 最小高度
 		HideWindowOnClose: true,     // 关闭的时候隐藏窗口
-		StartHidden:       true,    // 启动的时候隐藏窗口 （建议生产环境关闭此项，开发环境开启此项，原因自己体会）
+		StartHidden:       false,     // 启动的时候隐藏窗口 （建议生产环境关闭此项，开发环境开启此项，原因自己体会）
 		AlwaysOnTop:       false,    // 窗口固定在最顶层
 		AssetServer: &assetserver.Options{
 			Assets:  assets,
