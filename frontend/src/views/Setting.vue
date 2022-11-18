@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%;">
-    <n-card style="height: 100%;">
+    <n-card :bordered="false">
       <n-tabs type="line" animated default-value="system">
         <n-tab-pane name="system" tab="系统优化">
           <n-card title="软件设置" class="card-radius-10" embedded>
@@ -104,7 +104,6 @@ export default {
   data() {
     return {
       app: go.gtools.App,
-      run: runtime.runtime,
       imgBedCardName: null,
       imgBedTypes: [
         {
