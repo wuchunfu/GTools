@@ -1,32 +1,30 @@
 <template>
-    <!-- <button @click="invokeHtmlMethod">调用html种方法</button> -->
-    <div style="height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
-      <iframe  name = "iframeMap" id="iframeMapViewComponent"  v-bind:src="getPageUrl"
-               width="100%" height="100%"
-               frameborder="0" scrolling="yes" ref="iframeDom"
-      ></iframe>
-    </div>
+<n-button @click="fanyi">123</n-button>
+<n-input
+      v-model:value="invalue"
+      type="textarea"
+      placeholder="基本的 Textarea"
+    />
+    <n-input
+      v-model:value="trans"
+      type="textarea"
+      placeholder="基本的 Textarea"
+    />
 </template>
-<script>
-export default {
-    data() {
-      return {
-        getPageUrl: '/Users/pixiao/WorkSpace/Tomcat/webapps/docs/index.html'
-      }
-    },
-    created() {
-      // 初始化时为window绑定一个方法
-      window['vueDefinedMyProp'] = (receiveParams) => {
-        this.receiveParamsFromHtml(receiveParams)
-      }
-    },
-    methods: {
-      receiveParamsFromHtml(res) {
-        console.log(res)
-      },
-      invokeHtmlMethod() {
-        window.frames['iframeMap'].lodaTable()
+<script setup>
+import { ref } from "vue";
+const app = ref(window.go.gtools.App)
+const invalue = ref(null)
+const trans = ref(null)
+
+const fanyi = () => {
+  app.value.BaiDuTrans(invalue.value).then(res => {
+    if(res.code == 200) {
+      trans.value = res.data
+    } else {
+      console.log(res.msg);
     }
-      },
+    
+  })
 }
 </script>

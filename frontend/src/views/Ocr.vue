@@ -40,10 +40,11 @@ const { message, dialog } = createDiscreteApi(
 );
 const ocrStr = ref("")
 const loading = ref(false)
+const app = ref(window.go.gtools.App)
 
 const ocr = (ocrType) => {
     loading.value = true
-    window.go.gtools.App.BaiduOCR(ocrType).then(res => {
+    app.value.BaiduOCR(ocrType).then(res => {
         if (res.code == 200) {
             ocrStr.value = res.data
         } else {

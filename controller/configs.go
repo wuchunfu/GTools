@@ -151,6 +151,25 @@ func (a *App) initConfigData(ctype string) {
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
+	case "bdtrans":
+		datas := make([]*internal.ConfigItem, 0)
+		for i := 0; i < len(configs.BdTrans); i++ {
+			var value string
+			switch configs.BdTrans[i] {
+			case "salt":
+				value = "gtools"
+			case "from":
+				value = "auto"
+			case "to":
+				value = "zh"
+			default:
+				value = ""
+			}
+			datas = append(datas, &internal.ConfigItem{Name: configs.BdTrans[i], Value: value, Type: ctype})
+		}
+		if _, err := a.Db.Insert(&datas); err != nil {
+			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
+		}
 	default:
 		a.Log.Warn(fmt.Sprintf("未找到配置项[%s], 系统配置初始化失败", ctype))
 	}

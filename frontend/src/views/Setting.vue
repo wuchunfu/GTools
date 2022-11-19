@@ -80,7 +80,7 @@
             </n-card>
           </n-space>
         </n-tab-pane>
-        <n-tab-pane name="ocr" tab="图文识别">
+        <n-tab-pane name="ocr" tab="图文设置">
           <n-space vertical>
             <n-card title="百度OCR" embedded class="card-radius-10">
               <n-form inline :label-width="80" :model="data.bdocr"
@@ -100,6 +100,49 @@
                   <n-grid-item>
                     <n-form-item>
                       <n-button attr-type="button" @click="updateConfigByType('bdocr', data.bdocr)" type="success">
+                        更新
+                      </n-button>
+                    </n-form-item>
+                  </n-grid-item>
+                </n-grid>
+              </n-form>
+            </n-card>
+            <n-card title="百度翻译(翻译开放平台)" embedded class="card-radius-10">
+              <n-form inline :label-width="80" :model="data.bdtrans"
+                size="medium">
+                <n-grid cols="2 400:2 800:3 1000:4">
+                  <n-grid-item>
+                    <n-form-item label="appid">
+                      <n-input v-model:value="data.bdtrans.appid" placeholder="appid" :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="secret">
+                      <n-input v-model:value="data.bdtrans.secret" placeholder="secret" :style="{ width: '250px' }"
+                        type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="salt(盐默认gtools)">
+                      <n-input v-model:value="data.bdtrans.salt" placeholder="salt" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="from(默认auto自动识别)">
+                      <n-input v-model:value="data.bdtrans.from" placeholder="from" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="to(默认翻译为中文)">
+                      <n-input v-model:value="data.bdtrans.to" placeholder="to" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item>
+                      <n-button attr-type="button" @click="updateConfigByType('bdtrans', data.bdtrans)" type="success">
                         更新
                       </n-button>
                     </n-form-item>
@@ -142,14 +185,15 @@ const imgBedTypes = ref([
   },
 ])
 const data = ref({})
+const app = ref(window.go.gtools.App)
 
 const cleanCache = () => {
-  window.go.gtools.App.CleanWebKitCache().then(res => {
+  app.value.CleanWebKitCache().then(res => {
     if (res.code == 200) message.success("缓存已清理")
   })
 }
 const getConfigMap = () => {
-  window.go.gtools.App.GetConfigOnounted().then(res => {
+  app.value.GetConfigOnounted().then(res => {
     if (res.code == 200) {
       data.value = res.data
       setImgBedCardName()
@@ -158,7 +202,7 @@ const getConfigMap = () => {
 }
 
 const changeImgBed = (val) => {
-  window.go.gtools.App.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
+  app.value.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
     if (res.code == 200) {
       if (res.data != null) data.value = res.data
       setImgBedCardName()
@@ -169,7 +213,7 @@ const changeImgBed = (val) => {
 }
 
 const updateConfigByType = (type, value) => {
-  window.go.gtools.App.UpdateConfigByType({ "type": type, "value": value }).then(res => {
+  app.value.UpdateConfigByType({ "type": type, "value": value }).then(res => {
     if (res.code == 200) {
       if (res.data != null) data.value = res.data
       // this.setImgBedCardName()

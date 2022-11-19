@@ -18,6 +18,10 @@ export function AddTodoItem(arg1) {
   return window['go']['gtools']['App']['AddTodoItem'](arg1);
 }
 
+export function BaiDuTrans(arg1) {
+  return window['go']['gtools']['App']['BaiDuTrans'](arg1);
+}
+
 export function BaiduOCR(arg1) {
   return window['go']['gtools']['App']['BaiduOCR'](arg1);
 }

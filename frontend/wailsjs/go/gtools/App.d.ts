@@ -12,6 +12,8 @@ export function AddMdFile():Promise<util.Resp>;
 
 export function AddTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
+export function BaiDuTrans(arg1:string):Promise<util.Resp>;
+
 export function BaiduOCR(arg1:number):Promise<util.Resp>;
 
 export function CleanWebKitCache():Promise<util.Resp>;
