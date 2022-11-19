@@ -22,8 +22,8 @@
                 <n-radio-button v-for="song in imgBedTypes" :key="song.value" :value="song.value" :label="song.label" />
               </n-radio-group>
             </n-card>
-            <n-card :title="this.imgBedCardName" embedded class="card-radius-10">
-              <n-form ref="formRef" inline :label-width="80" :model="data.limgpath" size="medium"
+            <n-card :title="imgBedCardName" embedded class="card-radius-10">
+              <n-form inline :label-width="80" :model="data.limgpath" size="medium"
                 v-show="data.imgbed.configType == 'limgpath'">
                 <n-form-item label="本地图片存储路径" path="data.limgpath.path">
                   <n-input v-model:value="data.limgpath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
@@ -37,7 +37,7 @@
               <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false" closable>
                 Region、Bucket、Object内容请勿添加任何符号
               </n-alert>
-              <n-form ref="formRef" inline :label-width="80" style="margin-top: 30px;" :model="data.limgpath"
+              <n-form inline :label-width="80" style="margin-top: 30px;" :model="data.alioss"
                 size="medium" v-show="data.imgbed.configType == 'alioss'">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
@@ -79,12 +79,11 @@
               </n-form>
             </n-card>
           </n-space>
-
         </n-tab-pane>
         <n-tab-pane name="ocr" tab="图文识别">
           <n-space vertical>
             <n-card title="百度OCR" embedded class="card-radius-10">
-              <n-form ref="formRef" inline :label-width="80" :model="data.limgpath"
+              <n-form inline :label-width="80" :model="data.bdocr"
                 size="medium">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
