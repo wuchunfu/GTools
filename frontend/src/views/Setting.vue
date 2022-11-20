@@ -37,8 +37,8 @@
               <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false" closable>
                 Region、Bucket、Object内容请勿添加任何符号
               </n-alert>
-              <n-form inline :label-width="80" style="margin-top: 30px;" :model="data.alioss"
-                size="medium" v-show="data.imgbed.configType == 'alioss'">
+              <n-form inline :label-width="80" style="margin-top: 30px;" :model="data.alioss" size="medium"
+                v-show="data.imgbed.configType == 'alioss'">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
                     <n-form-item label="存储地域(Region)">
@@ -83,8 +83,7 @@
         <n-tab-pane name="ocr" tab="图文设置">
           <n-space vertical>
             <n-card title="百度OCR" embedded class="card-radius-10">
-              <n-form inline :label-width="80" :model="data.bdocr"
-                size="medium">
+              <n-form inline :label-width="80" :model="data.bdocr" size="medium">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
                     <n-form-item label="ID(clientId)">
@@ -108,8 +107,11 @@
               </n-form>
             </n-card>
             <n-card title="百度翻译(翻译开放平台)" embedded class="card-radius-10">
-              <n-form inline :label-width="80" :model="data.bdtrans"
-                size="medium">
+              <n-alert title="注意事项" type="info" :bordered="false">
+                百度翻译免费额度下并发量为1，请勿在短时间内快速、重复地进行翻译。<br>
+                appid 和 secret 务必准确，其他三项根据实际需求配置。
+              </n-alert>
+              <n-form inline :label-width="80" :model="data.bdtrans" size="medium" style="margin-top: 15px">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
                     <n-form-item label="appid">
