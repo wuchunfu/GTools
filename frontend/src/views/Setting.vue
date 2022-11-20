@@ -155,6 +155,12 @@
         <n-tab-pane name="other" tab="其他设置">
           我爱波多野结衣
         </n-tab-pane>
+        <n-tab-pane name="instructions" tab="使用说明">
+          我爱波多野结衣
+        </n-tab-pane>
+        <n-tab-pane name="feedback" tab="问题反馈">
+          我爱波多野结衣
+        </n-tab-pane>
       </n-tabs>
     </n-card>
   </div>

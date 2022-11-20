@@ -1,6 +1,34 @@
 <template>
   <div class="parentContent" ref="parentContent">
-    <div id="vditor" class="vditor" ref="vditor"></div>
+    <n-layout has-sider sider-placement="right">
+      <n-layout-content content-style="overflow: hidden">
+        <div id="vditor" class="vditor" ref="vditor"></div>
+      </n-layout-content>
+      <n-layout-sider collapse-mode="transform" :collapsed-width="0" :width="300" :native-scrollbar="false"
+        content-style="" show-trigger="bar" :default-collapsed="true">
+        <n-space style="margin-top: 20px; margin-left: 30px">
+          <n-button type="success" dashed @click="contentTrans()">
+            立即翻译
+          </n-button>
+          <n-button type="success" class="copy">
+            复制译文
+          </n-button>
+        </n-space>
+        <n-divider />
+        <n-card :bordered="false" title="原文">
+          <n-input placeholder="原文内容..." type="textarea" size="small" :autosize="{
+            minRows: 5,
+            maxRows: 10
+          }" v-model:value="original" />
+        </n-card>
+        <n-card :bordered="false" title="译文">
+          <n-input placeholder="译文内容..." type="textarea" size="small" :autosize="{
+            minRows: 5,
+            maxRows: 10
+          }" v-model:value="translation" />
+        </n-card>
+      </n-layout-sider>
+    </n-layout>
     <n-drawer v-model:show="showDirList" :width="502" :placement="placement" style="--wails-draggable:drag">
       <n-input-group style="display: flex; justify-content: center; margin: 20px 0;">
         <n-button type="primary" ghost round @click="addDirPath">
@@ -70,6 +98,7 @@ import { createDiscreteApi } from 'naive-ui'
 import mitt from '../utils/event.js'
 import { FolderOpen as FolderIcon, DocumentText as FileIcon } from "@vicons/ionicons5";
 import { DeleteOutlineOutlined as DelIcon } from '@vicons/material'
+import Clipboard from 'clipboard'
 
 // 脱离上下文的 API 引入消息提示框
 const { message, dialog } = createDiscreteApi(
@@ -99,6 +128,9 @@ export default {
       mdPath: null,
       themeType: true,  // true 亮 false 暗
       editorHeight: 0,
+      translation: "",
+      original: "",
+      transOk: true
     }
   },
   //mounted
@@ -225,6 +257,9 @@ export default {
       after: () => {
 
       },
+      select(md) {
+        _this.original = md
+      },
       input: () => {
 
       },
@@ -295,7 +330,6 @@ export default {
     },
     getMdContent(path) {
       // 判断当前文件是否保存
-      console.log(path);
       if (localStorage.getItem("mdPath") != null) {
         localStorage.setItem("mdPath", path)
         this.getContent(path)
@@ -446,7 +480,32 @@ export default {
           message.error(res.msg)
         }
       })
+    },
+    contentTrans() {
+      if(!this.transOk) {
+        message.error("点击过于频繁")
+        return
+      }
+      this.transOk = false
+      this.app.BaiDuTrans(this.original).then(res => {
+        if(res.code == 200) {
+          this.translation = res.data
+        } else {
+          message.error(res.msg)
+        }
+        this.transOk = true
+      })
+    },
+    translationCopy() {
+    if(this.translation == "") {
+        return
     }
+    let clipboard = new Clipboard('.copy')
+    clipboard.on('success', (e) => {
+        message.success('复制成功')
+        clipboard.destroy()
+    })
+}
   },
 
 }

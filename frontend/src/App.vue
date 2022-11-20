@@ -11,7 +11,9 @@ import {
   Navigate as NavigateIcon,
   DocumentText as DocIcon,
   AlertCircleSharp as AboutIcon,
-  Barcode as OcrIcon
+  Barcode as OcrIcon,
+  Bug as FeedbackIcon,
+  Book as InstructionsIcon
 } from '@vicons/ionicons5'
 
 import { PictureAsPdfFilled as PdfIcon} from '@vicons/material'

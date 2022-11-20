@@ -55,6 +55,9 @@ const ocr = (ocrType) => {
 }
 
 const copy = () => {
+    if(ocrStr.value == "") {
+        return
+    }
     let clipboard = new Clipboard('.copy')
     clipboard.on('success', (e) => {
         message.success('复制成功')
