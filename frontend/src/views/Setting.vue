@@ -2,29 +2,36 @@
   <div style="height: 100%;">
     <n-card :bordered="false">
       <n-tabs type="line" animated default-value="system">
-        <n-tab-pane name="system" tab="系统优化">
-          <n-card title="软件设置" class="card-radius-10" embedded>
-            <n-button secondary strong @click="cleanCache()">
-              <template #icon>
-                <n-icon color="#E5A241">
-                  <cleancache-icon />
-                </n-icon>
-              </template>
-              缓存清理
-            </n-button>
-          </n-card>
-        </n-tab-pane>
-        <n-tab-pane name="imgbed" tab="图床设置">
+        <n-tab-pane name="system" tab="软件设置">
           <n-space vertical>
+            <n-card title="软件优化" class="card-radius-10" embedded>
+              <n-button secondary strong @click="cleanCache()">
+                <template #icon>
+                  <n-icon color="#E5A241">
+                    <cleancache-icon />
+                  </n-icon>
+                </template>
+                缓存清理
+              </n-button>
+            </n-card>
             <n-card title="Markdown图片存储方式" class="card-radius-10" embedded>
               <n-radio-group v-model:value="data.imgbed.configType" name="imgBedTypeRadiobuttongroup"
-                :on-update="changeImgBed(data.imgbed.configType)">
+              :on-update="changeImgBed(data.imgbed.configType)">
                 <n-radio-button v-for="song in imgBedTypes" :key="song.value" :value="song.value" :label="song.label" />
               </n-radio-group>
             </n-card>
-            <n-card :title="imgBedCardName" embedded class="card-radius-10">
-              <n-form inline :label-width="80" :model="data.limgpath" size="medium"
-                v-show="data.imgbed.configType == 'limgpath'">
+            <n-card title="翻译方式" class="card-radius-10" embedded>
+              <n-radio-group v-model:value="data.trans.transType" name="transTypeRadiobuttongroup"
+                :on-update="changeTrans(data.trans.transType)">
+                <n-radio-button v-for="song in transTypes" :key="song.value" :value="song.value" :label="song.label" />
+              </n-radio-group>
+            </n-card>
+          </n-space>
+        </n-tab-pane>
+        <n-tab-pane name="imgbed" tab="图床配置">
+          <n-space vertical>
+            <n-card title="本地存储配置" embedded class="card-radius-10">
+              <n-form inline :label-width="80" :model="data.limgpath" size="medium">
                 <n-form-item label="本地图片存储路径" path="data.limgpath.path">
                   <n-input v-model:value="data.limgpath.path" placeholder="本地图片存储路径" :style="{ width: '600px' }" />
                 </n-form-item>
@@ -34,11 +41,12 @@
                   </n-button>
                 </n-form-item>
               </n-form>
-              <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false" closable>
+            </n-card>
+            <n-card title="阿里云OSS配置" embedded class="card-radius-10">
+              <n-alert title="注意事项" type="info" v-show="data.imgbed.configType == 'alioss'" :bordered="false">
                 Region、Bucket、Object内容请勿添加任何符号
               </n-alert>
-              <n-form inline :label-width="80" style="margin-top: 30px;" :model="data.alioss" size="medium"
-                v-show="data.imgbed.configType == 'alioss'">
+              <n-form inline :label-width="80" style="margin-top: 30px;" :model="data.alioss" size="medium">
                 <n-grid cols="2 400:2 800:3 1000:4">
                   <n-grid-item>
                     <n-form-item label="存储地域(Region)">
@@ -80,7 +88,7 @@
             </n-card>
           </n-space>
         </n-tab-pane>
-        <n-tab-pane name="ocr" tab="图文设置">
+        <n-tab-pane name="ocr" tab="图文配置">
           <n-space vertical>
             <n-card title="百度OCR" embedded class="card-radius-10">
               <n-form inline :label-width="80" :model="data.bdocr" size="medium">
@@ -152,9 +160,101 @@
                 </n-grid>
               </n-form>
             </n-card>
+            <n-card title="腾讯云翻译" embedded class="card-radius-10">
+              <n-alert title="注意事项" type="info" :bordered="false">
+                腾讯云翻译免费额度下默认接口请求频率限制：5次/秒，文本翻译的每月免费额度为5百万字符，免费额度每月1日0点重置。<br>
+              </n-alert>
+              待对接
+              <!-- <n-form inline :label-width="80" :model="data.bdtrans" size="medium" style="margin-top: 15px">
+                <n-grid cols="2 400:2 800:3 1000:4">
+                  <n-grid-item>
+                    <n-form-item label="appid">
+                      <n-input v-model:value="data.bdtrans.appid" placeholder="appid" :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="secret">
+                      <n-input v-model:value="data.bdtrans.secret" placeholder="secret" :style="{ width: '250px' }"
+                        type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="salt(盐默认gtools)">
+                      <n-input v-model:value="data.bdtrans.salt" placeholder="salt" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="from(默认auto自动识别)">
+                      <n-input v-model:value="data.bdtrans.from" placeholder="from" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="to(默认翻译为中文)">
+                      <n-input v-model:value="data.bdtrans.to" placeholder="to" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item>
+                      <n-button attr-type="button" @click="updateConfigByType('bdtrans', data.bdtrans)" type="success">
+                        更新
+                      </n-button>
+                    </n-form-item>
+                  </n-grid-item>
+                </n-grid>
+              </n-form> -->
+            </n-card>
+            <n-card title="阿里云机器翻译" embedded class="card-radius-10">
+              <n-alert title="注意事项" type="info" :bordered="false">
+                阿里云机器翻译免费额度下QPS为50，通用版机器翻译每月100万字符免费额度，单次请求字符不要太大(控制在1000字符以内)，否则请使用文本翻译。<br>
+              </n-alert>
+              待对接
+              <!-- <n-form inline :label-width="80" :model="data.bdtrans" size="medium" style="margin-top: 15px">
+                <n-grid cols="2 400:2 800:3 1000:4">
+                  <n-grid-item>
+                    <n-form-item label="appid">
+                      <n-input v-model:value="data.bdtrans.appid" placeholder="appid" :style="{ width: '250px' }" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="secret">
+                      <n-input v-model:value="data.bdtrans.secret" placeholder="secret" :style="{ width: '250px' }"
+                        type="password" :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="salt(盐默认gtools)">
+                      <n-input v-model:value="data.bdtrans.salt" placeholder="salt" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="from(默认auto自动识别)">
+                      <n-input v-model:value="data.bdtrans.from" placeholder="from" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item label="to(默认翻译为中文)">
+                      <n-input v-model:value="data.bdtrans.to" placeholder="to" :style="{ width: '250px' }"
+                        :clearable="true" />
+                    </n-form-item>
+                  </n-grid-item>
+                  <n-grid-item>
+                    <n-form-item>
+                      <n-button attr-type="button" @click="updateConfigByType('bdtrans', data.bdtrans)" type="success">
+                        更新
+                      </n-button>
+                    </n-form-item>
+                  </n-grid-item>
+                </n-grid>
+              </n-form> -->
+            </n-card>
           </n-space>
         </n-tab-pane>
-        <n-tab-pane name="other" tab="其他设置">
+        <n-tab-pane name="other" tab="其他配置">
           我爱波多野结衣
         </n-tab-pane>
         <n-tab-pane name="instructions" tab="使用说明">
@@ -171,9 +271,9 @@
 <script async setup>
 import { Trash as CleancacheIcon } from "@vicons/ionicons5";
 import { createDiscreteApi } from 'naive-ui'
-import { ref, onMounted } from "vue";
-// 生命周期放在最前面
-onMounted(() => {
+import { ref, onBeforeMount } from "vue";
+// 生命周期放在最前面å
+onBeforeMount(() => {
   getConfigMap()
 })
 
@@ -192,7 +292,29 @@ const imgBedTypes = ref([
     value: "alioss"
   },
 ])
-const data = ref({})
+const transTypes = ref([
+  {
+    label: "百度翻译",
+    value: "bdtrans"
+  },
+  {
+    label: "阿里翻译",
+    value: "alitrans"
+  },
+  {
+    label: "腾讯翻译",
+    value: "trans"
+  },
+])
+const data = ref({
+  // 默认值必须有，否则会重复触发更新方法
+  imgbed: {
+    configType: null
+  },
+  trans: {
+    transType: null
+  }
+})
 const app = ref(window.go.gtools.App)
 
 const cleanCache = () => {
@@ -210,7 +332,19 @@ const getConfigMap = () => {
 }
 
 const changeImgBed = (val) => {
+  if(val == null) return
   app.value.UpdateConfigItem({ "name": "configType", "value": val, "type": "imgbed" }).then(res => {
+    if (res.code == 200) {
+      if (res.data != null) data.value = res.data
+      setImgBedCardName()
+    } else {
+      message.error(res.msg)
+    }
+  })
+}
+const changeTrans = (val) => {
+  if(val == null) return
+  app.value.UpdateConfigItem({ "name": "transType", "value": val, "type": "trans" }).then(res => {
     if (res.code == 200) {
       if (res.data != null) data.value = res.data
       setImgBedCardName()

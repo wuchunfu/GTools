@@ -96,7 +96,6 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
-import { getCurrentInstance } from '@vue/runtime-core';
 import Vditor from "vditor"
 import "vditor/dist/index.css"
 import { createDiscreteApi } from 'naive-ui'
@@ -104,6 +103,8 @@ import mitt from '../utils/event.js'
 import { FolderOpen as FolderIcon, DocumentText as FileIcon } from "@vicons/ionicons5";
 import { DeleteOutlineOutlined as DelIcon } from '@vicons/material'
 import Clipboard from 'clipboard'
+
+
 onMounted(() => {
   editorHeight.value = document.documentElement.clientHeight;
   let themeType = localStorage.getItem("theme")
@@ -154,7 +155,7 @@ onMounted(() => {
         },
       },
       '|',
-      'emoji',
+      // 'emoji',
       'headings',
       'bold',
       'italic',
@@ -209,7 +210,10 @@ onMounted(() => {
       },
       theme: {
         current: contentTheme
-      }
+      },
+      math: {
+        engine: 'KaTeX',
+      },
     },
     resize: {
       enable: true,
@@ -271,7 +275,6 @@ onMounted(() => {
 const { message, dialog } = createDiscreteApi(
   ["message", "dialog"]
 );
-const currentInstance = getCurrentInstance()
 const app = ref(window.go.gtools.App)
 const collapsed = ref(true)
 const contentEditor = ref("")
@@ -470,6 +473,9 @@ const addFilePath = () => {
   })
 }
 const contentTrans = () => {
+  if (original.value == "") {
+    return
+  }
   if (!transOk.value) {
     message.error("点击过于频繁")
     return

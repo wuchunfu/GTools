@@ -170,6 +170,15 @@ func (a *App) initConfigData(ctype string) {
 		if _, err := a.Db.Insert(&datas); err != nil {
 			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
 		}
+	case "trans":
+		datas := make([]*internal.ConfigItem, 0)
+		for i := 0; i < len(configs.Trans); i++ {
+			var value string = ""
+			datas = append(datas, &internal.ConfigItem{Name: configs.Trans[i], Value: value, Type: ctype})
+		}
+		if _, err := a.Db.Insert(&datas); err != nil {
+			a.Log.Error(fmt.Sprintf(configs.AddConfigItemErr, ctype, err.Error()))
+		}
 	default:
 		a.Log.Warn(fmt.Sprintf("未找到配置项[%s], 系统配置初始化失败", ctype))
 	}
