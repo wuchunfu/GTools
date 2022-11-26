@@ -63,6 +63,10 @@ func (a *App) UpdateConfigItem(item internal.ConfigItem) *util.Resp {
 		return util.Error(err.Error())
 	}
 	a.ConfigMap = a.GetConfigMap()
+
+	// 对图床重新初始化
+	a.initImgBed()
+
 	return util.Success(a.ConfigMap)
 }
 

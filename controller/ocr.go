@@ -117,7 +117,7 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 	if !b {
 		return util.Error(s)
 	}
-
+	defer os.Remove(s)
 	filebytes, err := os.ReadFile(s)
 	if err != nil {
 		fmt.Println(err)

@@ -19,6 +19,7 @@ var (
 	NoImgBedConfigErr   = "系统无图床配置"
 )
 var (
+	InitSysClipboardErr      = "初始化剪贴板功能失败--异常信息[%s]"
 	GetSystemClipboardImgErr = "获取系统剪贴板图片失败"
 	SaveImgToLocalErr        = "图片本地存储失败"
 )

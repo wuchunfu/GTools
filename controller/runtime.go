@@ -24,12 +24,26 @@ func (a *App) OpenMdSaveFileWindow() *util.Resp {
 
 func (a *App) OpenMdFolderWindow() *util.Resp {
 	options := runtime.OpenDialogOptions{
-		Title: "选择文件夹",
-		CanCreateDirectories:true,
+		Title:                "选择文件夹",
+		CanCreateDirectories: true,
 	}
 	dirPath, err := runtime.OpenDirectoryDialog(a.ctx, options)
 	if err != nil {
 		return util.Error(err.Error())
 	}
 	return util.Success(dirPath)
+}
+
+func (a *App) OpenHtmlSaveWindow() *util.Resp {
+	options := runtime.SaveDialogOptions{
+		Title:                "导出为HTML",
+		DefaultFilename:      "new",
+		Filters:              [](runtime.FileFilter){configs.HtmlFilter},
+		CanCreateDirectories: true,
+	}
+	fpath, err := runtime.SaveFileDialog(a.ctx, options)
+	if err != nil {
+		return util.Error(err.Error())
+	}
+	return util.Success(fpath)
 }

@@ -28,6 +28,8 @@ export function DelTodoItem(arg1:internal.TodoItem):Promise<util.Resp>;
 
 export function DelTodoItemById(arg1:internal.TodoItem):Promise<util.Resp>;
 
+export function ExportHTML(arg1:string,arg2:string):Promise<util.Resp>;
+
 export function GetBdOCRToken():Promise<boolean|string>;
 
 export function GetCmdItemList():Promise<util.Resp>;
@@ -48,6 +50,8 @@ export function GetTodoList():Promise<util.Resp>;
 
 export function NewMd(arg1:string,arg2:string):Promise<util.Resp>;
 
+export function OpenHtmlSaveWindow():Promise<util.Resp>;
+
 export function OpenMdFolderWindow():Promise<util.Resp>;
 
 export function OpenMdSaveFileWindow():Promise<util.Resp>;
@@ -55,6 +59,8 @@ export function OpenMdSaveFileWindow():Promise<util.Resp>;
 export function SaveImgPath():Promise<void>;
 
 export function SaveMdContent(arg1:string,arg2:string):Promise<util.Resp>;
+
+export function TxTrans():Promise<void>;
 
 export function UpdateConfigByType(arg1:gtools.updatParam):Promise<util.Resp>;
 

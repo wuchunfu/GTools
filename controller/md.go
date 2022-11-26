@@ -2,10 +2,10 @@ package gtools
 
 import (
 	"bufio"
+	"fmt"
 	"gtools/configs"
 	"gtools/internal"
 	"gtools/util"
-	"fmt"
 	"io/fs"
 	"os"
 	"strings"
@@ -161,4 +161,17 @@ func (a *App) AddMdFile() *util.Resp {
 		}
 	}
 	return a.GetMdDirList()
+}
+
+func (a *App) ExportHTML(fpath, content string) *util.Resp {
+	file, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE, 0755)
+	if err != nil {
+		a.Log.Error("创建HTML文件异常: " + err.Error())
+		return util.Error("创建HTML文件异常: " + err.Error())
+	}
+	defer file.Close()
+	writer := bufio.NewWriter(file)
+	writer.WriteString(content)
+	writer.Flush()
+	return util.Ok()
 }

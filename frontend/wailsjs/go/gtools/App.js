@@ -50,6 +50,10 @@ export function DelTodoItemById(arg1) {
   return window['go']['gtools']['App']['DelTodoItemById'](arg1);
 }
 
+export function ExportHTML(arg1, arg2) {
+  return window['go']['gtools']['App']['ExportHTML'](arg1, arg2);
+}
+
 export function GetBdOCRToken() {
   return window['go']['gtools']['App']['GetBdOCRToken']();
 }
@@ -90,6 +94,10 @@ export function NewMd(arg1, arg2) {
   return window['go']['gtools']['App']['NewMd'](arg1, arg2);
 }
 
+export function OpenHtmlSaveWindow() {
+  return window['go']['gtools']['App']['OpenHtmlSaveWindow']();
+}
+
 export function OpenMdFolderWindow() {
   return window['go']['gtools']['App']['OpenMdFolderWindow']();
 }
@@ -104,6 +112,10 @@ export function SaveImgPath() {
 
 export function SaveMdContent(arg1, arg2) {
   return window['go']['gtools']['App']['SaveMdContent'](arg1, arg2);
+}
+
+export function TxTrans() {
+  return window['go']['gtools']['App']['TxTrans']();
 }
 
 export function UpdateConfigByType(arg1) {

@@ -154,6 +154,16 @@ onMounted(() => {
           saveMdContent()
         },
       },
+      {
+        name: 'exphtml',
+        tipPosition: 's',
+        tip: '导出HTML',
+        className: 'right',
+        icon: '<svg t="1669430938977" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3499" width="200" height="200"><path d="M921.6 1024H102.4c-56.32 0-102.4-46.08-102.4-102.4V102.4C0 46.08 46.08 0 102.4 0h256c30.72 0 51.2 20.48 51.2 51.2s-20.48 51.2-51.2 51.2H153.6c-30.72 0-51.2 20.48-51.2 51.2v716.8c0 30.72 20.48 51.2 51.2 51.2h716.8c30.72 0 51.2-20.48 51.2-51.2v-204.8c0-30.72 20.48-51.2 51.2-51.2s51.2 20.48 51.2 51.2v256c0 56.32-46.08 102.4-102.4 102.4z" p-id="3500"></path><path d="M552.96 399.36L916.48 35.84c20.48-20.48 51.2-20.48 71.68 0 20.48 20.48 20.48 51.2 0 71.68l-363.52 363.52c-20.48 20.48-51.2 20.48-71.68 0-20.48-15.36-20.48-51.2 0-71.68zM768 0h204.8c30.72 0 51.2 20.48 51.2 51.2s-20.48 51.2-51.2 51.2h-204.8c-30.72 0-51.2-20.48-51.2-51.2s20.48-51.2 51.2-51.2z m204.8 0c30.72 0 51.2 20.48 51.2 51.2v204.8c0 30.72-20.48 51.2-51.2 51.2s-51.2-20.48-51.2-51.2V51.2c0-30.72 20.48-51.2 51.2-51.2z" p-id="3501"></path></svg>',
+        click() {
+          exportHTML()
+        },
+      },
       '|',
       // 'emoji',
       'headings',
@@ -185,7 +195,6 @@ onMounted(() => {
       {
         name: 'more',
         toolbar: [
-          'export',
           'preview',
           // 'content-theme',
           // 'code-theme',
@@ -438,6 +447,27 @@ const uploadClipboard = () => {
       insertValue(res.data)
     } else {
       message.error(res.msg)
+    }
+  })
+}
+function exportHTML() {
+  app.value.OpenHtmlSaveWindow().then(res => {
+    if (res.code == 200) {
+      if (res.data == null) {
+        message.error("文件选择异常！")
+        return
+      }
+      if (res.data == '') { // 取消选择
+        return
+      }
+      let content = getHTML()
+      app.value.ExportHTML(res.data, content).then((res) => {
+        if (res.code != 200) {
+          message.error(res.msg)
+        } else {
+          message.success("导出成功")
+        }
+      })
     }
   })
 }

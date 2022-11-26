@@ -9,6 +9,7 @@ import (
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/sirupsen/logrus"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
 	"xorm.io/xorm"
 )
@@ -52,7 +53,7 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.initImgBed()
 
 	// 初始化系统剪贴板工具
-	initClipboard()
+	a.initClipboard()
 }
 
 // OnBeforeClose
@@ -61,6 +62,14 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 	a.Db.Close()
 	// 返回 true 将阻止程序关闭
 	return false
+}
+
+// OnDOMReady
+func (a *App) OnDOMReady(ctx context.Context) {
+	// 启动一个监听事件
+	runtime.EventsOn(a.ctx, "test", func(optionalData ...interface{}) {
+		a.Log.Info(optionalData...)
+	})
 }
 
 // 初始化图床配置
@@ -77,10 +86,11 @@ func (a *App) initImgBed() {
 	}
 }
 
-func initClipboard() {
+func (a *App) initClipboard() {
 	// Init returns an error if the package is not ready for use.
 	err := clipboard.Init()
 	if err != nil {
+		a.Log.Error(configs.InitSysClipboardErr, err.Error())
 		panic(err)
 	}
 }
